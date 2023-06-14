@@ -57,4 +57,22 @@ export class ClienteController {
       }
     }
   };
+  update = async (req: Request, res: Response) => {
+    try {
+      const { id_cliente, nome_completo, nome_social, email, senha } = req.body;
+      const result: string = await this.clienteBusiness.update(id_cliente, {
+        nome_completo,
+        nome_social,
+        email,
+        senha,
+      });
+      res.status(200).send({ result });
+    } catch (error: any) {
+      const { statusCode, message } = error;
+      res.status(statusCode || 400).send({ message });
+    }
+  };
+  
+  
+
 }

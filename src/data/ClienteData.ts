@@ -65,4 +65,19 @@ public async getClientes () {
       throw new CustomError(400, error.sqlMessage);
   }
 }
+public async updateCliente(cliente: ClienteModel): Promise<void> {
+  try {
+    await BaseData.connection(this.tableName)
+      .where({ id_cliente: cliente.getIdCliente() })
+      .update({
+        nome_completo: cliente.getNomeCompleto(),
+        nome_social: cliente.getNomeSocial(),
+        email: cliente.getEmail(),
+        senha: cliente.getSenha(),
+      });
+  } catch (error: any) {
+    throw new CustomError(400, error.sqlMessage);
+  }
+}
+
 }

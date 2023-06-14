@@ -20,7 +20,7 @@ const clienteController = new ClienteController(clienteBusiness);
 app.post("/cliente/cadastrar", clienteController.signup);
 app.post("/cliente/conectar", clienteController.login);
 app.get("/cliente", clienteController.getCliente);
-
+app.put("/cliente/atualizar", clienteController.update);
 //Nutricionista
 const nutriBusiness = new NutricionistaBusiness(
   new HashGenerator(),
