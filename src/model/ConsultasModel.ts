@@ -1,4 +1,4 @@
-export class ConsultaModel {
+export class ConsultasModel {
 constructor(
     private id: string,
     private data: Date,
@@ -38,8 +38,8 @@ constructor(
         return this.id_cliente
     }
 
-    static toConsultaModel(data:any): ConsultaModel{
-        return new ConsultaModel(data.id,data.data,data.hora,
+    static toConsultaModel(data:any): ConsultasModel{
+        return new ConsultasModel(data.id,data.data,data.hora,
             data.status,data.observacoes,data.id_nutricionista,data.id_cliente)
     }
 }
