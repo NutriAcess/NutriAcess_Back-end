@@ -63,29 +63,26 @@ export class ClienteBusiness {
         throw new CustomError(422, "Missing input.");
       }
       const cliente = await this.clienteData.findClienteByEmail(email);
-
+  
       if (!cliente) {
         throw new CustomError(400, "User already created.");
       }
-
+  
       const senhaIsCorrect = this.hashGenerator.compareHash(
         senha,
         cliente.getSenha()
       );
-
+  
       if (!senhaIsCorrect) {
         throw new CustomError(401, "Invalid credentials.");
       }
-
-      const accessToken = this.tokenGenerator.generate({
-        id: cliente.getIdCliente(),
-      });
-
-      return { accessToken };
+  
+      return { result: "Logged in successfully." };
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
   }
+  
    public async getCliente (data: any)  {
     try {
       const { id_cliente, nome_completo } = data; 
@@ -117,4 +114,59 @@ export class ClienteBusiness {
       throw new CustomError(error.statusCode, error.message);
     }
   };
+  public async update(
+    id_cliente: string,
+    options: {
+      nome_completo?: string;
+      nome_social?: string;
+      email?: string;
+      senha?: string;
+    }
+  ) {
+    try {
+      if (!id_cliente) {
+        throw new Error("Missing input: id_cliente is required.");
+      }
+  
+      const cliente = await this.clienteData.findClienteById(id_cliente);
+      if (!cliente) {
+        throw new Error("Cliente not found.");
+      }
+  
+      if (options.email) {
+        const existingCliente = await this.clienteData.findClienteByEmail(options.email);
+        if (existingCliente && existingCliente.getIdCliente() !== id_cliente) {
+          throw new Error("Email already in use.");
+        }
+      }
+  
+      let novoHashSenha: string | undefined = undefined;
+      if (options.senha && options.senha !== cliente.getSenha()) {
+        if (options.senha.length < 6) {
+          throw new Error("Invalid password.");
+        }
+        novoHashSenha = await this.hashGenerator.hash(options.senha);
+      }
+  
+      if (options.nome_completo) {
+        cliente.setNomeCompleto(options.nome_completo);
+      }
+      if (options.nome_social) {
+        cliente.setNomeSocial(options.nome_social);
+      }
+      if (options.email) {
+        cliente.setEmail(options.email);
+      }
+      if (novoHashSenha) {
+        cliente.setSenha(novoHashSenha);
+      }
+  
+      await this.clienteData.updateCliente(cliente);
+  
+      return "Client updated successfully.";
+    } catch (error: any) {
+      throw new CustomError(error.statusCode, error.message);
+    }
+  }
+  
 }
