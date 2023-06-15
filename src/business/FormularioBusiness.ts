@@ -4,24 +4,26 @@ import { ClienteModel } from "../model/ClienteModel";
 import { HashGenerator } from "../services/hashGenerator";
 import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
+import { FormularioInputDTO } from "../types/FormularioInputDTO";
 
 export class FormularioBusiness {
   constructor(
     private idGenerator: IdGenerator,
     private formData: FormData
   ) {}
-  // public async create(
-    
-  // ) {
-  //   try {
-  //     if (!nome || !objetivo || !altura || !idade || !peso || !capacidade_fisica || !restricao_alimentar || !tempo_preparo || !foto || !id_formulario) {
-  //       throw new CustomError(422, "Missing input.");
-  //     }
+  public async create(
+    input: FormularioInputDTO
+  ) {
+    try {
+      const {nome, objetivo, altura, idade, peso, capacidade_fisica, restricao_alimentar, tempo_preparo, foto} = input;
+      if (!nome || !objetivo || !altura || !idade || !peso || !capacidade_fisica || !restricao_alimentar || !tempo_preparo  ) {
+        throw new CustomError(422, "Missing input.");
+      }
      
-  //   } catch (error: any) {
-  //     throw new CustomError(error.statusCode, error.message);
-  //   }
-  // }
+    } catch (error: any) {
+      throw new CustomError(error.statusCode, error.message);
+    }
+  }
   
   //  public async getFormulario (data: any)  {
   //   try {
