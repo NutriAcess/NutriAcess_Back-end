@@ -6,6 +6,16 @@ CREATE TABLE `cliente` (
   `senha` varchar(255) NOT NULL
 );
 
+
+CREATE TABLE `planos` (
+  `id_plano` VARCHAR(255) PRIMARY KEY,
+  `tipo` Enum('Plus', 'Família', 'Premium') NOT NULL,
+  `duracao` varchar(255) NOT NULL,
+  `descricao` varchar(255) NOT NULL,
+  `valor` decimal NOT NULL
+);
+
+
 CREATE TABLE `familia` (
   `id_familia` VARCHAR(255) PRIMARY KEY,
   `nome` varchar(255) NOT NULL,
@@ -56,22 +66,6 @@ CREATE TABLE `formulario` (
   foreign key (id_cliente) references cliente (id_cliente)
 );
 
-CREATE TABLE familia_cliente (
-  id_familia_cliente VARCHAR(255) PRIMARY KEY,
-  id_cliente VARCHAR(255),
-  id_familia VARCHAR(255),
-  foreign key (id_cliente) references cliente (id_cliente),
-  foreign key (id_familia) references familia (id_familia)
-);
-
-CREATE TABLE `planos` (
-  `id_plano` VARCHAR(255) PRIMARY KEY,
-  `tipo` Enum('Plus', 'Família', 'Premium') NOT NULL,
-  `duracao` varchar(255) NOT NULL,
-  `descricao` varchar(255) NOT NULL,
-  `valor` decimal NOT NULL
-);
-
 CREATE TABLE `fale_conosco` (
   `id` VARCHAR(255) PRIMARY KEY,
   `avaliacao` Enum('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'),
@@ -81,4 +75,13 @@ CREATE TABLE `fale_conosco` (
   `id_cliente` VARCHAR(255),
   foreign key (id_cliente) references cliente (id_cliente)
 );
+
+CREATE TABLE familia_cliente (
+  id_familia_cliente VARCHAR(255) PRIMARY KEY,
+  id_cliente VARCHAR(255),
+  id_familia VARCHAR(255),
+  foreign key (id_cliente) references cliente (id_cliente),
+  foreign key (id_familia) references familia (id_familia)
+);
+
 
