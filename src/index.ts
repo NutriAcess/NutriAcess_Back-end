@@ -1,9 +1,12 @@
 import { ClienteBusiness } from "./business/ClienteBusiness";
+import { FormularioBusiness } from "./business/FormularioBusiness";
 import { NutricionistaBusiness } from "./business/NutricionistaBusiness";
 import { ClienteController } from "./controller/ClienteController";
+import { FormularioController } from "./controller/FormularioController";
 import { NutricionistaController } from "./controller/NutricionistaController";
 import { app } from "./controller/app";
 import { ClienteData } from "./data/ClienteData";
+import { FormularioData } from "./data/FormularioData";
 import { NutricionistaData } from "./data/NutricionistaData";
 import { HashGenerator } from "./services/hashGenerator";
 import { IdGenerator } from "./services/idGenerator";
@@ -32,3 +35,12 @@ const nutriController = new NutricionistaController(nutriBusiness);
 app.post("/nutricionista/cadastrar", nutriController.signup);
 app.post("/nutricionista/conectar", nutriController.login);
 app.get("/nutricionista", nutriController.getNutricionista);
+
+//Formulário
+const formsBusiness = new FormularioBusiness(
+  new IdGenerator(),
+  new FormularioData(),
+  new ClienteData()
+);
+const formsController = new FormularioController(formsBusiness);
+app.post("/formulario/criar", formsController.create);
