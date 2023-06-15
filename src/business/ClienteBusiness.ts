@@ -63,26 +63,29 @@ export class ClienteBusiness {
         throw new CustomError(422, "Missing input.");
       }
       const cliente = await this.clienteData.findClienteByEmail(email);
-  
+
       if (!cliente) {
         throw new CustomError(400, "User already created.");
       }
-  
+
       const senhaIsCorrect = this.hashGenerator.compareHash(
         senha,
         cliente.getSenha()
       );
-  
+
       if (!senhaIsCorrect) {
         throw new CustomError(401, "Invalid credentials.");
       }
-  
-      return { result: "Logged in successfully." };
+
+      const accessToken = this.tokenGenerator.generate({
+        id: cliente.getIdCliente(),
+      });
+
+      return { accessToken };
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
   }
-  
    public async getCliente (data: any)  {
     try {
       const { id_cliente, nome_completo } = data; 

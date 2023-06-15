@@ -29,7 +29,6 @@ export class ClienteController {
       res.status(statusCode || 400).send({ message });
     }
   };
-
   getCliente = async (req: Request, res: Response) => {
     const id_cliente = req.query.id_cliente;
     const nome_completo = req.query.nome_completo;
