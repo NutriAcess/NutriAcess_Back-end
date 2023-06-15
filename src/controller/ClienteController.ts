@@ -59,7 +59,8 @@ export class ClienteController {
   };
   update = async (req: Request, res: Response) => {
     try {
-      const { id_cliente, nome_completo, nome_social, email, senha } = req.body;
+      const { nome_completo, nome_social, email, senha } = req.body;
+      const id_cliente = req.params.id; 
       const result: string = await this.clienteBusiness.update(id_cliente, {
         nome_completo,
         nome_social,
