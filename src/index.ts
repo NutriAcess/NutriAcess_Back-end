@@ -22,8 +22,9 @@ const clienteBusiness = new ClienteBusiness(
 const clienteController = new ClienteController(clienteBusiness);
 app.post("/cliente/cadastrar", clienteController.signup);
 app.post("/cliente/conectar", clienteController.login);
-app.get("/cliente", clienteController.getCliente);
-app.put("/cliente/atualizar", clienteController.update);
+app.get("/cliente/:id_cliente", clienteController.getClienteById);
+app.get("/cliente", clienteController.getAllClientes);
+// app.put("/cliente/atualizar", clienteController.updateCliente);
 //Nutricionista
 const nutriBusiness = new NutricionistaBusiness(
   new HashGenerator(),
@@ -34,13 +35,17 @@ const nutriBusiness = new NutricionistaBusiness(
 const nutriController = new NutricionistaController(nutriBusiness);
 app.post("/nutricionista/cadastrar", nutriController.signup);
 app.post("/nutricionista/conectar", nutriController.login);
-app.get("/nutricionista", nutriController.getNutricionista);
+app.get("/nutricionista/:id_nutricionista", nutriController.getNutriById);
+app.get("/nutricionista", nutriController.getAllNutricionistas);
 
 //Formulário
 const formsBusiness = new FormularioBusiness(
   new IdGenerator(),
+  new TokenGenerator(),
   new FormularioData(),
   new ClienteData()
 );
 const formsController = new FormularioController(formsBusiness);
-app.post("/formulario/criar", formsController.create);
+app.post("/formulario/criar", formsController.createForm);
+app.get("/formulario/:id_formulario", formsController.getFormById);
+app.get("/formulario", formsController.getAllFormularios);

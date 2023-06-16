@@ -49,7 +49,7 @@ CREATE TABLE `consultas` (
   foreign key (id_cliente) references cliente (id_cliente)
 );
 
--- //Arrumar tabela
+
 CREATE TABLE `formulario` (
   `id_formulario` VARCHAR(255) PRIMARY KEY,
   `nome` varchar(255) NOT NULL,
@@ -61,11 +61,10 @@ CREATE TABLE `formulario` (
   `capacidade_fisica` Enum('Sedentarismo', 'Atividade física moderada', 'Atividade física intensiva'),
   `restricao_alimentar` Enum('Qualquer coisa', 'Sou vegetariano(a)', 'Sou vegano(a)'),
   `tempo_preparo` Enum('Sim', 'Nao') NOT NULL,
-  `foto` varchar(255) NOT NULL,
+  `foto` LONGBLOB,
   `id_cliente` VARCHAR(255),
   foreign key (id_cliente) references cliente (id_cliente)
 );
-
 CREATE TABLE `fale_conosco` (
   `id` VARCHAR(255) PRIMARY KEY,
   `avaliacao` Enum('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'),
