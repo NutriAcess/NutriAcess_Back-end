@@ -9,10 +9,11 @@ import { FormularioInputDTO } from "../types/FormularioInputDTO";
 export class FormularioBusiness {
   constructor(
     private idGenerator: IdGenerator,
+    private tokenGenerator: TokenGenerator,
     private formData: FormularioData,
     private clienteData: ClienteData
   ) {}
-  public async create(input: FormularioInputDTO) {
+  public async createForm(input: FormularioInputDTO) {
     try {
       const {
         token,
@@ -31,11 +32,15 @@ export class FormularioBusiness {
       if (!token) {
         throw new CustomError(403, `Authorization token is required`);
       }
-      const authenticator = new TokenGenerator();
-      const tokenData = authenticator.verify(token);
+     
+     
+      const tokenData = this.tokenGenerator.verify(token);
+      console.log(tokenData)
       if (!tokenData) {
+       
         throw new CustomError(404, `User not found!`);
       }
+      
       if (
         !nome ||
         !objetivo ||
@@ -129,4 +134,39 @@ export class FormularioBusiness {
       throw new CustomError(error.statusCode, error.message);
     }
   }
+  
+  public async getFormById(id_formulario: string, token: string) {
+    try {
+      if (!token) {
+        throw new CustomError(401, "Insert a token please!")
+    }
+    if (!id_formulario) {
+      throw new CustomError(400,"Insert a id_formulario please!")
+  }
+  const formTokenData = this.tokenGenerator.verify(token)
+
+  if(!formTokenData){
+    throw new CustomError(401, "Invalid token!")
+  }
+
+  const form = await this.formData.findFormularioById(id_formulario)
+
+  if(!form){
+    throw new CustomError(400,"There is no form with that ID!")
+  }
+  return form;
+    } catch (error: any) {
+      throw new CustomError(error.statusCode, error.message);
+    }
+  }
+
+  public async getAllFormularios () {
+    try {
+     
+      const results = await this.formData.getFormularios();
+      return results;
+    } catch (error: any) {
+      throw new CustomError(error.statusCode, error.message);
+    }
+  };
 }

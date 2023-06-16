@@ -2,10 +2,10 @@ import { CustomError } from "../error/CustomError";
 import { BaseData } from "./BaseData";
 import { FormularioModel } from "../model/FormularioModel";
 
-export class FormularioData extends BaseData{
-  protected tableName:string = "formulario";
-  
-public async createFormulario(forms:  FormularioModel): Promise<void> {
+export class FormularioData extends BaseData {
+  protected tableName: string = "formulario";
+
+  public async createFormulario(forms: FormularioModel): Promise<void> {
     try {
       await BaseData.connection(this.tableName).insert({
         id_formulario: forms.getId_formulaio(),
@@ -18,35 +18,32 @@ public async createFormulario(forms:  FormularioModel): Promise<void> {
         restricao_alimentar: forms.getRestricao_alimentar(),
         tempo_preparo: forms.getTempo_preparo(),
         foto: forms.getFoto(),
-        id_cliente: forms.getId_cliente()
-      })
-      
-    }  catch (error:any) {
-         throw new CustomError(400, error.sqlMessage);
+        id_cliente: forms.getId_cliente(),
+      });
+    } catch (error: any) {
+      throw new CustomError(400, error.sqlMessage);
     }
-}
-public async findFormularioById(
+  }
+  public async findFormularioById(
     id_formulario: string
-): Promise<FormularioModel | undefined> {
+  ): Promise<FormularioModel | undefined> {
     try {
-        const [forms]: FormularioModel[] = await BaseData.connection(
-            this.tableName
-        )
-            .select("*")
-            .where({id_formulario: id_formulario });
-            return forms;
+      const [forms]: FormularioModel[] = await BaseData.connection(
+        this.tableName
+      )
+        .select("*")
+        .where({ id_formulario: id_formulario });
+      return forms;
     } catch (error: any) {
-        throw new CustomError(400,error.sqlMessage);
+      throw new CustomError(400, error.sqlMessage);
     }
-}
-public async getPlanos() {
+  }
+  public async getFormularios() {
     try {
-        const results = await FormularioData.connection(this.tableName).select(
-            "*"
-        );
-return results;
+      const results = await FormularioData.connection(this.tableName).select("*");
+      return results;
     } catch (error: any) {
-    throw new CustomError(400, error.sqlMessage);
-    } 
-}
+      throw new CustomError(400, error.sqlMessage);
+    }
+  }
 }

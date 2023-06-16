@@ -4,6 +4,7 @@ import { ClienteModel } from "../model/ClienteModel";
 import { HashGenerator } from "../services/hashGenerator";
 import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
+import { ClienteInputDTO } from "../types/ClienteInputDTO";
 
 export class ClienteBusiness {
   constructor(
@@ -12,30 +13,31 @@ export class ClienteBusiness {
     private tokenGenerator: TokenGenerator,
     private clienteData: ClienteData
   ) {}
-  public async signup(
-    nome_completo: string,
-    nome_social: string,
-    email: string,
-    senha: string
-  ) {
+
+  public async signup  (clienteInput: ClienteInputDTO): Promise<string>  {
     try {
+      const { nome_completo, nome_social, email, senha } = clienteInput;
+
       if (!nome_completo || !nome_social || !senha || !email) {
         throw new CustomError(422, "Missing input.");
       }
+
       if (senha.length < 6) {
         throw new CustomError(422, "Invalid password.");
       }
+
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       if (!emailRegex.test(email)) {
         throw new CustomError(422, "Invalid email.");
       }
 
-      const cliente = await this.clienteData.findClienteByEmail(email);
+      const existingCliente = await this.clienteData.findClienteByEmail(email);
 
-      if (cliente) {
+      if (existingCliente) {
         throw new CustomError(401, "Invalid credentials.");
       }
+
       const id = this.idGenerator.generate();
       const cypherSenha = await this.hashGenerator.hash(senha);
 
@@ -49,26 +51,30 @@ export class ClienteBusiness {
 
       await this.clienteData.createCliente(newCliente);
 
-      const acessToken = this.tokenGenerator.generate({
-        id,
+      const accessToken = this.tokenGenerator.generate({
+        id: newCliente.getIdCliente(),
+        email: newCliente.getEmail(),
       });
-      return acessToken;
+
+      return accessToken;
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
-  }
-  public async login(email: string, senha: string) {
+  };
+
+  public async login(email: string, senha: string): Promise<{ accessToken: string }> {
     try {
       if (!email || !senha) {
         throw new CustomError(422, "Missing input.");
       }
+
       const cliente = await this.clienteData.findClienteByEmail(email);
 
       if (!cliente) {
-        throw new CustomError(400, "User already created.");
+        throw new CustomError(400, "Client not found.");
       }
 
-      const senhaIsCorrect = this.hashGenerator.compareHash(
+      const senhaIsCorrect = await this.hashGenerator.compareHash(
         senha,
         cliente.getSenha()
       );
@@ -79,6 +85,7 @@ export class ClienteBusiness {
 
       const accessToken = this.tokenGenerator.generate({
         id: cliente.getIdCliente(),
+        email: cliente.getEmail(),
       });
 
       return { accessToken };
@@ -86,37 +93,41 @@ export class ClienteBusiness {
       throw new CustomError(error.statusCode, error.message);
     }
   }
-   public async getCliente (data: any)  {
+
+  public async getClienteById(id_cliente: string, token: string) {
     try {
-      const { id_cliente, nome_completo } = data; 
-  
-      if (!nome_completo && !id_cliente) {
-        throw new CustomError(422, "User name or id required");
-      }
-      if (id_cliente && !nome_completo) {
-        const result = await this.clienteData.findClienteById(id_cliente);
-        return result;
-      } else if (nome_completo && !id_cliente) {
-        const result = await this.clienteData.findClienteByNome(nome_completo);
-        return result;
-      } else {
-        throw new CustomError(422, "User ID or name is required");
-      }
+      if (!token) {
+        throw new CustomError(401, "Insert a token please!")
+    }
+    if (!id_cliente) {
+      throw new CustomError(400,"Insert a id_cliente please!")
+  }
+  const clienteTokenData = this.tokenGenerator.verify(token)
+
+  if(!clienteTokenData){
+    throw new CustomError(401, "Invalid token!")
+  }
+
+  const cliente = await this.clienteData.findClienteById(id_cliente)
+
+  if(!cliente){
+    throw new CustomError(400,"There is no customer with that ID!")
+  }
+  return cliente;
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
-  };
-  
+  }
 
-  public async getAllClientes () {
+  public async getAllClientes() {
     try {
-      const clienteDataBase = new ClienteData();
-      const results = await clienteDataBase.getClientes();
+      const results = await this.clienteData.getClientes();
       return results;
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
-  };
+  }
+
   public async update(
     id_cliente: string,
     options: {
@@ -130,19 +141,24 @@ export class ClienteBusiness {
       if (!id_cliente) {
         throw new Error("Missing input: id_cliente is required.");
       }
-  
+
       const cliente = await this.clienteData.findClienteById(id_cliente);
       if (!cliente) {
         throw new Error("Cliente not found.");
       }
-  
+
       if (options.email) {
-        const existingCliente = await this.clienteData.findClienteByEmail(options.email);
-        if (existingCliente && existingCliente.getIdCliente() !== id_cliente) {
+        const existingCliente = await this.clienteData.findClienteByEmail(
+          options.email
+        );
+        if (
+          existingCliente &&
+          existingCliente.getIdCliente() !== id_cliente
+        ) {
           throw new Error("Email already in use.");
         }
       }
-  
+
       let novoHashSenha: string | undefined = undefined;
       if (options.senha && options.senha !== cliente.getSenha()) {
         if (options.senha.length < 6) {
@@ -150,7 +166,7 @@ export class ClienteBusiness {
         }
         novoHashSenha = await this.hashGenerator.hash(options.senha);
       }
-  
+
       if (options.nome_completo) {
         cliente.setNomeCompleto(options.nome_completo);
       }
@@ -163,13 +179,12 @@ export class ClienteBusiness {
       if (novoHashSenha) {
         cliente.setSenha(novoHashSenha);
       }
-  
+
       await this.clienteData.updateCliente(cliente);
-  
+
       return "Client updated successfully.";
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
   }
-  
 }
