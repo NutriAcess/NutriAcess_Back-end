@@ -4,6 +4,7 @@ import { BaseData } from "./BaseData";
 
 export class ClienteData extends BaseData {
   protected tableName: string = "cliente";
+  nome_completo: any;
 
   public async createCliente(cliente: ClienteModel): Promise<void> {
     try {
@@ -65,6 +66,21 @@ export class ClienteData extends BaseData {
     }
   }
   public async updateCliente(cliente: ClienteModel): Promise<void> {
+    try {
+      await BaseData.connection(this.tableName)
+        .where({ id_cliente: cliente.getIdCliente() })
+        .update({
+          nome_completo: cliente.getNomeCompleto(),
+          nome_social: cliente.getNomeSocial(),
+          email: cliente.getEmail(),
+          senha: cliente.getSenha(),
+        });
+    } catch (error: any) {
+      throw new CustomError(400, error.sqlMessage);
+    }
+  }
+
+  public async saveCliente(cliente: ClienteModel): Promise<void> {
     try {
       await BaseData.connection(this.tableName)
         .where({ id_cliente: cliente.getIdCliente() })
