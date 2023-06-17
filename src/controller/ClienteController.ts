@@ -13,11 +13,11 @@ export class ClienteController {
         nome_social,
         email,
         senha,
+       
       };
       const token = await this.clienteBusiness.signup(clienteInput);
 
       res.status(201).send({ message:"Sign Up created successfully.",token });
-      console.log(token);
     } catch (error: any) {
       const { statusCode, message } = error;
       res.status(statusCode || 400).send({ message });
@@ -61,39 +61,31 @@ export class ClienteController {
     }
   };
 
-  // updateCliente = async (req: Request, res: Response) => {
-  //   try {
-  //     const id_cliente = req.params.id;
-  //     const { nome_completo, nome_social, email, senha } = req.body;
-
-  //     const options: {
-  //       nome_completo?: string;
-  //       nome_social?: string;
-  //       email?: string;
-  //       senha?: string;
-  //     } = {};
-
-  //     if (nome_completo) {
-  //       options.nome_completo = nome_completo;
-  //     }
-  //     if (nome_social) {
-  //       options.nome_social = nome_social;
-  //     }
-  //     if (email) {
-  //       options.email = email;
-  //     }
-  //     if (senha) {
-  //       options.senha = senha;
-  //     }
-
-  //     await this.clienteBusiness.update(id_cliente, options);
-
-  //     res.status(200).send({ message: "Cliente updated successfully" });
-  //   } catch (error: any) {
-  //     const { statusCode, message } = error;
-  //     res.status(statusCode || 400).send({ message });
-  //   }
-  // };
+  updateClienteById = async (req: Request, res: Response) => {
+    try {
+      const token = req.headers.authorization as string;
+      const id_cliente = req.params.id_cliente;
+      const { nome_completo, nome_social, email, senha } = req.body;
+  
+      const clienteInput: ClienteInputDTO = {
+        token,
+        nome_completo,
+        nome_social,
+        email,
+        senha,
+      };
+  
+      const updatedToken = await this.clienteBusiness.updateClienteById(
+        id_cliente,
+        clienteInput
+      );
+  
+      res.status(200).send({ message: "Cliente atualizado!", token: updatedToken });
+    } catch (error: any) {
+      const { statusCode, message } = error;
+      res.status(statusCode || 400).send({ message });
+    }
+  };
 }
 
 

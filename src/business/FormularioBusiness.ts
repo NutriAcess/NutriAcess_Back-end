@@ -65,7 +65,7 @@ export class FormularioBusiness {
       ) {
         throw new CustomError(
           422,
-          "Objetivo accepts  'perder peso', 'manter peso', 'ganhar massa' as a valid result."
+          "Objective accepts  'perder peso', 'manter peso', 'ganhar massa' as a valid result."
         );
       }
       if (
@@ -75,7 +75,7 @@ export class FormularioBusiness {
       ) {
         throw new CustomError(
           422,
-          "Objetivo accepts  'mulher', 'homem', 'outro' as a valid result."
+          "Gender accepts  'mulher', 'homem', 'outro' as a valid result."
         );
       }
       if (
@@ -85,7 +85,7 @@ export class FormularioBusiness {
       ) {
         throw new CustomError(
           422,
-          "Objetivo accepts  'sedentarismo', 'atividade fisica moderada', 'atividade fisica intensa' as a valid result."
+          "Physical capacity accepts  'sedentarismo', 'atividade fisica moderada', 'atividade fisica intensa' as a valid result."
         );
       }
       if (
@@ -95,7 +95,7 @@ export class FormularioBusiness {
       ) {
         throw new CustomError(
           422,
-          "Objetivo accepts  'qualquer coisa', 'vegetariano', 'vegano' as a valid result."
+          "Food restriction accepts  'qualquer coisa', 'vegetariano', 'vegano' as a valid result."
         );
       }
       if (
@@ -104,7 +104,7 @@ export class FormularioBusiness {
       ) {
         throw new CustomError(
           422,
-          "Objetivo accepts  'sim', 'não' as a valid result."
+          "Preparation time accepts  'sim', 'não' as a valid result."
         );
       }
 

@@ -128,63 +128,65 @@ export class ClienteBusiness {
     }
   }
 
-  public async update(
-    id_cliente: string,
-    options: {
-      nome_completo?: string;
-      nome_social?: string;
-      email?: string;
-      senha?: string;
-    }
-  ) {
+  public async updateClienteById(id_cliente: string, clienteInput: ClienteInputDTO) {
     try {
-      if (!id_cliente) {
-        throw new Error("Missing input: id_cliente is required.");
+      const { token, nome_completo, nome_social, email, senha } = clienteInput;
+
+      if (!token) {
+        throw new CustomError(401, "Please enter a valid token!");
+      }
+
+      const clienteTokenData = this.tokenGenerator.verify(token);
+
+      if (!clienteTokenData) {
+        throw new CustomError(401, "Invalid token!");
+      }
+
+      if (!nome_completo && !nome_social && !email && !senha) {
+        throw new CustomError(400,"No fields provided to update.");
       }
 
       const cliente = await this.clienteData.findClienteById(id_cliente);
+// console.log(cliente);
+
       if (!cliente) {
-        throw new Error("Cliente not found.");
+        throw new CustomError(404, "Customer not found.");
       }
 
-      if (options.email) {
-        const existingCliente = await this.clienteData.findClienteByEmail(
-          options.email
-        );
-        if (
-          existingCliente &&
-          existingCliente.getIdCliente() !== id_cliente
-        ) {
-          throw new Error("Email already in use.");
+      if (nome_completo) {
+        cliente.setNomeCompleto(nome_completo);
+      }
+      // console.log(nome_completo);
+      
+      if (nome_social) {
+        cliente.setNomeSocial(nome_social);
+      }
+      // console.log(nome_social);
+      if (email) {
+        const existingCliente = await this.clienteData.findClienteByEmail(email);
+        if (existingCliente && existingCliente.getIdCliente() !== cliente.getIdCliente()) {
+          throw new CustomError(409, "E-mail already registered.");
         }
+        // cliente.setEmail(email);
       }
-
-      let novoHashSenha: string | undefined = undefined;
-      if (options.senha && options.senha !== cliente.getSenha()) {
-        if (options.senha.length < 6) {
-          throw new Error("Invalid password.");
-        }
-        novoHashSenha = await this.hashGenerator.hash(options.senha);
+      // console.log(email);
+      if (senha) {
+        const cypherSenha = await this.hashGenerator.hash(senha);
+        cliente.setSenha(cypherSenha);
       }
-
-      if (options.nome_completo) {
-        cliente.setNomeCompleto(options.nome_completo);
-      }
-      if (options.nome_social) {
-        cliente.setNomeSocial(options.nome_social);
-      }
-      if (options.email) {
-        cliente.setEmail(options.email);
-      }
-      if (novoHashSenha) {
-        cliente.setSenha(novoHashSenha);
-      }
-
+      // console.log(senha);
       await this.clienteData.updateCliente(cliente);
 
-      return "Client updated successfully.";
+      const updatedToken = this.tokenGenerator.generate({
+        id: cliente.getIdCliente(),
+        email: cliente.getEmail(),
+      });
+
+      // console.log(updatedToken);
+      
+      return updatedToken;
     } catch (error: any) {
-      throw new CustomError(error.statusCode, error.message);
+      throw new CustomError(error.statusCode || 400, error.message);
     }
   }
 }

@@ -26,7 +26,7 @@ export class FormularioController {
         id_cliente
       }
       const newForm = await this.formularioBusiness.createForm(form);
-      console.log(newForm)
+ 
       res.status(201).send({message:"Form created successfully.", newForm });
     } catch (error: any) {
       if (res.statusCode === 200) {
