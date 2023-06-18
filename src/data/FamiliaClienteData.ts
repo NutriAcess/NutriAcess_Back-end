@@ -32,7 +32,7 @@ export class FamiliaClienteData extends BaseData{
 
   public async getFamiliaCliente() {
     try {
-    const results = await FamiliaClienteData.connection(this.tableName).select(
+    const results = await BaseData.connection(this.tableName).select(
         "*"
     );
     return results;

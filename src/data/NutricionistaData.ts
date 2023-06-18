@@ -73,7 +73,7 @@ export class NutricionistaData extends BaseData {
   }
   public async getNutricionistas() {
     try {
-      const results = await NutricionistaData.connection(this.tableName).select(
+      const results = await BaseData.connection(this.tableName).select(
         "*"
       );
       return results;

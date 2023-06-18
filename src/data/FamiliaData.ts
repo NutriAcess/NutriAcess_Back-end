@@ -37,7 +37,7 @@ public async findFamiliaById(
 
     public async getFamilia() {
         try {
-        const results = await FamiliaData.connection(this.tableName).select(
+        const results = await BaseData.connection(this.tableName).select(
             "*"
         );
         return results;

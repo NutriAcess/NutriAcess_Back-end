@@ -35,7 +35,7 @@ public async findPlanosById(
 }
     public async getPlanos() {
         try {
-        const results = await PlanosData.connection(this.tableName).select(
+        const results = await BaseData.connection(this.tableName).select(
             "*"
         );
         return results;

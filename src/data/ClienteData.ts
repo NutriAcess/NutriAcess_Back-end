@@ -31,6 +31,7 @@ export class ClienteData extends BaseData {
       throw new CustomError(400, error.sqlMessage);
     }
   }
+ 
   public async findClienteById(
     id_cliente: string
   ): Promise<ClienteModel | undefined> {
@@ -45,6 +46,7 @@ export class ClienteData extends BaseData {
       throw new CustomError(400, error.sqlMessage);
     }
   }
+  
   public async findClienteByNome(
     nome_completo: string
   ): Promise<ClienteModel | undefined> {
@@ -57,15 +59,17 @@ export class ClienteData extends BaseData {
       throw new CustomError(400, error.sqlMessage);
     }
   }
+
   public async getClientes() {
     try {
-      const results = await ClienteData.connection(this.tableName).select("*");
+      const results = await BaseData.connection(this.tableName).select("*");
       return results;
     } catch (error: any) {
       throw new CustomError(400, error.sqlMessage);
     }
   }
-  public async updateCliente(cliente: ClienteModel): Promise<void> {
+  
+  public async updateCliente(cliente: ClienteModel) {
     try {
       await BaseData.connection(this.tableName)
         .where({ id_cliente: cliente.getIdCliente() })
@@ -79,19 +83,5 @@ export class ClienteData extends BaseData {
       throw new CustomError(400, error.sqlMessage);
     }
   }
-
-  public async saveCliente(cliente: ClienteModel): Promise<void> {
-    try {
-      await BaseData.connection(this.tableName)
-        .where({ id_cliente: cliente.getIdCliente() })
-        .update({
-          nome_completo: cliente.getNomeCompleto(),
-          nome_social: cliente.getNomeSocial(),
-          email: cliente.getEmail(),
-          senha: cliente.getSenha(),
-        });
-    } catch (error: any) {
-      throw new CustomError(400, error.sqlMessage);
-    }
-  }
+  
 }

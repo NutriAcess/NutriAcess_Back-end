@@ -36,7 +36,7 @@ export class ConsultasData extends BaseData{
 
   public async getConsultas() {
     try {
-    const results = await ConsultasData.connection(this.tableName).select(
+    const results = await BaseData.connection(this.tableName).select(
         "*"
     );
     return results;

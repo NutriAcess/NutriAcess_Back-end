@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ClienteBusiness } from "../business/ClienteBusiness";
-import { ClienteInputDTO } from "../types/ClienteInputDTO";
+import { ClienteInputDTO, ClienteInputDTO2 } from "../types/ClienteInputDTO";
 
 export class ClienteController {
   constructor(private clienteBusiness: ClienteBusiness) {}
@@ -67,7 +67,7 @@ export class ClienteController {
       const id_cliente = req.params.id_cliente;
       const { nome_completo, nome_social, email, senha } = req.body;
   
-      const clienteInput: ClienteInputDTO = {
+      const clienteInput: ClienteInputDTO2 = {
         token,
         nome_completo,
         nome_social,

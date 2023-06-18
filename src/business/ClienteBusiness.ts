@@ -4,7 +4,7 @@ import { ClienteModel } from "../model/ClienteModel";
 import { HashGenerator } from "../services/hashGenerator";
 import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
-import { ClienteInputDTO } from "../types/ClienteInputDTO";
+import { ClienteInputDTO, ClienteInputDTO2 } from "../types/ClienteInputDTO";
 
 export class ClienteBusiness {
   constructor(
@@ -128,65 +128,63 @@ export class ClienteBusiness {
     }
   }
 
-  public async updateClienteById(id_cliente: string, clienteInput: ClienteInputDTO) {
+  public async updateClienteById(id_cliente: string, clienteInput: ClienteInputDTO2) {
     try {
       const { token, nome_completo, nome_social, email, senha } = clienteInput;
-
+  
       if (!token) {
         throw new CustomError(401, "Please enter a valid token!");
       }
-
+  
       const clienteTokenData = this.tokenGenerator.verify(token);
-
+  
       if (!clienteTokenData) {
         throw new CustomError(401, "Invalid token!");
       }
-
+  
       if (!nome_completo && !nome_social && !email && !senha) {
         throw new CustomError(400,"No fields provided to update.");
       }
-
+  
       const cliente = await this.clienteData.findClienteById(id_cliente);
-// console.log(cliente);
-
+  
       if (!cliente) {
         throw new CustomError(404, "Customer not found.");
       }
-
+  
       if (nome_completo) {
         cliente.setNomeCompleto(nome_completo);
       }
-      // console.log(nome_completo);
-      
+  
       if (nome_social) {
         cliente.setNomeSocial(nome_social);
       }
-      // console.log(nome_social);
+  
       if (email) {
         const existingCliente = await this.clienteData.findClienteByEmail(email);
+  
         if (existingCliente && existingCliente.getIdCliente() !== cliente.getIdCliente()) {
-          throw new CustomError(409, "E-mail already registered.");
+          throw new CustomError(400, "Email is already in use.");
         }
-        // cliente.setEmail(email);
+  
+        cliente.setEmail(email);
       }
-      // console.log(email);
+  
       if (senha) {
-        const cypherSenha = await this.hashGenerator.hash(senha);
-        cliente.setSenha(cypherSenha);
+        const hashedSenha = await this.hashGenerator.hash(senha);
+        cliente.setSenha(hashedSenha);
       }
-      // console.log(senha);
+  
       await this.clienteData.updateCliente(cliente);
-
       const updatedToken = this.tokenGenerator.generate({
         id: cliente.getIdCliente(),
         email: cliente.getEmail(),
       });
-
-      // console.log(updatedToken);
-      
+  
       return updatedToken;
     } catch (error: any) {
-      throw new CustomError(error.statusCode || 400, error.message);
+      throw new CustomError(error.statusCode, error.message);
     }
   }
+  
 }
