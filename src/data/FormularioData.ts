@@ -40,7 +40,7 @@ export class FormularioData extends BaseData {
   }
   public async getFormularios() {
     try {
-      const results = await FormularioData.connection(this.tableName).select("*");
+      const results = await BaseData.connection(this.tableName).select("*");
       return results;
     } catch (error: any) {
       throw new CustomError(400, error.sqlMessage);

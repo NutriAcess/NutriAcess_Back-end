@@ -39,7 +39,7 @@ export class FaleConoscoData extends BaseData{
 
     public async getFaleConosco() {
         try {
-            const results = await FaleConoscoData.connection(this.tableName).select(
+            const results = await BaseData.connection(this.tableName).select(
                 "*"
             );
             return results;
