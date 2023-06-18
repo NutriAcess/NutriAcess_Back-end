@@ -1,16 +1,20 @@
 import { ClienteBusiness } from "./business/ClienteBusiness";
 import { ConsultasBusiness } from "./business/ConsultasBusiness";
+import { FamiliaBusiness } from "./business/FamiliaBusiness";
 import { FormularioBusiness } from "./business/FormularioBusiness";
 import { NutricionistaBusiness } from "./business/NutricionistaBusiness";
 import { ClienteController } from "./controller/ClienteController";
 import { ConsultasController } from "./controller/ConsultasController";
+import { FamiliaController } from "./controller/FamiliaController";
 import { FormularioController } from "./controller/FormularioController";
 import { NutricionistaController } from "./controller/NutricionistaController";
 import { app } from "./controller/app";
 import { ClienteData } from "./data/ClienteData";
 import { ConsultasData } from "./data/ConsultasData";
+import { FamiliaData } from "./data/FamiliaData";
 import { FormularioData } from "./data/FormularioData";
 import { NutricionistaData } from "./data/NutricionistaData";
+import { PlanosData } from "./data/PlanosData";
 import { HashGenerator } from "./services/hashGenerator";
 import { IdGenerator } from "./services/idGenerator";
 import { TokenGenerator } from "./services/tokenGenerator";
@@ -39,15 +43,19 @@ const nutriController = new NutricionistaController(nutriBusiness);
 app.post("/nutricionista/cadastrar", nutriController.signup);
 app.post("/nutricionista/conectar", nutriController.login);
 app.get("/nutricionista", nutriController.getAllNutricionistas);
+app.get("/nutricionista/:id_nutricionista", nutriController.getNutriById);
 
-
+//Consultas
 const consultasBusiness = new ConsultasBusiness (
+  new TokenGenerator(),
   new IdGenerator(),
-  new ConsultasData()
+  new ConsultasData(),
+  new ClienteData(),
+new NutricionistaData()
 )
 const Consultas = new ConsultasController(consultasBusiness);
 app.post("/consulta/criar", Consultas.createConsultas)
-app.get("/nutricionista/:id_nutricionista", nutriController.getNutriById);
+
 app.get("/nutricionista", nutriController.getAllNutricionistas);
 
 //Formulário
@@ -61,3 +69,17 @@ const formsController = new FormularioController(formsBusiness);
 app.post("/formulario/criar", formsController.createForm);
 app.get("/formulario/:id_formulario", formsController.getFormById);
 app.get("/formulario", formsController.getAllFormularios);
+
+//Familia
+const familiaBusiness = new FamiliaBusiness(
+  new TokenGenerator(),
+  new ClienteData(),
+  new IdGenerator(),
+  new FamiliaData(),
+  new PlanosData()
+  
+);
+const familiaController = new FamiliaController(familiaBusiness);
+app.post("/familia/criar", familiaController.createFamilia);
+app.get("/familia/:id_familia", familiaController.getFamiliaById);
+app.get("/familia", familiaController.getAllFamilias);
