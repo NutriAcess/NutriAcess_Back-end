@@ -4,6 +4,7 @@ import { NutricionistaModel } from "../model/NutricionistaModel";
 import { HashGenerator } from "../services/hashGenerator";
 import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
+import { NutriInputDTO } from "../types/NutriInputDTO";
 
 export class NutricionistaBusiness {
   constructor(
@@ -13,14 +14,11 @@ export class NutricionistaBusiness {
     private nutriData: NutricionistaData
   ){}
   public async signup(
-    nome_completo: string,
-    nome_social:string,
-    email: string,
-    senha:string,
-    crn: string
-  ) {
+    nutriInput : NutriInputDTO
+  ) : Promise<string>{
 
     try {
+      const { nome_completo, nome_social, email, senha , crn} = nutriInput;
       if (!nome_completo || !nome_social || !senha || !email || !crn) {
         throw new CustomError(422, "Missing input.");
       }
@@ -42,6 +40,7 @@ export class NutricionistaBusiness {
       }
       
       const nutri = await this.nutriData.findNutricionistaByEmail(email);
+
       const verification_crn = await this.nutriData.findNutricionistaByCrn(crn);
 
       if (nutri) {
@@ -58,68 +57,76 @@ export class NutricionistaBusiness {
       await this.nutriData.createNutricionista(newNutri);
 
       const acessToken = this.tokenGenerator.generate({
-        id
+       id: newNutri.getIdNutricionista(),
+        email: newNutri.getEmail(),
       });
+
       return acessToken ;
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
   }
-  public async login(crn: string, senha: string) {
+  public async login(crn: string, senha: string): Promise<{ accessToken: string }> {
     try {
       if (!crn || !senha) {
         throw new CustomError(422, "Missing input.");
       }
       const nutri = await this.nutriData.findNutricionistaByCrn(crn);
-
+  
       if (!nutri) {
-        throw new CustomError(400, "User already created.");
+        throw new CustomError(400, "User not found.");
       }
-
-      const senhaIsCorrect = this.hashGenerator.compareHash(
+  
+      const senhaIsCorrect = await this.hashGenerator.compareHash(
         senha,
         nutri.getSenha()
       );
-
+  
       if (!senhaIsCorrect) {
         throw new CustomError(401, "Invalid credentials.");
       }
-
+  
       const accessToken = this.tokenGenerator.generate({
-        id: nutri.getIdNutricionista()
+        id: nutri.getIdNutricionista(),
+        email: nutri.getEmail(),
       });
-
+     
+  
       return { accessToken };
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
   }
-  public async getNutricionista (data: any)  {
-    try {
-      const { id_nutricionista, nome_completo } = data; 
   
-      if (!nome_completo && !id_nutricionista) {
-        throw new CustomError(422, "User name or id required");
-      }
-      if (id_nutricionista && !nome_completo) {
-        const result = await this.nutriData.findNutricionistaById(id_nutricionista);
-        return result;
-      } else if (nome_completo && !id_nutricionista) {
-        const result = await this.nutriData.findNutricionistaByNome(nome_completo);
-        return result;
-      } else {
-        throw new CustomError(422, "User ID or name is required");
-      }
+  public async getNutriById(id_nutricionista: string, token: string) {
+    try {
+      if (!token) {
+        throw new CustomError(401, "Insert a token please!")
+    }
+    if (!id_nutricionista) {
+      throw new CustomError(400,"Insert a id_nutricionista please!")
+  }
+  const nutriTokenData = this.tokenGenerator.verify(token)
+
+  if(!nutriTokenData){
+    throw new CustomError(401, "Invalid token!")
+  }
+
+  const nutri = await this.nutriData.findNutricionistaById(id_nutricionista)
+
+  if(!nutri){
+    throw new CustomError(400,"There is no nutritionist with that ID!")
+  }
+  return nutri;
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
-  };
-  
+  }
 
   public async getAllNutricionistas () {
     try {
-      const nutriDataBase = new NutricionistaData();
-      const results = await nutriDataBase.getNutricionistas();
+     
+      const results = await this.nutriData.getNutricionistas();
       return results;
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);

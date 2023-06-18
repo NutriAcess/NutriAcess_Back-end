@@ -40,7 +40,7 @@ constructor(
     private capacidade_fisica: CAPACIDADE_FISICA,
     private restricao_alimentar: RESTRICAO_ALIMENTAR,
     private tempo_preparo: TEMPO_PREPARO,
-    private foto: string,
+    private foto: string | undefined,
     private id_cliente: string
 
 )
@@ -86,7 +86,7 @@ constructor(
     return this.tempo_preparo
   }
 
-  getFoto = () : string => {
+  getFoto = () : string | undefined=> {
     return this.foto
   }
 

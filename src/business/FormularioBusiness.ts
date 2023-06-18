@@ -1,125 +1,173 @@
-// import { ClienteData } from "../data/ClienteData";
-// import { CustomError } from "../error/CustomError";
-// import { ClienteModel } from "../model/ClienteModel";
-// import { HashGenerator } from "../services/hashGenerator";
-// import { IdGenerator } from "../services/idGenerator";
-// import { TokenGenerator } from "../services/tokenGenerator";
-// import { FormularioInputDTO } from "../types/FormularioInputDTO";
 
-// export class FormularioBusiness {
-//   constructor(
-//     private idGenerator: IdGenerator,
-//     private formData: FormData
-//   ) {}
-//   public async create(
-//     input: FormularioInputDTO
-//   ) {
-//     try {
-//       const {nome, objetivo, altura, idade, peso, capacidade_fisica, restricao_alimentar, tempo_preparo, foto} = input;
-//       if (!nome || !objetivo || !altura || !idade || !peso || !capacidade_fisica || !restricao_alimentar || !tempo_preparo  ) {
-//         throw new CustomError(422, "Missing input.");
-//       }
+import { ClienteData } from "../data/ClienteData";
+import { FormularioData } from "../data/FormularioData";
+import { CustomError } from "../error/CustomError";
+import { FormularioModel } from "../model/FormularioModel";
+import { IdGenerator } from "../services/idGenerator";
+import { TokenGenerator } from "../services/tokenGenerator";
+import { FormularioInputDTO } from "../types/FormularioInputDTO";
+
+export class FormularioBusiness {
+  constructor(
+    private idGenerator: IdGenerator,
+    private tokenGenerator: TokenGenerator,
+    private formData: FormularioData,
+    private clienteData: ClienteData
+  ) {}
+  public async createForm(input: FormularioInputDTO) {
+    try {
+      const {
+        token,
+        nome,
+        objetivo,
+        genero,
+        altura,
+        idade,
+        peso,
+        capacidade_fisica,
+        restricao_alimentar,
+        tempo_preparo,
+        foto,
+        id_cliente,
+      } = input;
+      if (!token) {
+        throw new CustomError(403, `Authorization token is required`);
+      }
      
-//     } catch (error: any) {
-//       throw new CustomError(error.statusCode, error.message);
-//     }
-//   }
-  
-//    public async getFormulario (data: any)  {
-//     try {
-//       const { id_cliente } = data; 
+     
+      const tokenData = this.tokenGenerator.verify(token);
+      console.log(tokenData)
+      if (!tokenData) {
+       
+        throw new CustomError(404, `User not found!`);
+      }
       
-//       if (!id_cliente) {
-//         throw new CustomError(422, "User name or id required");
-//       }
-//       if (id_cliente ) {
-//         const result = await this.clienteData.findClienteById(id_cliente);
-//         return result;
-//       } else {
-//         throw new CustomError(422, "User ID or name is required");
-//       }
-//       // const { id_cliente, nome_completo } = data; 
-  
-//       // if (!nome_completo && !id_cliente) {
-//       //   throw new CustomError(422, "User name or id required");
-//       // }
-//       // if (id_cliente && !nome_completo) {
-//       //   const result = await this.clienteData.findClienteById(id_cliente);
-//       //   return result;
-//       // } else if (nome_completo && !id_cliente) {
-//       //   const result = await this.clienteData.findClienteByNome(nome_completo);
-//       //   return result;
-//       // } else {
-//       //   throw new CustomError(422, "User ID or name is required");
-//       // }
-//     } catch (error: any) {
-//       throw new CustomError(error.statusCode, error.message);
-//     }
-//   };
-  
+      if (
+        !nome ||
+        !objetivo ||
+        !genero ||
+        !altura ||
+        !idade ||
+        !peso ||
+        !capacidade_fisica ||
+        !restricao_alimentar ||
+        !tempo_preparo ||
+        !id_cliente
+      ) {
+        throw new CustomError(422, "Missing input.");
+      }
+      if (isNaN(altura) || isNaN(idade) || isNaN(peso)) {
+        throw new CustomError(401, "Invalid number!");
+      }
+      if (
+        objetivo.toLowerCase() !== "perder peso" &&
+        objetivo.toLowerCase() !== "manter peso" &&
+        objetivo.toLowerCase() !== "ganhar massa"
+      ) {
+        throw new CustomError(
+          422,
+          "Objective accepts  'perder peso', 'manter peso', 'ganhar massa' as a valid result."
+        );
+      }
+      if (
+        genero.toLowerCase() !== "homem" &&
+        genero.toLowerCase() !== "mulher" &&
+        genero.toLowerCase() !== "outro"
+      ) {
+        throw new CustomError(
+          422,
+          "Gender accepts  'mulher', 'homem', 'outro' as a valid result."
+        );
+      }
+      if (
+        capacidade_fisica.toLowerCase() !== "sedentarismo" &&
+        capacidade_fisica.toLowerCase() !== "atividade fisica moderada" &&
+        capacidade_fisica.toLowerCase() !== "atividade fisica intensa"
+      ) {
+        throw new CustomError(
+          422,
+          "Physical capacity accepts  'sedentarismo', 'atividade fisica moderada', 'atividade fisica intensa' as a valid result."
+        );
+      }
+      if (
+        restricao_alimentar.toLowerCase() !== "qualquer coisa" &&
+        restricao_alimentar.toLowerCase() !== "vegetariano" &&
+        restricao_alimentar.toLowerCase() !== "vegano"
+      ) {
+        throw new CustomError(
+          422,
+          "Food restriction accepts  'qualquer coisa', 'vegetariano', 'vegano' as a valid result."
+        );
+      }
+      if (
+        tempo_preparo.toLowerCase() !== "sim" &&
+        tempo_preparo.toLowerCase() !== "não"
+      ) {
+        throw new CustomError(
+          422,
+          "Preparation time accepts  'sim', 'não' as a valid result."
+        );
+      }
 
-//   public async getAllFormularios () {
-//     try {
-//       const clienteDataBase = new ClienteData();
-//       const results = await clienteDataBase.getClientes();
-//       return results;
-//     } catch (error: any) {
-//       throw new CustomError(error.statusCode, error.message);
-//     }
-//   };
-//   public async update(
-//     id_cliente: string,
-//     options: {
-//       nome_completo?: string;
-//       nome_social?: string;
-//       email?: string;
-//       senha?: string;
-//     }
-//   ) {
-//     try {
-//       if (!id_cliente) {
-//         throw new Error("Missing input: id_cliente is required.");
-//       }
+      const clienteExists = await this.clienteData.findClienteById(id_cliente);
+      if (!clienteExists) {
+        throw new CustomError(404, `Client could not be found`);
+      }
+
+      const id_formulario = this.idGenerator.generate();
+      const newForms = new FormularioModel(
+        id_formulario,
+        nome,
+        objetivo,
+        genero,
+        altura,
+        idade,
+        peso,
+        capacidade_fisica,
+        restricao_alimentar,
+        tempo_preparo,
+        foto,
+        id_cliente
+      );
+      await this.formData.createFormulario(newForms);
+      return newForms;
+    } catch (error: any) {
+      throw new CustomError(error.statusCode, error.message);
+    }
+  }
   
-//       const cliente = await this.clienteData.findClienteById(id_cliente);
-//       if (!cliente) {
-//         throw new Error("Cliente not found.");
-//       }
-  
-//       if (options.email) {
-//         const existingCliente = await this.clienteData.findClienteByEmail(options.email);
-//         if (existingCliente && existingCliente.getIdCliente() !== id_cliente) {
-//           throw new Error("Email already in use.");
-//         }
-//       }
-  
-//       let novoHashSenha: string | undefined = undefined;
-//       if (options.senha && options.senha !== cliente.getSenha()) {
-//         if (options.senha.length < 6) {
-//           throw new Error("Invalid password.");
-//         }
-//         novoHashSenha = await this.hashGenerator.hash(options.senha);
-//       }
-  
-//       if (options.nome_completo) {
-//         cliente.setNomeCompleto(options.nome_completo);
-//       }
-//       if (options.nome_social) {
-//         cliente.setNomeSocial(options.nome_social);
-//       }
-//       if (options.email) {
-//         cliente.setEmail(options.email);
-//       }
-//       if (novoHashSenha) {
-//         cliente.setSenha(novoHashSenha);
-//       }
-  
-//       await this.clienteData.updateCliente(cliente);
-  
-//       return "Client updated successfully.";
-//     } catch (error: any) {
-//       throw new CustomError(error.statusCode, error.message);
-//     }
-//   }
-  
-// }
+  public async getFormById(id_formulario: string, token: string) {
+    try {
+      if (!token) {
+        throw new CustomError(401, "Insert a token please!")
+    }
+    if (!id_formulario) {
+      throw new CustomError(400,"Insert a id_formulario please!")
+  }
+  const formTokenData = this.tokenGenerator.verify(token)
+
+  if(!formTokenData){
+    throw new CustomError(401, "Invalid token!")
+  }
+
+  const form = await this.formData.findFormularioById(id_formulario)
+
+  if(!form){
+    throw new CustomError(400,"There is no form with that ID!")
+  }
+  return form;
+    } catch (error: any) {
+      throw new CustomError(error.statusCode, error.message);
+    }
+  }
+
+  public async getAllFormularios () {
+    try {
+     
+      const results = await this.formData.getFormularios();
+      return results;
+    } catch (error: any) {
+      throw new CustomError(error.statusCode, error.message);
+    }
+  };
+}
