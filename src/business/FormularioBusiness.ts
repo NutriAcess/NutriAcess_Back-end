@@ -1,4 +1,3 @@
-
 import { ClienteData } from "../data/ClienteData";
 import { FormularioData } from "../data/FormularioData";
 import { CustomError } from "../error/CustomError";
@@ -36,7 +35,7 @@ export class FormularioBusiness {
      
      
       const tokenData = this.tokenGenerator.verify(token);
-      console.log(tokenData)
+
       if (!tokenData) {
        
         throw new CustomError(404, `User not found!`);
