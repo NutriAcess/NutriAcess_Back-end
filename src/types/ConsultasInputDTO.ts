@@ -1,4 +1,4 @@
-export type ConsultaInputDTO = {
+export type ConsultasInputDTO = {
     data: Date,
     hora: Date,
     status: string,
