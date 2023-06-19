@@ -24,6 +24,7 @@ export class FormularioData extends BaseData {
       throw new CustomError(400, error.sqlMessage);
     }
   }
+
   public async findFormularioById(
     id_formulario: string
   ): Promise<FormularioModel | undefined> {
@@ -38,6 +39,23 @@ export class FormularioData extends BaseData {
       throw new CustomError(400, error.sqlMessage);
     }
   }
+
+  public async findFormularioByUserId(
+    id_cliente: string
+  ): Promise<FormularioModel | undefined> {
+    try {
+      const [forms]: FormularioModel[] = await BaseData.connection(
+        this.tableName
+      )
+        .select("*")
+        .where({ id_cliente });
+
+      return forms;
+    } catch (error: any) {
+      throw new CustomError(400, error.sqlMessage);
+    }
+  }
+
   public async getFormularios() {
     try {
       const results = await BaseData.connection(this.tableName).select("*");
