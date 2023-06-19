@@ -16,7 +16,7 @@ export class ClienteController {
       };
      await this.clienteBusiness.signup(clienteInput);
 
-      res.status(201).send({ message: "Sign Up created successfully.", token });
+      res.status(201).send({ message: "Sign Up created successfully." });
 
     } catch (error: any) {
       const { statusCode, message } = error;

@@ -3,5 +3,6 @@ export type NutriInputDTO = {
   nome_social: string,
   email: string,
   senha: string,
+  especialidade: string,
   crn: string
 }

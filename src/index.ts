@@ -1,11 +1,13 @@
 import { ClienteBusiness } from "./business/ClienteBusiness";
 import { ConsultasBusiness } from "./business/ConsultasBusiness";
+import { FaleConoscoBusiness } from "./business/FaleConoscoBusiness";
 import { FamiliaBusiness } from "./business/FamiliaBusiness";
 import { FormularioBusiness } from "./business/FormularioBusiness";
 import { NutricionistaBusiness } from "./business/NutricionistaBusiness";
 import { PlanosBusiness } from "./business/PlanosBusiness";
 import { ClienteController } from "./controller/ClienteController";
 import { ConsultasController } from "./controller/ConsultasController";
+import { FaleConoscoController } from "./controller/FaleConoscoController";
 import { FamiliaController } from "./controller/FamiliaController";
 import { FormularioController } from "./controller/FormularioController";
 import { NutricionistaController } from "./controller/NutricionistaController";
@@ -13,6 +15,7 @@ import { PlanosController } from "./controller/PlanosController";
 import { app } from "./controller/app";
 import { ClienteData } from "./data/ClienteData";
 import { ConsultasData } from "./data/ConsultasData";
+import { FaleConoscoData } from "./data/FaleConoscoData";
 import { FamiliaData } from "./data/FamiliaData";
 import { FormularioData } from "./data/FormularioData";
 import { NutricionistaData } from "./data/NutricionistaData";
@@ -55,7 +58,6 @@ const consultasBusiness = new ConsultasBusiness(
   new IdGenerator(),
   new ConsultasData(),
   new ClienteData(),
-
   new NutricionistaData()
 );
 
@@ -101,4 +103,14 @@ const familiaController = new FamiliaController(familiaBusiness);
 app.post("/familia/criar", familiaController.createFamilia);
 app.get("/familia/:id_familia", familiaController.getFamiliaById);
 app.get("/familia", familiaController.getAllFamilias);
+
+
+const faleConoscoBusiness = new FaleConoscoBusiness(
+  new IdGenerator(),
+  new FaleConoscoData()
+);
+const faleConoscoController = new FaleConoscoController(faleConoscoBusiness);
+app.post("/fale-conosco/criar", faleConoscoController.createFaleConosco);
+app.get("/fale-conosco/:id", faleConoscoController.getFaleConoscoById);
+app.get("/fale-conosco", faleConoscoController.getAllFaleConosco);
 

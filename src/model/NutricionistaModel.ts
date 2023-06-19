@@ -5,6 +5,7 @@ export class NutricionistaModel {
       private nome_social: string,
       private email: string,
       private senha: string,
+      private especialidade: string,
       private crn: string
   )
    {}
@@ -24,12 +25,15 @@ export class NutricionistaModel {
   getSenha = ():string => {
       return this.senha
   }
+  getEspecialidade = ():string => {
+    return this.especialidade
+}
   getCrn = ():string => {
     return this.crn
 }
  
   static toNutricionistaModel(data: any): NutricionistaModel {
-      return new NutricionistaModel(data.id_nutricionista, data.nome_completo, data.nome_social, data.email, data.senha, data.crn);
+      return new NutricionistaModel(data.id_nutricionista, data.nome_completo, data.nome_social, data.email, data.senha, data.especialidade, data.crn);
 
     }
 }

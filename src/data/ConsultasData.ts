@@ -1,7 +1,6 @@
 import { CustomError } from "../error/CustomError";
 import { BaseData } from "./BaseData";
 import { ConsultasModel } from "../model/ConsultasModel";
-import { promises } from "dns";
 
 export class ConsultasData extends BaseData{
   protected tableName:string = "consultas"
@@ -12,6 +11,7 @@ export class ConsultasData extends BaseData{
         data: consulta.getData(),
         hora: consulta.getHora(),
         status: consulta.getStatus(),
+        observacoes: consulta.getObservacoes(),
         id_nutricionista: consulta.getId_nutricionista(),
         id_cliente: consulta.getId_cliente()
       })

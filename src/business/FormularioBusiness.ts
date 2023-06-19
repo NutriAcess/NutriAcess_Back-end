@@ -30,7 +30,7 @@ export class FormularioBusiness {
         id_cliente,
       } = input;
       if (!token) {
-        throw new CustomError(403, `Authorization token is required`);
+        throw new CustomError(401, `Authorization token is required`);
       }
      
      

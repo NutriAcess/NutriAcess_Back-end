@@ -12,8 +12,7 @@ export class FaleConoscoData extends BaseData{
         avaliacao: faleConosco.getAvaliacao(),
         nome_usuario: faleConosco.getNome_usuario(),
         email: faleConosco.getEmail(),
-        mensagem: faleConosco.getMensagem(),
-        id_cliente: faleConosco.getId_cliente()
+        mensagem: faleConosco.getMensagem()
       })
       
     }   catch (error:any) {

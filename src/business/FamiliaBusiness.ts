@@ -24,13 +24,13 @@ export class FamiliaBusiness {
       }
 
       if (!token) {
-        throw new CustomError(403, `Authorization token is required`);
+        throw new CustomError(401, `Authorization token is required`);
       }
 
       const tokenData = this.tokenGenerator.verify(token);
 
       if (!tokenData) {
-        throw new CustomError(404, `User not found!`);
+        throw new CustomError(401, "Invalid token!");
       }
       if (isNaN(idade) || isNaN(peso)) {
         throw new CustomError(401, "Invalid number!");

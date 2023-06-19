@@ -1,3 +1,6 @@
+import { ClienteModel } from "../model/ClienteModel";
+import { FormularioModel } from "../model/FormularioModel";
+
 export type ClienteInputDTO = {
   nome_completo: string,
   nome_social: string,
@@ -11,3 +14,13 @@ export type ClienteInputDTO2 = {
   email: string,
   senha: string
 }
+
+export type TUser = {
+  form?: FormularioModel;
+  data: ClienteModel;
+};
+
+export type TLogin = {
+  accessToken: string;
+  user: TUser;
+};

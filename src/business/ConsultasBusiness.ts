@@ -7,8 +7,12 @@ import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
 import { ConsultasInputDTO } from "../types/ConsultasInputDTO";
 import { format } from 'date-fns';
+import { FaleConoscoInputDTO } from "../types/FaleConoscoInputDTO";
 
 export class ConsultasBusiness {
+  createFaleConosco(faleConoscoInput: FaleConoscoInputDTO) {
+      throw new Error("Method not implemented.");
+  }
   constructor(
     private tokenGenerator: TokenGenerator,
     private idGenerator: IdGenerator,
@@ -22,13 +26,13 @@ export class ConsultasBusiness {
         input;
         
       if (!token) {
-        throw new CustomError(403, `Authorization token is required`);
+        throw new CustomError(401, `Authorization token is required`);
       }
 
       const tokenData = this.tokenGenerator.verify(token);
 
       if (!tokenData) {
-        throw new CustomError(404, `User not found!`);
+        throw new CustomError(401, `Token not found!`);
       }
       if (
         !data ||
@@ -94,23 +98,7 @@ export class ConsultasBusiness {
       throw new CustomError(error.statusCode, error.message);
     }
   }
-  public async getConsultas(data: any) {
-    try {
-      const { id } = data;
 
-      if (!id) {
-        throw new CustomError(422, "User name or ID is required");
-      }
-      if (id) {
-        const result = await this.consultasData.findConsultasById(id);
-        return result;
-      } else {
-        throw new CustomError(422, "User ID or name is required");
-      }
-    } catch (error: any) {
-      throw new CustomError(error.statusCode, error.message);
-    }
-  }
   public async getConsultaById(id: string, token: string) {
     try {
         if (!token) {
