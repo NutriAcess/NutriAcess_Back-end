@@ -13,11 +13,11 @@ export class ClienteController {
         nome_social,
         email,
         senha,
-       
       };
      await this.clienteBusiness.signup(clienteInput);
 
-      res.status(201).send({ message:"Sign Up created successfully." });
+      res.status(201).send({ message: "Sign Up created successfully.", token });
+
     } catch (error: any) {
       const { statusCode, message } = error;
       res.status(statusCode || 400).send({ message });
@@ -28,9 +28,16 @@ export class ClienteController {
     try {
   
       const { email, senha } = req.body;
-      const result = await this.clienteBusiness.login(email, senha);
-  
-      res.status(201).send({ message: 'Login successful.', token: result.accessToken });
+
+      const { accessToken, user } = await this.clienteBusiness.login(
+        email,
+        senha
+      );
+
+      res
+        .status(201)
+        .send({ message: "Login successful.", token: accessToken, user });
+
     } catch (error: any) {
       const { statusCode, message } = error;
       res.status(statusCode || 400).send({ message });
@@ -40,13 +47,14 @@ export class ClienteController {
 
   getClienteById = async (req: Request, res: Response) => {
     try {
-      const token = req.headers.authorization as string
+      const token = req.headers.authorization as string;
       const id_cliente = req.params.id_cliente;
-     
-      const cliente = await this.clienteBusiness.getClienteById(id_cliente, token)
-      res.status(200).send({message: "Customer found!", cliente })
-  
-       
+
+      const cliente = await this.clienteBusiness.getClienteById(
+        id_cliente,
+        token
+      );
+      res.status(200).send({ message: "Customer found!", cliente });
     } catch (error: any) {
       const { statusCode, message } = error;
       res.status(statusCode || 400).send({ message });
@@ -68,7 +76,7 @@ export class ClienteController {
       const token = req.headers.authorization as string;
       const id_cliente = req.params.id_cliente;
       const { nome_completo, nome_social, email, senha } = req.body;
-  
+
       const clienteInput: ClienteInputDTO2 = {
         token,
         nome_completo,
@@ -76,23 +84,18 @@ export class ClienteController {
         email,
         senha,
       };
-  
+
       const updatedToken = await this.clienteBusiness.updateClienteById(
         id_cliente,
         clienteInput
       );
-  
-      res.status(200).send({ message: "Cliente atualizado!", token: updatedToken });
+
+      res
+        .status(200)
+        .send({ message: "Cliente atualizado!", token: updatedToken });
     } catch (error: any) {
       const { statusCode, message } = error;
       res.status(statusCode || 400).send({ message });
     }
   };
 }
-
-
-
-
-
-
-
