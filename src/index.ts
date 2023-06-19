@@ -24,7 +24,8 @@ const clienteBusiness = new ClienteBusiness(
   new HashGenerator(),
   new IdGenerator(),
   new TokenGenerator(),
-  new ClienteData()
+  new ClienteData(),
+  new FormularioData()
 );
 const clienteController = new ClienteController(clienteBusiness);
 app.post("/cliente/cadastrar", clienteController.signup);
@@ -46,15 +47,15 @@ app.get("/nutricionista", nutriController.getAllNutricionistas);
 app.get("/nutricionista/:id_nutricionista", nutriController.getNutriById);
 
 //Consultas
-const consultasBusiness = new ConsultasBusiness (
+const consultasBusiness = new ConsultasBusiness(
   new TokenGenerator(),
   new IdGenerator(),
   new ConsultasData(),
   new ClienteData(),
-new NutricionistaData()
-)
+  new NutricionistaData()
+);
 const Consultas = new ConsultasController(consultasBusiness);
-app.post("/consulta/criar", Consultas.createConsultas)
+app.post("/consulta/criar", Consultas.createConsultas);
 
 app.get("/nutricionista", nutriController.getAllNutricionistas);
 
@@ -77,7 +78,6 @@ const familiaBusiness = new FamiliaBusiness(
   new IdGenerator(),
   new FamiliaData(),
   new PlanosData()
-  
 );
 const familiaController = new FamiliaController(familiaBusiness);
 app.post("/familia/criar", familiaController.createFamilia);

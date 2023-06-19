@@ -1,20 +1,33 @@
 import { ClienteData } from "../data/ClienteData";
+import { FormularioData } from "../data/FormularioData";
 import { CustomError } from "../error/CustomError";
 import { ClienteModel } from "../model/ClienteModel";
+import { FormularioModel } from "../model/FormularioModel";
 import { HashGenerator } from "../services/hashGenerator";
 import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
 import { ClienteInputDTO, ClienteInputDTO2 } from "../types/ClienteInputDTO";
+
+type TUser = {
+  form?: FormularioModel;
+  data: ClienteModel;
+};
+
+type TLogin = {
+  accessToken: string;
+  user: TUser;
+};
 
 export class ClienteBusiness {
   constructor(
     private hashGenerator: HashGenerator,
     private idGenerator: IdGenerator,
     private tokenGenerator: TokenGenerator,
-    private clienteData: ClienteData
+    private clienteData: ClienteData,
+    private formularioData: FormularioData
   ) {}
 
-  public async signup  (clienteInput: ClienteInputDTO): Promise<string>  {
+  public async signup(clienteInput: ClienteInputDTO): Promise<string> {
     try {
       const { nome_completo, nome_social, email, senha } = clienteInput;
 
@@ -60,9 +73,9 @@ export class ClienteBusiness {
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
-  };
+  }
 
-  public async login(email: string, senha: string): Promise<{ accessToken: string }> {
+  public async login(email: string, senha: string): Promise<TLogin> {
     try {
       if (!email || !senha) {
         throw new CustomError(422, "Missing input.");
@@ -88,7 +101,16 @@ export class ClienteBusiness {
         email: cliente.getEmail(),
       });
 
-      return { accessToken };
+      const clientForm = await this.formularioData.findFormularioByUserId(
+        cliente.getIdCliente()
+      );
+
+      const user: TUser = {
+        data: cliente,
+        form: clientForm,
+      };
+
+      return { accessToken, user };
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
@@ -97,23 +119,23 @@ export class ClienteBusiness {
   public async getClienteById(id_cliente: string, token: string) {
     try {
       if (!token) {
-        throw new CustomError(401, "Insert a token please!")
-    }
-    if (!id_cliente) {
-      throw new CustomError(400,"Insert a id_cliente please!")
-  }
-  const clienteTokenData = this.tokenGenerator.verify(token)
+        throw new CustomError(401, "Insert a token please!");
+      }
+      if (!id_cliente) {
+        throw new CustomError(400, "Insert a id_cliente please!");
+      }
+      const clienteTokenData = this.tokenGenerator.verify(token);
 
-  if(!clienteTokenData){
-    throw new CustomError(401, "Invalid token!")
-  }
+      if (!clienteTokenData) {
+        throw new CustomError(401, "Invalid token!");
+      }
 
-  const cliente = await this.clienteData.findClienteById(id_cliente)
+      const cliente = await this.clienteData.findClienteById(id_cliente);
 
-  if(!cliente){
-    throw new CustomError(400,"There is no customer with that ID!")
-  }
-  return cliente;
+      if (!cliente) {
+        throw new CustomError(400, "There is no customer with that ID!");
+      }
+      return cliente;
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
@@ -128,63 +150,70 @@ export class ClienteBusiness {
     }
   }
 
-  public async updateClienteById(id_cliente: string, clienteInput: ClienteInputDTO2) {
+  public async updateClienteById(
+    id_cliente: string,
+    clienteInput: ClienteInputDTO2
+  ) {
     try {
       const { token, nome_completo, nome_social, email, senha } = clienteInput;
-  
+
       if (!token) {
         throw new CustomError(401, "Please enter a valid token!");
       }
-  
+
       const clienteTokenData = this.tokenGenerator.verify(token);
-  
+
       if (!clienteTokenData) {
         throw new CustomError(401, "Invalid token!");
       }
-  
+
       if (!nome_completo && !nome_social && !email && !senha) {
-        throw new CustomError(400,"No fields provided to update.");
+        throw new CustomError(400, "No fields provided to update.");
       }
-  
+
       const cliente = await this.clienteData.findClienteById(id_cliente);
-  
+
       if (!cliente) {
         throw new CustomError(404, "Customer not found.");
       }
-  
+
       if (nome_completo) {
         cliente.setNomeCompleto(nome_completo);
       }
-  
+
       if (nome_social) {
         cliente.setNomeSocial(nome_social);
       }
-  
+
       if (email) {
-        const existingCliente = await this.clienteData.findClienteByEmail(email);
-  
-        if (existingCliente && existingCliente.getIdCliente() !== cliente.getIdCliente()) {
+        const existingCliente = await this.clienteData.findClienteByEmail(
+          email
+        );
+
+        if (
+          existingCliente &&
+          existingCliente.getIdCliente() !== cliente.getIdCliente()
+        ) {
           throw new CustomError(400, "Email is already in use.");
         }
-  
+
         cliente.setEmail(email);
       }
-  
+
       if (senha) {
         const hashedSenha = await this.hashGenerator.hash(senha);
         cliente.setSenha(hashedSenha);
       }
-  
+
       await this.clienteData.updateCliente(cliente);
       const updatedToken = this.tokenGenerator.generate({
         id: cliente.getIdCliente(),
         email: cliente.getEmail(),
       });
-  
+
       return updatedToken;
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
   }
-  
 }
