@@ -14,9 +14,9 @@ export class NutricionistaController {
         senha,
         crn
       }
-      const token = await this.nutriBusiness.signup(nutriInput);
+    await this.nutriBusiness.signup(nutriInput);
     
-      res.status(201).send({ message:"Sign Up created successfully.",token });
+      res.status(201).send({ message:"Sign Up created successfully." });
     } catch (error: any) {
       const { statusCode, message } = error;
       res.status(statusCode || 400).send({ message });
@@ -24,9 +24,9 @@ export class NutricionistaController {
   };
   login = async (req: Request, res: Response) => {
     try {
+   
       const { senha, crn } = req.body;
       const result = await this.nutriBusiness.login(crn, senha);
-
   
       res.status(201).send({ message: 'Login successful.', token: result.accessToken });
     } catch (error: any) {
@@ -34,6 +34,7 @@ export class NutricionistaController {
       res.status(statusCode || 400).send({ message });
     }
   };
+  
  
   getNutriById = async (req: Request, res: Response) => {
     try {

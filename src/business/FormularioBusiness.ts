@@ -38,7 +38,7 @@ export class FormularioBusiness {
 
       if (!tokenData) {
        
-        throw new CustomError(404, `User not found!`);
+        throw new CustomError(401, "Invalid token.");
       }
       
       if (

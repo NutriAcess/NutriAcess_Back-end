@@ -15,9 +15,9 @@ export class ClienteController {
         senha,
        
       };
-      const token = await this.clienteBusiness.signup(clienteInput);
+     await this.clienteBusiness.signup(clienteInput);
 
-      res.status(201).send({ message:"Sign Up created successfully.",token });
+      res.status(201).send({ message:"Sign Up created successfully." });
     } catch (error: any) {
       const { statusCode, message } = error;
       res.status(statusCode || 400).send({ message });
@@ -26,15 +26,17 @@ export class ClienteController {
 
   login = async (req: Request, res: Response) => {
     try {
+  
       const { email, senha } = req.body;
       const result = await this.clienteBusiness.login(email, senha);
-
-      res.status(201).send({  message: 'Login successful.', token: result.accessToken  });
+  
+      res.status(201).send({ message: 'Login successful.', token: result.accessToken });
     } catch (error: any) {
       const { statusCode, message } = error;
       res.status(statusCode || 400).send({ message });
     }
   };
+  
 
   getClienteById = async (req: Request, res: Response) => {
     try {
