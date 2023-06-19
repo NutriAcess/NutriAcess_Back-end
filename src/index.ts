@@ -3,11 +3,13 @@ import { ConsultasBusiness } from "./business/ConsultasBusiness";
 import { FamiliaBusiness } from "./business/FamiliaBusiness";
 import { FormularioBusiness } from "./business/FormularioBusiness";
 import { NutricionistaBusiness } from "./business/NutricionistaBusiness";
+import { PlanosBusiness } from "./business/PlanosBusiness";
 import { ClienteController } from "./controller/ClienteController";
 import { ConsultasController } from "./controller/ConsultasController";
 import { FamiliaController } from "./controller/FamiliaController";
 import { FormularioController } from "./controller/FormularioController";
 import { NutricionistaController } from "./controller/NutricionistaController";
+import { PlanosController } from "./controller/PlanosController";
 import { app } from "./controller/app";
 import { ClienteData } from "./data/ClienteData";
 import { ConsultasData } from "./data/ConsultasData";
@@ -15,6 +17,7 @@ import { FamiliaData } from "./data/FamiliaData";
 import { FormularioData } from "./data/FormularioData";
 import { NutricionistaData } from "./data/NutricionistaData";
 import { PlanosData } from "./data/PlanosData";
+import { PlanosModel } from "./model/PlanosModel";
 import { HashGenerator } from "./services/hashGenerator";
 import { IdGenerator } from "./services/idGenerator";
 import { TokenGenerator } from "./services/tokenGenerator";
@@ -74,6 +77,18 @@ app.post("/formulario/criar", formsController.createForm);
 app.get("/formulario/:id_formulario", formsController.getFormById);
 app.get("/formulario", formsController.getAllFormularios);
 
+
+//Planos
+const planosBusiness = new PlanosBusiness(
+  new IdGenerator(),
+  new PlanosData()
+);
+
+const planosController = new PlanosController(planosBusiness);
+app.post("/planos/criar", planosController.createPlanos);
+app.get("/planos/:id", planosController.createPlanos);
+app.get("/planos", planosController.getAllPlanos);
+
 //Familia
 const familiaBusiness = new FamiliaBusiness(
   new TokenGenerator(),
@@ -86,3 +101,4 @@ const familiaController = new FamiliaController(familiaBusiness);
 app.post("/familia/criar", familiaController.createFamilia);
 app.get("/familia/:id_familia", familiaController.getFamiliaById);
 app.get("/familia", familiaController.getAllFamilias);
+

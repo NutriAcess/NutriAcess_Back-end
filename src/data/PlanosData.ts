@@ -21,7 +21,7 @@ public async createPlanos(plano: PlanosModel): Promise<void> {
 }
 public async findPlanosById(
     id_plano: string
-): Promise<PlanosModel | undefined> {
+): Promise<PlanosModel | undefined> { 
     try {
         const [plano]: PlanosModel[] = await BaseData.connection(
             this.tableName
