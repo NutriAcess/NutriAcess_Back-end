@@ -18,8 +18,7 @@ export class FaleConoscoModel {
         private avaliacao: AVALIACAO,
         private nome_usuario: string,
         private email: string,
-        private mensagem: string,
-        private id_cliente: string
+        private mensagem: string
     )
         {}
     
@@ -43,12 +42,8 @@ export class FaleConoscoModel {
         return this.mensagem
     }
 
-    getId_cliente = () : string => {
-        return this.id_cliente
-    }
-
     static toFaleConoscoModel (data:any): FaleConoscoModel {
         return new FaleConoscoModel(data.id,data.avaliacao,data.nome_usuario,
-            data.email,data.mensagem,data.id_cliente);
+            data.email,data.mensagem);
     }
 }

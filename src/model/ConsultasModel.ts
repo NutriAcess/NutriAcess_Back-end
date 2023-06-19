@@ -1,5 +1,5 @@
 export class ConsultasModel {
-constructor(
+  constructor(
     private id: string,
     private data: Date,
     private hora: Date,
@@ -7,39 +7,45 @@ constructor(
     private observacoes: string,
     private id_nutricionista: string,
     private id_cliente: string
-)
-    {}
+  ) {}
 
-    getId = () : string => {
-        return this.id
-    }
+  getId = (): string => {
+    return this.id;
+  };
 
-    getData = () : Date => {
-        return this.data
-    }
+  getData = (): Date => {
+    return this.data;
+  };
 
-    getHora = () : Date => {
-        return this.hora
-    }
+  getHora = (): Date => {
+    return this.hora;
+  };
 
-    getStatus  = () : string => {
-        return this.status
-    }
+  getStatus = (): string => {
+    return this.status;
+  };
 
-    getObservacoes = () : string => {
-        return this.observacoes
-    }
+  getObservacoes = (): string => {
+    return this.observacoes;
+  };
 
-    getId_nutricionista = () : string => {
-        return this.id_nutricionista
-    }
+  getId_nutricionista = (): string => {
+    return this.id_nutricionista;
+  };
 
-    getId_cliente = () : string => {
-        return this.id_cliente
-    }
+  getId_cliente = (): string => {
+    return this.id_cliente;
+  };
 
-    static toConsultaModel(data:any): ConsultasModel{
-        return new ConsultasModel(data.id,data.data,data.hora,
-            data.status,data.observacoes,data.id_nutricionista,data.id_cliente)
-    }
+  static toConsultaModel(data: any): ConsultasModel {
+    return new ConsultasModel(
+      data.id,
+      data.data,
+      data.hora,
+      data.status,
+      data.observacoes,
+      data.id_nutricionista,
+      data.id_cliente
+    );
+  }
 }

@@ -34,8 +34,10 @@ CREATE TABLE `nutricionista` (
   `nome_social` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `senha` varchar(255) NOT NULL,
+   `especialidade` varchar(255) NOT NULL,
   `crn` int NOT NULL
 );
+
 
 CREATE TABLE `consultas` (
   `id` VARCHAR(255) PRIMARY KEY,
@@ -70,9 +72,7 @@ CREATE TABLE `fale_conosco` (
   `avaliacao` Enum('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'),
   `nome_usuario` varchar(255),
   `email` varchar(255),
-  `mensagem` varchar(255),
-  `id_cliente` VARCHAR(255),
-  foreign key (id_cliente) references cliente (id_cliente)
+  `mensagem` varchar(255)
 );
 
 CREATE TABLE familia_cliente (

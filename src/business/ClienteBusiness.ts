@@ -6,17 +6,9 @@ import { FormularioModel } from "../model/FormularioModel";
 import { HashGenerator } from "../services/hashGenerator";
 import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
-import { ClienteInputDTO, ClienteInputDTO2 } from "../types/ClienteInputDTO";
+import { ClienteInputDTO, ClienteInputDTO2, TLogin, TUser } from "../types/ClienteInputDTO";
 
-type TUser = {
-  form?: FormularioModel;
-  data: ClienteModel;
-};
 
-type TLogin = {
-  accessToken: string;
-  user: TUser;
-};
 
 export class ClienteBusiness {
   constructor(

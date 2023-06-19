@@ -13,6 +13,7 @@ export class NutricionistaData extends BaseData {
         nome_social: nutri.getNomeSocial(),
         email: nutri.getEmail(),
         senha: nutri.getSenha(),
+        especialidade: nutri.getEspecialidade(),
         crn: nutri.getCrn(),
       });
     } catch (error: any) {
@@ -59,13 +60,13 @@ export class NutricionistaData extends BaseData {
       throw new CustomError(400, error.sqlMessage);
     }
   }
-  public async findNutricionistaByNome(
-    nome_completo: string
+  public async findNutricionistaByEspecialidade(
+    especialidade: string
   ): Promise<NutricionistaModel | undefined> {
     try {
       const nutri = await BaseData.connection(this.tableName)
         .select("*")
-        .where({ nome_completo: nome_completo });
+        .where({ especialidade: especialidade });
       return nutri[0];
     } catch (error: any) {
       throw new CustomError(400, error.sqlMessage);

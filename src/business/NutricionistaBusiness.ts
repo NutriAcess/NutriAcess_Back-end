@@ -18,8 +18,8 @@ export class NutricionistaBusiness {
   ) : Promise<string>{
 
     try {
-      const { nome_completo, nome_social, email, senha , crn} = nutriInput;
-      if (!nome_completo || !nome_social || !senha || !email || !crn) {
+      const { nome_completo, nome_social, email, senha ,especialidade, crn} = nutriInput;
+      if (!nome_completo || !nome_social || !senha || !email || !crn || !especialidade) {
         throw new CustomError(422, "Missing input.");
       }
       if (senha.length < 6) {
@@ -52,7 +52,7 @@ export class NutricionistaBusiness {
       const id = this.idGenerator.generate();
       const cypherSenha = await this.hashGenerator.hash(senha);
 
-      const newNutri = new NutricionistaModel(id, nome_completo, nome_social, email, cypherSenha, crn);
+      const newNutri = new NutricionistaModel(id, nome_completo, nome_social, email, cypherSenha, especialidade, crn);
 
       await this.nutriData.createNutricionista(newNutri);
 
@@ -122,7 +122,30 @@ export class NutricionistaBusiness {
       throw new CustomError(error.statusCode, error.message);
     }
   }
+  public async getNutriByEspecialidade(id_nutricionista: string, token: string) {
+    try {
+      if (!token) {
+        throw new CustomError(401, "Insert a token please!")
+    }
+    if (!id_nutricionista) {
+      throw new CustomError(400,"Insert a id_nutricionista please!")
+  }
+  const nutriTokenData = this.tokenGenerator.verify(token)
 
+  if(!nutriTokenData){
+    throw new CustomError(401, "Invalid token!")
+  }
+
+  const nutri = await this.nutriData.findNutricionistaById(id_nutricionista)
+
+  if(!nutri){
+    throw new CustomError(400,"There is no nutritionist with that ID!")
+  }
+  return nutri;
+    } catch (error: any) {
+      throw new CustomError(error.statusCode, error.message);
+    }
+  }
   public async getAllNutricionistas () {
     try {
      
