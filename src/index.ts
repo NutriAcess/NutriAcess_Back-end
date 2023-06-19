@@ -4,12 +4,14 @@ import { FaleConoscoBusiness } from "./business/FaleConoscoBusiness";
 import { FamiliaBusiness } from "./business/FamiliaBusiness";
 import { FormularioBusiness } from "./business/FormularioBusiness";
 import { NutricionistaBusiness } from "./business/NutricionistaBusiness";
+import { PlanosBusiness } from "./business/PlanosBusiness";
 import { ClienteController } from "./controller/ClienteController";
 import { ConsultasController } from "./controller/ConsultasController";
 import { FaleConoscoController } from "./controller/FaleConoscoController";
 import { FamiliaController } from "./controller/FamiliaController";
 import { FormularioController } from "./controller/FormularioController";
 import { NutricionistaController } from "./controller/NutricionistaController";
+import { PlanosController } from "./controller/PlanosController";
 import { app } from "./controller/app";
 import { ClienteData } from "./data/ClienteData";
 import { ConsultasData } from "./data/ConsultasData";
@@ -18,6 +20,7 @@ import { FamiliaData } from "./data/FamiliaData";
 import { FormularioData } from "./data/FormularioData";
 import { NutricionistaData } from "./data/NutricionistaData";
 import { PlanosData } from "./data/PlanosData";
+import { PlanosModel } from "./model/PlanosModel";
 import { HashGenerator } from "./services/hashGenerator";
 import { IdGenerator } from "./services/idGenerator";
 import { TokenGenerator } from "./services/tokenGenerator";
@@ -76,6 +79,18 @@ app.post("/formulario/criar", formsController.createForm);
 app.get("/formulario/:id_formulario", formsController.getFormById);
 app.get("/formulario", formsController.getAllFormularios);
 
+
+//Planos
+const planosBusiness = new PlanosBusiness(
+  new IdGenerator(),
+  new PlanosData()
+);
+
+const planosController = new PlanosController(planosBusiness);
+app.post("/planos/criar", planosController.createPlanos);
+app.get("/planos/:id", planosController.createPlanos);
+app.get("/planos", planosController.getAllPlanos);
+
 //Familia
 const familiaBusiness = new FamiliaBusiness(
   new TokenGenerator(),
@@ -89,7 +104,7 @@ app.post("/familia/criar", familiaController.createFamilia);
 app.get("/familia/:id_familia", familiaController.getFamiliaById);
 app.get("/familia", familiaController.getAllFamilias);
 
-//Fale Conosco 
+
 const faleConoscoBusiness = new FaleConoscoBusiness(
   new IdGenerator(),
   new FaleConoscoData()
@@ -98,3 +113,4 @@ const faleConoscoController = new FaleConoscoController(faleConoscoBusiness);
 app.post("/fale-conosco/criar", faleConoscoController.createFaleConosco);
 app.get("/fale-conosco/:id", faleConoscoController.getFaleConoscoById);
 app.get("/fale-conosco", faleConoscoController.getAllFaleConosco);
+
