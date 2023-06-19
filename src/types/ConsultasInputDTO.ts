@@ -1,4 +1,5 @@
 export type ConsultasInputDTO = {
+    token: string,
     data: Date,
     hora: Date,
     status: string,

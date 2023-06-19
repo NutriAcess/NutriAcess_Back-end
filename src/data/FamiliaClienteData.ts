@@ -15,7 +15,7 @@ export class FamiliaClienteData extends BaseData{
        throw new CustomError(400, error.sqlMessage);
      }
   }
-  public async findFamiliaClientebyId(
+  public async findFamiliaClienteById(
     id_familia_cliente: string
   ): Promise<FamiliaClienteModel | undefined> {
       try {
