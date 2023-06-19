@@ -111,4 +111,38 @@ export class ConsultasBusiness {
       throw new CustomError(error.statusCode, error.message);
     }
   }
+  public async getConsultaById(id: string, token: string) {
+    try {
+        if (!token) {
+            throw new CustomError(401, "Insert a token please!");
+          }
+          if (!id) {
+            throw new CustomError(400, "Insert a id please!");
+          }
+          const consultaTokenData = this.tokenGenerator.verify(token);
+    
+          if (!consultaTokenData) {
+            throw new CustomError(401, "Invalid token!");
+          }
+    
+          const consulta = await this.consultasData.findConsultasById(id);
+    
+          if (!consulta) {
+            throw new CustomError(400,"There is no query with this id!");
+          }
+          return consulta;
+    } catch (error: any) {
+        throw new CustomError(error.statusCode, error.message);
+      }
+  }
+
+  public async getAllConsultas() {
+    try {
+    
+      const results = await this.consultasData.getConsultas();
+      return results;
+    } catch (error: any) {
+        throw new CustomError(error.statusCode, error.message);
+      }
+  }
 }

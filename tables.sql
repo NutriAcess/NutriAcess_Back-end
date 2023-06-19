@@ -52,16 +52,16 @@ CREATE TABLE `consultas` (
 
 CREATE TABLE `formulario` (
   `id_formulario` VARCHAR(255) PRIMARY KEY,
-  `nome` varchar(255) NOT NULL,
   `objetivo` Enum('Perder peso', 'Manter meu peso atual', 'Ganhar massa muscular') NOT NULL,
-  `genero` Enum('Homem', 'Mulher', 'Outro') NOT NULL,
+  `genero` ENUM('feminino', 'masculino', 'outro'),
   `altura` decimal NOT NULL,
   `idade` int NOT NULL,
   `peso` decimal NOT NULL,
   `capacidade_fisica` Enum('Sedentarismo', 'Atividade física moderada', 'Atividade física intensiva'),
   `restricao_alimentar` Enum('Qualquer coisa', 'Sou vegetariano(a)', 'Sou vegano(a)'),
+  `alergia` ENUM('gluten', 'laticinios', 'amendoim', 'peixes', 'ovos', 'mariscos'),
   `tempo_preparo` Enum('Sim', 'Nao') NOT NULL,
-  `foto` LONGBLOB,
+  `foto`LONGBLOB,
   `id_cliente` VARCHAR(255),
   foreign key (id_cliente) references cliente (id_cliente)
 );
