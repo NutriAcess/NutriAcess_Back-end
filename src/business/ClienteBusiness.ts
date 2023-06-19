@@ -80,22 +80,22 @@ export class ClienteBusiness {
       if (!email || !senha) {
         throw new CustomError(422, "Missing input.");
       }
-
+  
       const cliente = await this.clienteData.findClienteByEmail(email);
-
+  
       if (!cliente) {
         throw new CustomError(400, "Client not found.");
       }
-
+  
       const senhaIsCorrect = await this.hashGenerator.compareHash(
         senha,
         cliente.getSenha()
       );
-
+  
       if (!senhaIsCorrect) {
         throw new CustomError(401, "Invalid credentials.");
       }
-
+  
       const accessToken = this.tokenGenerator.generate({
         id: cliente.getIdCliente(),
         email: cliente.getEmail(),
@@ -111,10 +111,12 @@ export class ClienteBusiness {
       };
 
       return { accessToken, user };
+
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
   }
+  
 
   public async getClienteById(id_cliente: string, token: string) {
     try {

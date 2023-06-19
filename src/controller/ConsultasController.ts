@@ -30,4 +30,28 @@ export class ConsultasController {
       res.status(statusCode || 400).send({ message });
     }
   };
+  getConsultaById = async (req: Request, res: Response) => {
+    try {
+      const token = req.headers.authorization as string
+      const id = req.params.id;
+     
+      const consulta = await this.consultasBusiness.getConsultaById(id, token)
+      res.status(200).send({message: "Query found!", consulta })
+  
+       
+    } catch (error: any) {
+      const { statusCode, message } = error;
+      res.status(statusCode || 400).send({ message });
+    }
+  };
+
+  getAllConsultas = async (req: Request, res: Response) => {
+    try {
+      const result = await this.consultasBusiness.getAllConsultas();
+      res.status(200).send({ result });
+    } catch (error: any) {
+      const { statusCode, message } = error;
+      res.status(statusCode || 400).send({ message });
+    }
+  };
 }

@@ -52,12 +52,15 @@ const consultasBusiness = new ConsultasBusiness(
   new IdGenerator(),
   new ConsultasData(),
   new ClienteData(),
+
   new NutricionistaData()
 );
-const Consultas = new ConsultasController(consultasBusiness);
-app.post("/consulta/criar", Consultas.createConsultas);
 
-app.get("/nutricionista", nutriController.getAllNutricionistas);
+const consultaController = new ConsultasController(consultasBusiness);
+app.post("/consulta/criar", consultaController.createConsultas)
+app.get("/consulta/:id", consultaController.getConsultaById);
+app.get("/consulta", consultaController.getAllConsultas);
+
 
 //Formulário
 const formsBusiness = new FormularioBusiness(
