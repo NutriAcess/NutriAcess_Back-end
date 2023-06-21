@@ -5,7 +5,6 @@ import { FamiliaBusiness } from "./business/FamiliaBusiness";
 import { FormularioBusiness } from "./business/FormularioBusiness";
 import { NutricionistaBusiness } from "./business/NutricionistaBusiness";
 import { PlanosBusiness } from "./business/PlanosBusiness";
-//import { PlanosBusiness } from "./business/PlanosBusiness";
 import { ClienteController } from "./controller/ClienteController";
 import { ConsultasController } from "./controller/ConsultasController";
 import { FaleConoscoController } from "./controller/FaleConoscoController";
@@ -13,7 +12,7 @@ import { FamiliaController } from "./controller/FamiliaController";
 import { FormularioController } from "./controller/FormularioController";
 import { NutricionistaController } from "./controller/NutricionistaController";
 import { PlanosController } from "./controller/PlanosController";
-//import { PlanosController } from "./controller/PlanosController";
+
 import { app } from "./controller/app";
 import { ClienteData } from "./data/ClienteData";
 import { ConsultasData } from "./data/ConsultasData";
