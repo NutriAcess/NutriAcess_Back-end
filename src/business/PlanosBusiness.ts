@@ -9,28 +9,26 @@ constructor(
     private idGenerator: IdGenerator,
     private planosData: PlanosData
 ){}
-public async createPlanos(
-    input: PlanosInputDTO
-)   {
+public async createPlanos(input: PlanosInputDTO) {
     try {
-        const {tipo, duracao,descricao,valor} = input;
-        if (!tipo || !duracao || !descricao || !valor) {
-            throw new CustomError(422, "Missing input")
-        } 
-        if (isNaN(valor)) {
-            throw new CustomError(401, "Invalid number!");
-        }
+      const { tipo, duracao, descricao, valor } = input;
+      if (!tipo || !duracao || !descricao || !valor) {
+        throw new CustomError(422, "Missing input");
+      }
+      if (isNaN(valor)) {
+        throw new CustomError(401, "Invalid number!");
+      }
 
-        if (
-            tipo.toLowerCase() !== "familia" &&
-            tipo.toLowerCase() !== "plus"   &&
-            tipo.toLowerCase() !==  "premium" 
-          ) {
-            throw new CustomError(
-              422,
-              "O tipo aceita 'plus', 'premium', 'familia' como resultado válido."
-            );
-          }
+      if (
+        tipo.toLowerCase() !== "familia" &&
+        tipo.toLowerCase() !== "plus" &&
+        tipo.toLowerCase() !== "premium"
+      ) {
+        throw new CustomError(
+          422,
+          "O tipo aceita 'plus', 'premium' e 'familia' como valores válidos."
+        );
+      }
 
         const id = this.idGenerator.generate();
         const newPlano = new PlanosModel (
@@ -45,7 +43,7 @@ public async createPlanos(
         throw new CustomError(error.statusCode, error.message)
     }
 }
-    public async getPlanos (data: any) {
+    public async getPlanosById (data: any) {
         try {
             const {id_plano} = data;
             if (!id_plano) {
