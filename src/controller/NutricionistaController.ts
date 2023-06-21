@@ -6,13 +6,12 @@ export class NutricionistaController {
   constructor(private nutriBusiness: NutricionistaBusiness) {}
   signup = async (req: Request, res: Response) => {
     try {
-      const { nome_completo, nome_social, email, senha, especialidade, crn } = req.body;
+      const { nome_completo, nome_social, email, senha, crn } = req.body;
       const nutriInput: NutriInputDTO = {
         nome_completo,
         nome_social,
         email,
         senha,
-        especialidade,
         crn
       }
     await this.nutriBusiness.signup(nutriInput);
@@ -51,21 +50,21 @@ export class NutricionistaController {
       res.status(statusCode || 400).send({ message });
     }
   };
-  getNutriByEspecialidade = async (req: Request, res: Response) => {
-    try {
-      const { especialidade } = req.body;
-      const nutriInput: NutriInputDTO2 = {
-        especialidade
-      };
+  // getNutriByEspecialidade = async (req: Request, res: Response) => {
+  //   try {
+  //     const { especialidade } = req.body;
+  //     const nutriInput: NutriInputDTO2 = {
+  //       especialidade
+  //     };
   
-      const nutricionistas = await this.nutriBusiness.getNutriByEspecialidade(nutriInput);
+  //     const nutricionistas = await this.nutriBusiness.getNutriByEspecialidade(nutriInput);
   
-      res.status(200).send({ nutricionistas });
-    } catch (error: any) {
-      const { statusCode, message } = error;
-      res.status(statusCode || 400).send({ message });
-    }
-  };
+  //     res.status(200).send({ nutricionistas });
+  //   } catch (error: any) {
+  //     const { statusCode, message } = error;
+  //     res.status(statusCode || 400).send({ message });
+  //   }
+  // };
   
   
   getAllNutricionistas = async (req: Request, res: Response) => {

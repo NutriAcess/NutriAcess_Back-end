@@ -13,7 +13,6 @@ export class NutricionistaData extends BaseData {
         nome_social: nutri.getNomeSocial(),
         email: nutri.getEmail(),
         senha: nutri.getSenha(),
-        especialidade: nutri.getEspecialidade(),
         crn: nutri.getCrn(),
       });
     } catch (error: any) {
@@ -60,17 +59,17 @@ export class NutricionistaData extends BaseData {
       throw new CustomError(400, error.sqlMessage);
     }
   }
-  public async findNutricionistasByEspecialidade(especialidade: string): Promise<NutricionistaModel[]> {
-    try {
-      const nutricionistas = await BaseData.connection(this.tableName)
-        .select("id_nutricionista", "nome_completo", "nome_social", "email", "especialidade")
-        .where({ especialidade: especialidade });
+  // public async findNutricionistasByEspecialidade(especialidade: string): Promise<NutricionistaModel[]> {
+  //   try {
+  //     const nutricionistas = await BaseData.connection(this.tableName)
+  //       .select("id_nutricionista", "nome_completo", "nome_social", "email", "especialidade")
+  //       .where({ especialidade: especialidade });
     
-      return nutricionistas.map((nutri) => NutricionistaModel.toNutricionistaModel(nutri));
-    } catch (error: any) {
-      throw new CustomError(400, error.sqlMessage);
-    }
-  }
+  //     return nutricionistas.map((nutri) => NutricionistaModel.toNutricionistaModel(nutri));
+  //   } catch (error: any) {
+  //     throw new CustomError(400, error.sqlMessage);
+  //   }
+  // }
   
   public async getNutricionistas() {
     try {
