@@ -4,7 +4,7 @@ import { NutricionistaModel } from "../model/NutricionistaModel";
 import { HashGenerator } from "../services/hashGenerator";
 import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
-import { NutriInputDTO } from "../types/NutriInputDTO";
+import { NutriInputDTO, NutriInputDTO2 } from "../types/NutriInputDTO";
 
 export class NutricionistaBusiness {
   constructor(
@@ -122,30 +122,26 @@ export class NutricionistaBusiness {
       throw new CustomError(error.statusCode, error.message);
     }
   }
-  public async getNutriByEspecialidade(id_nutricionista: string, token: string) {
+  public async getNutriByEspecialidade(nutriInput: NutriInputDTO2) {
     try {
-      if (!token) {
-        throw new CustomError(401, "Insert a token please!")
-    }
-    if (!id_nutricionista) {
-      throw new CustomError(400,"Insert a id_nutricionista please!")
-  }
-  const nutriTokenData = this.tokenGenerator.verify(token)
-
-  if(!nutriTokenData){
-    throw new CustomError(401, "Invalid token!")
-  }
-
-  const nutri = await this.nutriData.findNutricionistaById(id_nutricionista)
-
-  if(!nutri){
-    throw new CustomError(400,"There is no nutritionist with that ID!")
-  }
-  return nutri;
+      const { especialidade } = nutriInput;
+  
+      if (!especialidade) {
+        throw new CustomError(422, "Missing input.");
+      }
+  
+      const nutricionistas = await this.nutriData.findNutricionistasByEspecialidade(especialidade);
+  
+      if (nutricionistas.length === 0) {
+        throw new CustomError(404, "No nutritionists found with that specialty.");
+      }
+  
+      return nutricionistas;
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
   }
+  
   public async getAllNutricionistas () {
     try {
      

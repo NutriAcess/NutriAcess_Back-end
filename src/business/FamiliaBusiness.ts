@@ -36,13 +36,13 @@ export class FamiliaBusiness {
         throw new CustomError(401, "Invalid number!");
       }
       if (
-        sexo.toLowerCase() !== "homem" &&
-        sexo.toLowerCase() !== "mulher" &&
+        sexo.toLowerCase() !== "masculino" &&
+        sexo.toLowerCase() !== "feminino" &&
         sexo.toLowerCase() !== "outro"
       ) {
         throw new CustomError(
           422,
-          "Gender accepts  ' homem', ' mulher', 'outro' as a valid result."
+          "Gender accepts  ' masculino', ' feminino', 'outro' as a valid result."
         );
       }
       const clienteExists = await this.clienteData.findClienteById(id_cliente);
@@ -66,41 +66,40 @@ export class FamiliaBusiness {
       await this.familiaData.createFamilia(newFamilia);
       return newFamilia;
     } catch (error: any) {
-        throw new CustomError(error.statusCode, error.message);
-      }
+      throw new CustomError(error.statusCode, error.message);
+    }
   }
   public async getFamiliaById(id_familia: string, token: string) {
     try {
-        if (!token) {
-            throw new CustomError(401, "Insert a token please!");
-          }
-          if (!id_familia) {
-            throw new CustomError(400, "Insert a id_familia please!");
-          }
-          const familiaTokenData = this.tokenGenerator.verify(token);
-    
-          if (!familiaTokenData) {
-            throw new CustomError(401, "Invalid token!");
-          }
-    
-          const famila = await this.familiaData.findFamiliaById(id_familia);
-    
-          if (!famila) {
-            throw new CustomError(400, "There is no family with that ID!");
-          }
-          return famila;
-    } catch (error: any) {
-        throw new CustomError(error.statusCode, error.message);
+      if (!token) {
+        throw new CustomError(401, "Insert a token please!");
       }
+      if (!id_familia) {
+        throw new CustomError(400, "Insert a id_familia please!");
+      }
+      const familiaTokenData = this.tokenGenerator.verify(token);
+
+      if (!familiaTokenData) {
+        throw new CustomError(401, "Invalid token!");
+      }
+
+      const famila = await this.familiaData.findFamiliaById(id_familia);
+
+      if (!famila) {
+        throw new CustomError(400, "There is no family with that ID!");
+      }
+      return famila;
+    } catch (error: any) {
+      throw new CustomError(error.statusCode, error.message);
+    }
   }
 
   public async getAllFamilias() {
     try {
-    
       const results = await this.familiaData.getFamilia();
       return results;
     } catch (error: any) {
-        throw new CustomError(error.statusCode, error.message);
-      }
+      throw new CustomError(error.statusCode, error.message);
+    }
   }
 }

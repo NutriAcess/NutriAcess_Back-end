@@ -1,6 +1,6 @@
 export enum SEXO {
-    homem = "homem",
-    mulher = "mulher",
+    homem = "masculino",
+    mulher = "feminino",
     outro = "outro"
 }
 

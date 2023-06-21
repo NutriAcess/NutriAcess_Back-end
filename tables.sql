@@ -20,13 +20,14 @@ CREATE TABLE `familia` (
   `id_familia` VARCHAR(255) PRIMARY KEY,
   `nome` varchar(255) NOT NULL,
   `idade` int,
-  `sexo` Enum('Homem', 'Mulher', 'Outro') NOT NULL,
+  `sexo` Enum('masculino', 'feminino', 'outro') NOT NULL,
   `peso` decimal NOT NULL,
   `id_cliente` VARCHAR(255),
   `id_plano` VARCHAR(255),
   foreign key (id_cliente) references cliente (id_cliente),
   foreign key (id_plano) references planos (id_plano)
 );
+
 
 CREATE TABLE `nutricionista` (
   `id_nutricionista` VARCHAR(255) PRIMARY KEY,
@@ -84,3 +85,12 @@ CREATE TABLE familia_cliente (
 );
 
 
+
+CREATE TABLE perfil_nutri (
+  id_perfil VARCHAR(255) PRIMARY KEY,
+  nome varchar(255),
+  foto blob,
+  instagram varchar(255) NOT NULL,
+  bio varchar(300) not null,
+  especialidades varchar(255) NOT NULL
+);
