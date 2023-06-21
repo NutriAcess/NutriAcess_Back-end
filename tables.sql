@@ -29,15 +29,16 @@ CREATE TABLE `familia` (
 );
 
 
+
 CREATE TABLE `nutricionista` (
   `id_nutricionista` VARCHAR(255) PRIMARY KEY,
   `nome_completo` varchar(255) NOT NULL,
   `nome_social` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `senha` varchar(255) NOT NULL,
-   `especialidade` varchar(255) NOT NULL,
   `crn` int NOT NULL
 );
+
 
 
 CREATE TABLE `consultas` (

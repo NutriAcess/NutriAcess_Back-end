@@ -18,8 +18,8 @@ export class NutricionistaBusiness {
   ) : Promise<string>{
 
     try {
-      const { nome_completo, nome_social, email, senha ,especialidade, crn} = nutriInput;
-      if (!nome_completo || !nome_social || !senha || !email || !crn || !especialidade) {
+      const { nome_completo, nome_social, email, senha , crn} = nutriInput;
+      if (!nome_completo || !nome_social || !senha || !email || !crn ) {
         throw new CustomError(422, "Missing input.");
       }
       if (senha.length < 6) {
@@ -52,7 +52,7 @@ export class NutricionistaBusiness {
       const id = this.idGenerator.generate();
       const cypherSenha = await this.hashGenerator.hash(senha);
 
-      const newNutri = new NutricionistaModel(id, nome_completo, nome_social, email, cypherSenha, especialidade, crn);
+      const newNutri = new NutricionistaModel(id, nome_completo, nome_social, email, cypherSenha,  crn);
 
       await this.nutriData.createNutricionista(newNutri);
 
@@ -122,25 +122,25 @@ export class NutricionistaBusiness {
       throw new CustomError(error.statusCode, error.message);
     }
   }
-  public async getNutriByEspecialidade(nutriInput: NutriInputDTO2) {
-    try {
-      const { especialidade } = nutriInput;
+  // public async getNutriByEspecialidade(nutriInput: NutriInputDTO2) {
+  //   try {
+  //     const { especialidade } = nutriInput;
   
-      if (!especialidade) {
-        throw new CustomError(422, "Missing input.");
-      }
+  //     if (!especialidade) {
+  //       throw new CustomError(422, "Missing input.");
+  //     }
   
-      const nutricionistas = await this.nutriData.findNutricionistasByEspecialidade(especialidade);
+  //     const nutricionistas = await this.nutriData.findNutricionistasByEspecialidade(especialidade);
   
-      if (nutricionistas.length === 0) {
-        throw new CustomError(404, "No nutritionists found with that specialty.");
-      }
+  //     if (nutricionistas.length === 0) {
+  //       throw new CustomError(404, "No nutritionists found with that specialty.");
+  //     }
   
-      return nutricionistas;
-    } catch (error: any) {
-      throw new CustomError(error.statusCode, error.message);
-    }
-  }
+  //     return nutricionistas;
+  //   } catch (error: any) {
+  //     throw new CustomError(error.statusCode, error.message);
+  //   }
+  // }
   
   public async getAllNutricionistas () {
     try {
