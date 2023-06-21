@@ -50,7 +50,7 @@ app.post("/nutricionista/cadastrar", nutriController.signup);
 app.post("/nutricionista/conectar", nutriController.login);
 app.get("/nutricionista", nutriController.getAllNutricionistas);
 app.get("/nutricionista/:id_nutricionista", nutriController.getNutriById);
-app.post("/nutricionista/especialidade", nutriController.getNutriByEspecialidade);
+
 //Consultas
 const consultasBusiness = new ConsultasBusiness(
   new TokenGenerator(),
