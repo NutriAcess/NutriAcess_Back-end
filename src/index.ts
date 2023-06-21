@@ -20,7 +20,6 @@ import { FamiliaData } from "./data/FamiliaData";
 import { FormularioData } from "./data/FormularioData";
 import { NutricionistaData } from "./data/NutricionistaData";
 import { PlanosData } from "./data/PlanosData";
-import { PlanosModel } from "./model/PlanosModel";
 import { HashGenerator } from "./services/hashGenerator";
 import { IdGenerator } from "./services/idGenerator";
 import { TokenGenerator } from "./services/tokenGenerator";
@@ -51,7 +50,7 @@ app.post("/nutricionista/cadastrar", nutriController.signup);
 app.post("/nutricionista/conectar", nutriController.login);
 app.get("/nutricionista", nutriController.getAllNutricionistas);
 app.get("/nutricionista/:id_nutricionista", nutriController.getNutriById);
-
+app.post("/nutricionista/especialidade", nutriController.getNutriByEspecialidade);
 //Consultas
 const consultasBusiness = new ConsultasBusiness(
   new TokenGenerator(),
@@ -88,13 +87,14 @@ const planosBusiness = new PlanosBusiness(
 
 const planosController = new PlanosController(planosBusiness);
 app.post("/planos/criar", planosController.createPlanos);
-app.get("/planos/:id", planosController.createPlanos);
+app.get("/planos/:id", planosController.getPlanoById);
 app.get("/planos", planosController.getAllPlanos);
+
 
 //Familia
 const familiaBusiness = new FamiliaBusiness(
   new TokenGenerator(),
-  new ClienteData(),
+  new ClienteData(), 
   new IdGenerator(),
   new FamiliaData(),
   new PlanosData()
@@ -104,7 +104,7 @@ app.post("/familia/criar", familiaController.createFamilia);
 app.get("/familia/:id_familia", familiaController.getFamiliaById);
 app.get("/familia", familiaController.getAllFamilias);
 
-
+//Fale Conosco
 const faleConoscoBusiness = new FaleConoscoBusiness(
   new IdGenerator(),
   new FaleConoscoData()

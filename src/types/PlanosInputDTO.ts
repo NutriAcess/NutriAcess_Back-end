@@ -4,5 +4,5 @@ export type PlanosInputDTO = {
     tipo: TIPO
     duracao: string,
     descricao: string,
-    valor: number
+    valor: number 
 }

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { NutricionistaBusiness } from "../business/NutricionistaBusiness";
-import { NutriInputDTO } from "../types/NutriInputDTO";
+import { NutriInputDTO, NutriInputDTO2 } from "../types/NutriInputDTO";
 
 export class NutricionistaController {
   constructor(private nutriBusiness: NutricionistaBusiness) {}
@@ -51,7 +51,23 @@ export class NutricionistaController {
       res.status(statusCode || 400).send({ message });
     }
   };
-
+  getNutriByEspecialidade = async (req: Request, res: Response) => {
+    try {
+      const { especialidade } = req.body;
+      const nutriInput: NutriInputDTO2 = {
+        especialidade
+      };
+  
+      const nutricionistas = await this.nutriBusiness.getNutriByEspecialidade(nutriInput);
+  
+      res.status(200).send({ nutricionistas });
+    } catch (error: any) {
+      const { statusCode, message } = error;
+      res.status(statusCode || 400).send({ message });
+    }
+  };
+  
+  
   getAllNutricionistas = async (req: Request, res: Response) => {
     try {
       const result = await this.nutriBusiness.getAllNutricionistas();
