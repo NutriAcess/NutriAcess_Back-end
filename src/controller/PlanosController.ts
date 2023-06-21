@@ -18,7 +18,7 @@ export class PlanosController {
       res.status(201).send({ message: "Created successfully.", result });
     } catch (error: any) {
       const { statusCode, message } = error;
-      res.status(statusCode  400).send({ message });
+      res.status(statusCode || 400).send({ message });
     }
   };
 
@@ -29,7 +29,7 @@ export class PlanosController {
       res.status(200).send({ message: "Plan found!", plano });
     } catch (error: any) {
       const { statusCode, message } = error;
-      res.status(statusCode  400).send({ message });
+      res.status(statusCode || 400).send({ message });
     }
   };
 

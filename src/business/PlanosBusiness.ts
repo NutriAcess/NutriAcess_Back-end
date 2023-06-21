@@ -13,7 +13,7 @@ export class PlanosBusiness {
   public async createPlanos(input: PlanosInputDTO) {
     try {
       const { tipo, duracao, descricao, valor } = input;
-      if (!tipo  !duracao  !descricao || !valor) {
+      if (!tipo || !duracao || !descricao || !valor) {
         throw new CustomError(422, "Missing input");
       }
       if (isNaN(valor)) {
