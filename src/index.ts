@@ -1,3 +1,4 @@
+import { ArmazenaPagamentoBusiness } from "./business/ArmazenaPagamentoBusiness";
 import { ClienteBusiness } from "./business/ClienteBusiness";
 import { ConsultasBusiness } from "./business/ConsultasBusiness";
 import { FaleConoscoBusiness } from "./business/FaleConoscoBusiness";
@@ -5,6 +6,7 @@ import { FamiliaBusiness } from "./business/FamiliaBusiness";
 import { FormularioBusiness } from "./business/FormularioBusiness";
 import { NutricionistaBusiness } from "./business/NutricionistaBusiness";
 import { PlanosBusiness } from "./business/PlanosBusiness";
+import { ArmazenaPagamentoController } from "./controller/ArmazenaPagamentoController";
 import { ClienteController } from "./controller/ClienteController";
 import { ConsultasController } from "./controller/ConsultasController";
 import { FaleConoscoController } from "./controller/FaleConoscoController";
@@ -13,6 +15,7 @@ import { FormularioController } from "./controller/FormularioController";
 import { NutricionistaController } from "./controller/NutricionistaController";
 import { PlanosController } from "./controller/PlanosController";
 import { app } from "./controller/app";
+import { ArmazenaPagamentoData } from "./data/ArmazenaPagamentoData";
 import { ClienteData } from "./data/ClienteData";
 import { ConsultasData } from "./data/ConsultasData";
 import { FaleConoscoData } from "./data/FaleConoscoData";
@@ -112,4 +115,17 @@ const faleConoscoController = new FaleConoscoController(faleConoscoBusiness);
 app.post("/fale-conosco/criar", faleConoscoController.createFaleConosco);
 app.get("/fale-conosco/:id", faleConoscoController.getFaleConoscoById);
 app.get("/fale-conosco", faleConoscoController.getAllFaleConosco);
+
+//Pagamento
+
+const armazenaPagamentoBusiness = new ArmazenaPagamentoBusiness(
+  new IdGenerator(),
+  new ArmazenaPagamentoData(),
+  new ClienteData()
+);
+const armazenaPagamentoController = new ArmazenaPagamentoController(armazenaPagamentoBusiness)
+  app.post("/pagamento/criar", armazenaPagamentoController.createPagamento);
+  app.get("/pagamento/id", armazenaPagamentoController.createPagamento)
+
+
 

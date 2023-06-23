@@ -95,3 +95,15 @@ CREATE TABLE perfil_nutri (
   bio varchar(300) not null,
   especialidades varchar(255) NOT NULL
 );
+
+
+
+create table `ArmazenaPagamento` (
+`id_pagamento` varchar(255) primary key,
+`id_cliente` varchar(255),
+`nomeTitular`varchar(255) not null,
+`numeroCartao`bigint not null unique,
+`validadeCartao` int not null unique,
+`codigoSeguranca` int not null unique,
+foreign key (id_cliente) references cliente (id_cliente)
+);
