@@ -1,3 +1,5 @@
+import { NutricionistaModel } from "../model/NutricionistaModel";
+
 export type NutriInputDTO = {
   nome_completo: string;
   nome_social: string;
@@ -7,5 +9,12 @@ export type NutriInputDTO = {
 };
 
 export type NutriInputDTO2 = {
-  especialidade: string;
+  nome_completo: string;
+};
+export type TEsp = {
+  data: NutricionistaModel;
+};
+export type TLogin = {
+  accessToken: string;
+  esp:  TEsp;
 };
