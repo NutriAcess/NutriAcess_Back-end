@@ -22,7 +22,7 @@ export class ClienteBusiness {
     try {
       const { nome_completo, nome_social, email, senha } = clienteInput;
 
-      if (!nome_completo || !nome_social || !senha || !email) {
+      if (!nome_completo || !senha || !email) {
         throw new CustomError(422, "Missing input.");
       }
 
