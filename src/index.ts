@@ -14,6 +14,7 @@ import { FamiliaController } from "./controller/FamiliaController";
 import { FormularioController } from "./controller/FormularioController";
 import { NutricionistaController } from "./controller/NutricionistaController";
 import { PlanosController } from "./controller/PlanosController";
+
 import { app } from "./controller/app";
 import { ArmazenaPagamentoData } from "./data/ArmazenaPagamentoData";
 import { ClienteData } from "./data/ClienteData";
