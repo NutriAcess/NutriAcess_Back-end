@@ -19,7 +19,7 @@ export class NutricionistaBusiness {
 
     try {
       const { nome_completo, nome_social, email, senha , crn} = nutriInput;
-      if (!nome_completo || !nome_social || !senha || !email || !crn ) {
+      if (!nome_completo || !senha || !email || !crn ) {
         throw new CustomError(422, "Missing input.");
       }
       if (senha.length < 6) {
