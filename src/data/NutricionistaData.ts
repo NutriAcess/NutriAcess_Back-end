@@ -59,17 +59,17 @@ export class NutricionistaData extends BaseData {
       throw new CustomError(400, error.sqlMessage);
     }
   }
-  // public async findNutricionistasByEspecialidade(especialidade: string): Promise<NutricionistaModel[]> {
-  //   try {
-  //     const nutricionistas = await BaseData.connection(this.tableName)
-  //       .select("id_nutricionista", "nome_completo", "nome_social", "email", "especialidade")
-  //       .where({ especialidade: especialidade });
+  public async findNutricionistasByNome(nome_completo: string): Promise<NutricionistaModel[]> {
+    try {
+      const nutricionistas = await BaseData.connection(this.tableName)
+        .select("id_nutricionista", "nome_completo", "email")
+        .where({ nome_completo: nome_completo });
     
-  //     return nutricionistas.map((nutri) => NutricionistaModel.toNutricionistaModel(nutri));
-  //   } catch (error: any) {
-  //     throw new CustomError(400, error.sqlMessage);
-  //   }
-  // }
+      return nutricionistas.map((nutri) => NutricionistaModel.toNutricionistaModel(nutri));
+    } catch (error: any) {
+      throw new CustomError(400, error.sqlMessage);
+    }
+  }
   
   public async getNutricionistas() {
     try {
