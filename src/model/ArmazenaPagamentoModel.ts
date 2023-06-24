@@ -4,7 +4,7 @@ export class ArmazenaPagamentoModel {
     private id_cliente: string,
     private nomeTitular: string,
     private numeroCartao: number,
-    private validadeCartao: number,
+    private validadeCartao: string,
     private codigoSeguranca: number
     ){}
 
@@ -24,7 +24,7 @@ export class ArmazenaPagamentoModel {
         return this.numeroCartao
     }
 
-    getValidadeCartao = () : number => {
+    getValidadeCartao = () : string => {
         return this.validadeCartao
     }
 

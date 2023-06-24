@@ -22,7 +22,7 @@ export class FamiliaClienteBusiness {
   public async createFamiliaCliente(input: FamiliaClienteInputDTO) {
     try {
       const { token, id_cliente, id_familia } = input;
-      if (!token || !id_familia || !id_cliente) {
+      if ( !id_familia || !id_cliente) {
         throw new CustomError(422, "Missing input");
       }
 
@@ -47,8 +47,9 @@ export class FamiliaClienteBusiness {
       const id_familia_cliente = this.idGenerator.generate();
       const newFamilia = new FamiliaClienteModel(
         id_familia_cliente,
-        id_familia,
-        id_cliente
+        id_cliente,
+        id_familia
+        
       );
       await this.familiaClienteData.createFamiliaCliente(newFamilia);
       return newFamilia;

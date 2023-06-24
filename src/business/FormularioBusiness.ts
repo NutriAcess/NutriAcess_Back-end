@@ -5,6 +5,7 @@ import { FormularioModel } from "../model/FormularioModel";
 import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
 import { FormularioInputDTO } from "../types/FormularioInputDTO";
+import jwt, { Secret } from "jsonwebtoken";
 
 export class FormularioBusiness {
   constructor(
@@ -17,7 +18,6 @@ export class FormularioBusiness {
     try {
       const {
         token,
-        nome,
         objetivo,
         genero,
         altura,
@@ -28,6 +28,7 @@ export class FormularioBusiness {
         tempo_preparo,
         foto,
         id_cliente,
+        alergia
       } = input;
       if (!token) {
         throw new CustomError(401, `Authorization token is required`);
@@ -42,7 +43,7 @@ export class FormularioBusiness {
       }
       
       if (
-        !nome ||
+     !alergia ||
         !objetivo ||
         !genero ||
         !altura ||
@@ -50,7 +51,8 @@ export class FormularioBusiness {
         !peso ||
         !capacidade_fisica ||
         !restricao_alimentar ||
-        !tempo_preparo ||
+        !tempo_preparo 
+        ||
         !id_cliente
       ) {
         throw new CustomError(422, "Missing input.");
@@ -69,13 +71,13 @@ export class FormularioBusiness {
         );
       }
       if (
-        genero.toLowerCase() !== "homem" &&
-        genero.toLowerCase() !== "mulher" &&
+        genero.toLowerCase() !== "masculino" &&
+        genero.toLowerCase() !== "feminino" &&
         genero.toLowerCase() !== "outro"
       ) {
         throw new CustomError(
           422,
-          "Gender accepts  'mulher', 'homem', 'outro' as a valid result."
+          "Gender accepts  'feminino', 'masculino', 'outro' as a valid result."
         );
       }
       if (
@@ -88,6 +90,20 @@ export class FormularioBusiness {
           "Physical capacity accepts  'sedentarismo', 'atividade fisica moderada', 'atividade fisica intensa' as a valid result."
         );
       }
+      if (
+        alergia.toLowerCase() !== "gluten" &&
+        alergia.toLowerCase() !== "laticinios" &&
+        alergia.toLowerCase() !== "amendoim" &&
+        alergia.toLowerCase() !== "peixes" &&
+        alergia.toLowerCase() !== "ovos" &&
+        alergia.toLowerCase() !== "mariscos"
+      ) {
+        throw new CustomError(
+          422,
+          "Alergia accepts 'gluten', 'laticinios', 'amendoim', 'peixes', 'ovos', 'mariscos' as valid results."
+        );
+      }
+      
       if (
         restricao_alimentar.toLowerCase() !== "qualquer coisa" &&
         restricao_alimentar.toLowerCase() !== "vegetariano" &&
@@ -116,7 +132,6 @@ export class FormularioBusiness {
       const id_formulario = this.idGenerator.generate();
       const newForms = new FormularioModel(
         id_formulario,
-        nome,
         objetivo,
         genero,
         altura,
@@ -126,7 +141,8 @@ export class FormularioBusiness {
         restricao_alimentar,
         tempo_preparo,
         foto,
-        id_cliente
+        id_cliente,
+        alergia
       );
       await this.formData.createFormulario(newForms);
       return newForms;
@@ -169,4 +185,8 @@ export class FormularioBusiness {
       throw new CustomError(error.statusCode, error.message);
     }
   };
+
+
+
 }
+

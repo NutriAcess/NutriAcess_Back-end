@@ -1,19 +1,18 @@
 import { Request, Response } from "express";
 import { FormularioBusiness } from "../business/FormularioBusiness";
 import { FormularioInputDTO } from "../types/FormularioInputDTO";
+import { CustomError } from "../error/CustomError";
+
 
 export class FormularioController {
   constructor(private formularioBusiness: FormularioBusiness) {}
 
   createForm = async (req: Request, res: Response) => {
     try {
-      const token = req.headers.authorization as string
-
-      const { nome, objetivo, genero, altura, idade, peso, capacidade_fisica, restricao_alimentar, tempo_preparo, foto,  id_cliente } = req.body;
-
-      const form: FormularioInputDTO = {
-        token: token , 
-        nome,
+      const token = req.headers.authorization as string;
+      
+      const {
+        alergia,
         objetivo,
         genero,
         altura,
@@ -24,17 +23,33 @@ export class FormularioController {
         tempo_preparo,
         foto,
         id_cliente
-      }
+      } = req.body;
+  
+      const form: FormularioInputDTO = {
+        token,
+        alergia,
+        objetivo,
+        genero,
+        altura,
+        idade,
+        peso,
+        capacidade_fisica,
+        restricao_alimentar,
+        tempo_preparo,
+        foto,
+        id_cliente 
+      };
+  
       const newForm = await this.formularioBusiness.createForm(form);
- 
-      res.status(201).send({message:"Form created successfully.", newForm });
+  
+      res.status(201).send({ message: "Form created successfully.", newForm });
     } catch (error: any) {
       if (res.statusCode === 200) {
-          res.status(500).send({ message: error.message })
+        res.status(500).send({ message: error.message });
       } else {
-          res.status(res.statusCode).send({ message: error.sqlMessage || error.message })
+        res.status(res.statusCode).send({ message: error.sqlMessage || error.message });
       }
-  }
+    }
   };
   getFormById = async (req: Request, res: Response) => {
     try {
@@ -60,4 +75,6 @@ export class FormularioController {
       res.status(statusCode || 400).send({ message });
     }
   };
+
+
 }

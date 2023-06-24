@@ -3,7 +3,8 @@ CREATE TABLE `cliente` (
   `nome_completo` varchar(255) NOT NULL,
   `nome_social` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `senha` varchar(255) NOT NULL
+  `senha` varchar(255) NOT NULL,
+  `telefone` varchar(255) not null 
 );
 
 
@@ -36,6 +37,8 @@ CREATE TABLE `nutricionista` (
   `nome_social` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `senha` varchar(255) NOT NULL,
+  `telefone` varchar(255) not null,
+  `especialidade` varchar(255),
   `crn` int NOT NULL
 );
 
@@ -97,7 +100,6 @@ CREATE TABLE perfil_nutri (
 );
 
 
-
 create table `ArmazenaPagamento` (
 `id_pagamento` varchar(255) primary key,
 `id_cliente` varchar(255),
@@ -107,3 +109,4 @@ create table `ArmazenaPagamento` (
 `codigoSeguranca` int not null unique,
 foreign key (id_cliente) references cliente (id_cliente)
 );
+

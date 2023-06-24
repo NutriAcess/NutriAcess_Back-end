@@ -5,6 +5,7 @@ import { CustomError } from "../error/CustomError";
 import { ArmazenaPagamentoModel } from "../model/ArmazenaPagamentoModel";
 import { IdGenerator } from "../services/idGenerator";
 import { ArmazenaPagamentoInputDTO } from "../types/ArmazenaPagamentoInputDTO";
+import { format, parse } from "date-fns";
 
 
 export class ArmazenaPagamentoBusiness {
@@ -32,9 +33,19 @@ export class ArmazenaPagamentoBusiness {
             )  {
                 throw new CustomError(422, "Missing input.")
         }
-        if (isNaN(numeroCartao) || isNaN(validadeCartao) || isNaN(codigoSeguranca)) {
+        if (numeroCartao !== 11) {
+            throw new CustomError(422, "Invalid number card.");
+          }
+         
+          if (codigoSeguranca !== 3) {
+            throw new CustomError(422, "Invalid card code.");
+          }
+    
+    
+        if (isNaN(numeroCartao) || isNaN(codigoSeguranca)) {
             throw new CustomError(401, "Invalid Number!");
         }
+
 
         const clienteExists = await this.clienteData.findClienteById(id_cliente);
         if (!clienteExists) {
@@ -42,13 +53,16 @@ export class ArmazenaPagamentoBusiness {
         }
 
         const id_pagamento = this.idGenerator.generate();
-        const newPagamento = new ArmazenaPagamentoModel (
-            id_pagamento,
-            id_cliente,
-            nomeTitular,
-            numeroCartao,
-            codigoSeguranca,
-            validadeCartao
+        const validadeCartaoDate = parse(validadeCartao, "MM/yy", new Date());
+        const formattedValidadeCartao = format(validadeCartaoDate, "MM/yyyy");
+
+        const newPagamento = new ArmazenaPagamentoModel(
+          id_pagamento,
+          id_cliente,
+          nomeTitular,
+          numeroCartao,
+          formattedValidadeCartao,
+          codigoSeguranca
         );
         await this.pagamentoData.createArmazenaPagamento(newPagamento);
         return newPagamento

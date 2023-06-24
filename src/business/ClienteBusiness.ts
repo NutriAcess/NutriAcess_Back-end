@@ -20,16 +20,22 @@ export class ClienteBusiness {
 
   public async signup(clienteInput: ClienteInputDTO): Promise<string> {
     try {
-      const { nome_completo, nome_social, email, senha } = clienteInput;
+      const { nome_completo, nome_social, email, senha, telefone } = clienteInput;
 
-      if (!nome_completo || !senha || !email) {
+      if (!nome_completo || !senha || !email || !telefone) {
         throw new CustomError(422, "Missing input.");
       }
 
       if (senha.length < 6) {
         throw new CustomError(422, "Invalid password.");
       }
+      
+      const telefoneSemFormatacao = telefone.replace(/\D/g, "");
 
+      if (telefoneSemFormatacao.length !== 10) {
+        throw new CustomError(422, "Invalid phone number.");
+      }
+      
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       if (!emailRegex.test(email)) {
@@ -38,10 +44,13 @@ export class ClienteBusiness {
 
       const existingCliente = await this.clienteData.findClienteByEmail(email);
 
+      const existingTelefone = await this.clienteData.findClienteByTelefone(telefone)
       if (existingCliente) {
         throw new CustomError(401, "Invalid credentials.");
       }
-
+      if (existingTelefone) {
+        throw new CustomError(401, "Invalid credentials.");
+      }
       const id = this.idGenerator.generate();
       const cypherSenha = await this.hashGenerator.hash(senha);
 
@@ -50,7 +59,8 @@ export class ClienteBusiness {
         nome_completo,
         nome_social,
         email,
-        cypherSenha
+        cypherSenha,
+        telefone
       );
 
       await this.clienteData.createCliente(newCliente);

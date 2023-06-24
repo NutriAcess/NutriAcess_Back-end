@@ -6,13 +6,15 @@ export type ClienteInputDTO = {
   nome_social: string,
   email: string,
   senha: string
+  telefone: string
 }
 export type ClienteInputDTO2 = {
   token:string,
   nome_completo: string,
   nome_social: string,
   email: string,
-  senha: string
+  senha: string,
+  telefone: string
 }
 
 export type TUser = {

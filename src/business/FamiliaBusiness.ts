@@ -19,10 +19,7 @@ export class FamiliaBusiness {
   public async createFamilia(input: FamiliaInputDTO) {
     try {
       const { token, nome, idade, sexo, peso, id_plano, id_cliente } = input;
-      if (!nome || !idade || !sexo || !peso || !id_plano || !id_cliente) {
-        throw new CustomError(422, "Missing input");
-      }
-
+     
       if (!token) {
         throw new CustomError(401, `Authorization token is required`);
       }
@@ -32,6 +29,10 @@ export class FamiliaBusiness {
       if (!tokenData) {
         throw new CustomError(401, "Invalid token!");
       }
+      if (!nome || !idade || !sexo || !peso || !id_plano || !id_cliente) {
+        throw new CustomError(422, "Missing input");
+      }
+
       if (isNaN(idade) || isNaN(peso)) {
         throw new CustomError(401, "Invalid number!");
       }
@@ -60,8 +61,9 @@ export class FamiliaBusiness {
         idade,
         sexo,
         peso,
-        id_plano,
-        id_cliente
+        id_cliente,
+        id_plano
+        
       );
       await this.familiaData.createFamilia(newFamilia);
       return newFamilia;

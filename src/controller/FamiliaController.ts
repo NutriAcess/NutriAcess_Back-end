@@ -8,7 +8,7 @@ export class FamiliaController {
   createFamilia = async (req: Request, res: Response) => {
     try {
       const token = req.headers.authorization as string
-
+      
       const { nome, idade, sexo, peso, id_plano,  id_cliente } = req.body;
 
       const familia: FamiliaInputDTO ={token, nome, idade, sexo, peso, id_plano,  id_cliente }
