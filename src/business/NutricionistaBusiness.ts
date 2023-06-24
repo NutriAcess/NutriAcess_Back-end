@@ -4,7 +4,12 @@ import { NutricionistaModel } from "../model/NutricionistaModel";
 import { HashGenerator } from "../services/hashGenerator";
 import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
-import { NutriInputDTO, NutriInputDTO2, TEsp, TLogin } from "../types/NutriInputDTO";
+import {
+  NutriInputDTO,
+  NutriInputDTO2,
+  TEsp,
+  TLogin,
+} from "../types/NutriInputDTO";
 
 export class NutricionistaBusiness {
   constructor(
@@ -16,9 +21,23 @@ export class NutricionistaBusiness {
 
   public async signup(nutriInput: NutriInputDTO): Promise<string> {
     try {
-      const { nome_completo, nome_social, email, senha , crn} = nutriInput;
-      if (!nome_completo || !senha || !email || !crn ) {
-
+      const {
+        nome_completo,
+        nome_social,
+        email,
+        senha,
+        crn,
+        telefone,
+        especialidade,
+      } = nutriInput;
+      if (
+        !nome_completo ||
+        !senha ||
+        !email ||
+        !crn ||
+        !telefone ||
+        !especialidade
+      ) {
         throw new CustomError(422, "Missing input.");
       }
 
@@ -41,6 +60,26 @@ export class NutricionistaBusiness {
       if (!emailRegex.test(email)) {
         throw new CustomError(422, "Invalid email.");
       }
+      if (
+        especialidade.toLowerCase() !== "nutrição esportiva" &&
+        especialidade.toLowerCase() !== "nutrição funcional" &&
+        especialidade.toLowerCase() !== "nutrição estética" &&
+        especialidade.toLowerCase() !== "nutrição integrativa" &&
+        especialidade.toLowerCase() !== "materno-infantil" &&
+        especialidade.toLowerCase() !== "nutrição familiar"
+      ) {
+        throw new CustomError(
+          422,
+          "Especialidade must be one of the following: 'nutrição esportiva', 'nutrição funcional', 'nutrição estética', 'nutrição integrativa', 'materno-infantil', or 'nutrição familiar'."
+        );
+      }
+      const telefoneSemFormatacao = telefone.replace(/\D/g, "");
+
+      if (telefoneSemFormatacao.length !== 10) {
+        throw new CustomError(422, "Invalid phone number.");
+      }
+      
+      
 
       const nutri = await this.nutriData.findNutricionistaByEmail(email);
       const verification_crn = await this.nutriData.findNutricionistaByCrn(crn);
@@ -58,7 +97,9 @@ export class NutricionistaBusiness {
         nome_social,
         email,
         cypherSenha,
-        crn
+        crn,
+        telefone,
+        especialidade
       );
 
       await this.nutriData.createNutricionista(newNutri);
@@ -74,7 +115,7 @@ export class NutricionistaBusiness {
     }
   }
 
-  public async login(crn: string, senha: string): Promise< TLogin> {
+  public async login(crn: string, senha: string): Promise<TLogin> {
     try {
       if (!crn || !senha) {
         throw new CustomError(422, "Missing input.");
@@ -101,9 +142,9 @@ export class NutricionistaBusiness {
       });
 
       const esp: TEsp = {
-        data: nutri
+        data: nutri,
       };
-     
+
       return { accessToken, esp };
     } catch (error: any) {
       throw new CustomError(error.statusCode || 500, error.message);
@@ -126,7 +167,9 @@ export class NutricionistaBusiness {
         throw new CustomError(401, "Invalid token!");
       }
 
-      const nutri = await this.nutriData.findNutricionistaById(id_nutricionista);
+      const nutri = await this.nutriData.findNutricionistaById(
+        id_nutricionista
+      );
 
       if (!nutri) {
         throw new CustomError(400, "There is no nutritionist with that ID!");
@@ -146,7 +189,9 @@ export class NutricionistaBusiness {
         throw new CustomError(422, "Missing input.");
       }
 
-      const nutricionistas = await this.nutriData.findNutricionistasByNome(nome_completo);
+      const nutricionistas = await this.nutriData.findNutricionistasByNome(
+        nome_completo
+      );
 
       if (nutricionistas.length === 0) {
         throw new CustomError(404, "No nutritionists found with that name.");

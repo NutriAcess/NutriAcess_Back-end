@@ -9,7 +9,6 @@ export class FormularioData extends BaseData {
     try {
       await BaseData.connection(this.tableName).insert({
         id_formulario: forms.getId_formulaio(),
-        nome: forms.getNome(),
         objetivo: forms.getObjetivo(),
         altura: forms.getAltura(),
         idade: forms.getIdade(),
@@ -19,6 +18,7 @@ export class FormularioData extends BaseData {
         tempo_preparo: forms.getTempo_preparo(),
         foto: forms.getFoto(),
         id_cliente: forms.getId_cliente(),
+        alergia: forms.getAlergia()
       });
     } catch (error: any) {
       throw new CustomError(400, error.sqlMessage);
@@ -64,4 +64,20 @@ export class FormularioData extends BaseData {
       throw new CustomError(400, error.sqlMessage);
     }
   }
+  public async findFormularioByClientId(
+    id_cliente: string
+  ): Promise<FormularioModel | undefined> {
+    try {
+      const [forms]: FormularioModel[] = await BaseData.connection(
+        this.tableName
+      )
+        .select("*")
+        .where({ id_cliente });
+  
+      return forms;
+    } catch (error: any) {
+      throw new CustomError(400, error.sqlMessage);
+    }
+  }
+  
 }

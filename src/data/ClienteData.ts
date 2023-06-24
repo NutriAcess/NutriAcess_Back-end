@@ -14,6 +14,7 @@ export class ClienteData extends BaseData {
         nome_social: cliente.getNomeSocial(),
         email: cliente.getEmail(),
         senha: cliente.getSenha(),
+        telefone: cliente.getTelefone()
       });
     } catch (error: any) {
       throw new CustomError(400, error.sqlMessage);
@@ -31,7 +32,17 @@ export class ClienteData extends BaseData {
       throw new CustomError(400, error.sqlMessage);
     }
   }
- 
+  public async findClienteByTelefone(telefone: string): Promise<ClienteModel | undefined> {
+    try {
+      const cliente = await BaseData.connection(this.tableName)
+        .select("*")
+        .where({ telefone: telefone });
+      return cliente[0];
+    } catch (error: any) {
+      throw new CustomError(400, error.sqlMessage);
+    }
+  }
+  
   public async findClienteById(
     id_cliente: string
   ): Promise<ClienteModel | undefined> {

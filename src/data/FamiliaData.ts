@@ -14,7 +14,7 @@ export class FamiliaData extends BaseData {
         sexo: familia.getSexo(),
         peso: familia.getPeso(),
         id_cliente: familia.getId_cliente(),
-        id_plano: familia.getId_plano(),
+        id_plano: familia.getId_plano()
       });
     } catch (error: any) {
       throw new CustomError(400, error.sqlMessage);

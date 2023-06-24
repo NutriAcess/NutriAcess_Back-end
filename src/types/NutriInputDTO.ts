@@ -1,4 +1,4 @@
-import { NutricionistaModel } from "../model/NutricionistaModel";
+import { SpecialtyNutriEnum, NutricionistaModel } from "../model/NutricionistaModel";
 
 export type NutriInputDTO = {
   nome_completo: string;
@@ -6,6 +6,8 @@ export type NutriInputDTO = {
   email: string;
   senha: string;
   crn: string;
+  telefone: string;
+   especialidade: SpecialtyNutriEnum
 };
 
 export type NutriInputDTO2 = {

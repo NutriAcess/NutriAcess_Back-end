@@ -3,6 +3,7 @@ import { ClienteBusiness } from "./business/ClienteBusiness";
 import { ConsultasBusiness } from "./business/ConsultasBusiness";
 import { FaleConoscoBusiness } from "./business/FaleConoscoBusiness";
 import { FamiliaBusiness } from "./business/FamiliaBusiness";
+import { FamiliaClienteBusiness } from "./business/FamiliaClienteBusiness";
 import { FormularioBusiness } from "./business/FormularioBusiness";
 import { NutricionistaBusiness } from "./business/NutricionistaBusiness";
 import { PlanosBusiness } from "./business/PlanosBusiness";
@@ -10,6 +11,7 @@ import { ArmazenaPagamentoController } from "./controller/ArmazenaPagamentoContr
 import { ClienteController } from "./controller/ClienteController";
 import { ConsultasController } from "./controller/ConsultasController";
 import { FaleConoscoController } from "./controller/FaleConoscoController";
+import { FamiliaClienteController } from "./controller/FamiliaClienteController";
 import { FamiliaController } from "./controller/FamiliaController";
 import { FormularioController } from "./controller/FormularioController";
 import { NutricionistaController } from "./controller/NutricionistaController";
@@ -20,6 +22,7 @@ import { ArmazenaPagamentoData } from "./data/ArmazenaPagamentoData";
 import { ClienteData } from "./data/ClienteData";
 import { ConsultasData } from "./data/ConsultasData";
 import { FaleConoscoData } from "./data/FaleConoscoData";
+import { FamiliaClienteData } from "./data/FamiliaClienteData";
 import { FamiliaData } from "./data/FamiliaData";
 import { FormularioData } from "./data/FormularioData";
 import { NutricionistaData } from "./data/NutricionistaData";
@@ -108,6 +111,19 @@ app.post("/familia/criar", familiaController.createFamilia);
 app.get("/familia/:id_familia", familiaController.getFamiliaById);
 app.get("/familia", familiaController.getAllFamilias);
 
+//Familia Cliente
+const familiaClienteBusiness = new FamiliaClienteBusiness(
+  new TokenGenerator(),
+  new ClienteData(), 
+  new IdGenerator(),
+  new FamiliaData(),
+  new FamiliaClienteData()
+);
+const familiaClienteController = new FamiliaClienteController(familiaClienteBusiness);
+app.post("/familia-cliente/criar", familiaClienteController.createFamiliaCliente);
+app.get("/familia/:id_familia", familiaController.getFamiliaById);
+app.get("/familia", familiaController.getAllFamilias);
+
 //Fale Conosco
 const faleConoscoBusiness = new FaleConoscoBusiness(
   new IdGenerator(),
@@ -127,7 +143,7 @@ const armazenaPagamentoBusiness = new ArmazenaPagamentoBusiness(
 );
 const armazenaPagamentoController = new ArmazenaPagamentoController(armazenaPagamentoBusiness)
   app.post("/pagamento/criar", armazenaPagamentoController.createPagamento);
-  app.get("/pagamento/id", armazenaPagamentoController.createPagamento)
+
 
 
 

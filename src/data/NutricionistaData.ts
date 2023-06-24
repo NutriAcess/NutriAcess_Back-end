@@ -14,6 +14,8 @@ export class NutricionistaData extends BaseData {
         email: nutri.getEmail(),
         senha: nutri.getSenha(),
         crn: nutri.getCrn(),
+        telefone: nutri.getTelefone(),
+        especialidade: nutri.getEspecialidade()
       });
     } catch (error: any) {
       throw new CustomError(400, error.sqlMessage);

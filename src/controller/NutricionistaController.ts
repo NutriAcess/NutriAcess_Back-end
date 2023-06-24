@@ -8,13 +8,14 @@ export class NutricionistaController {
 
   signup = async (req: Request, res: Response) => {
     try {
-      const { nome_completo, nome_social, email, senha, crn } = req.body;
+      const { nome_completo, nome_social, email, senha, crn, telefone, especialidade} = req.body;
       const nutriInput: NutriInputDTO = {
         nome_completo,
         nome_social,
         email,
         senha,
         crn,
+        telefone, especialidade
       };
       await this.nutriBusiness.signup(nutriInput);
 

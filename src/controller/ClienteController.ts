@@ -7,12 +7,13 @@ export class ClienteController {
 
   signup = async (req: Request, res: Response) => {
     try {
-      const { nome_completo, nome_social, email, senha } = req.body;
+      const { nome_completo, nome_social, email, senha, telefone } = req.body;
       const clienteInput: ClienteInputDTO = {
         nome_completo,
         nome_social,
         email,
         senha,
+        telefone
       };
      await this.clienteBusiness.signup(clienteInput);
 
@@ -75,7 +76,7 @@ export class ClienteController {
     try {
       const token = req.headers.authorization as string;
       const id_cliente = req.params.id_cliente;
-      const { nome_completo, nome_social, email, senha } = req.body;
+      const { nome_completo, nome_social, email, senha, telefone} = req.body;
 
       const clienteInput: ClienteInputDTO2 = {
         token,
@@ -83,6 +84,7 @@ export class ClienteController {
         nome_social,
         email,
         senha,
+        telefone
       };
 
       const updatedToken = await this.clienteBusiness.updateClienteById(

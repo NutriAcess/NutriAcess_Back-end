@@ -4,13 +4,15 @@ export class ClienteModel {
       private nome_completo: string,
       private nome_social: string,
       private email: string,
-      private senha: string
+      private senha: string,
+      private telefone: string
     ) {
       this.id_cliente = id_cliente;
       this.nome_completo = nome_completo;
       this.nome_social = nome_social;
       this.email = email;
-      this.senha = senha;}
+      this.senha = senha;
+    this.telefone = telefone;}
   
     getIdCliente = (): string => {
       return this.id_cliente;
@@ -27,7 +29,9 @@ export class ClienteModel {
     getSenha = (): string => {
         return this.senha;
       }    
-  
+      getTelefone= (): string => {
+        return this.telefone;
+      }
       setIdCliente = (id: string): void => {
         this.id_cliente = id;
       };
@@ -48,14 +52,18 @@ export class ClienteModel {
         this.senha = senha;
       };
       
-  
+      setTelefone = (telefone: string): void => {
+        this.telefone = telefone;
+      };
+      
     static toClienteModel(data: any): ClienteModel {
       return new ClienteModel(
         data.id_cliente,
         data.nome_completo,
         data.nome_social,
         data.email,
-        data.senha
+        data.senha,
+        data.telefone
       )
     }
   }
