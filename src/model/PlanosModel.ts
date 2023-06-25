@@ -1,7 +1,7 @@
 export enum TIPO {
-    plus = "plus",
+    plus1 = "plus1",
     familia = "familia",
-    premium = "premium"
+    plus2 = "plus2"
 }
 
 export class PlanosModel {
