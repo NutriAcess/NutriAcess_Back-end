@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { FormularioBusiness } from "../business/FormularioBusiness";
 import { FormularioInputDTO } from "../types/FormularioInputDTO";
-import { CustomError } from "../error/CustomError";
 
 
 export class FormularioController {

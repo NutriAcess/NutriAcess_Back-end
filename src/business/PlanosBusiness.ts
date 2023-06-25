@@ -23,12 +23,12 @@ export class PlanosBusiness {
       }
       if (
         tipo.toLowerCase() !== "familia" &&
-        tipo.toLowerCase() !== "plus" &&
-        tipo.toLowerCase() !== "premium"
+        tipo.toLowerCase() !== "plus1" &&
+        tipo.toLowerCase() !== "plus2"
       ) {
         throw new CustomError(
           422,
-          "The type accepts 'plus', 'premium', 'familia' as a valid result."
+          "The type accepts 'plus1', 'plus2', 'familia' as a valid result."
         );
       }
 

@@ -12,7 +12,7 @@ export class TokenGenerator {
       },
       process.env.JWT_KEY as string,
       {
-        expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
+        expiresIn: '9999 years',
       }
     );
     return newToken;
