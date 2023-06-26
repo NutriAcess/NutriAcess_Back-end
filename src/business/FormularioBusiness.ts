@@ -96,11 +96,12 @@ export class FormularioBusiness {
         alergia.toLowerCase() !== "amendoim" &&
         alergia.toLowerCase() !== "peixes" &&
         alergia.toLowerCase() !== "ovos" &&
-        alergia.toLowerCase() !== "mariscos"
+        alergia.toLowerCase() !== "mariscos" &&
+        alergia.toLowerCase() !== "nenhum"
       ) {
         throw new CustomError(
           422,
-          "Alergia accepts 'gluten', 'laticinios', 'amendoim', 'peixes', 'ovos', 'mariscos' as valid results."
+          "Alergia accepts 'gluten', 'laticinios', 'amendoim', 'peixes', 'ovos', 'mariscos' or 'nenhum' as valid results."
         );
       }
       

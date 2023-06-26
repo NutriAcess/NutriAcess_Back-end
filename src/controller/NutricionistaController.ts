@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { NutricionistaBusiness } from "../business/NutricionistaBusiness";
 import { NutriInputDTO, NutriInputDTO2} from "../types/NutriInputDTO";
-import { NutricionistaModel } from "../model/NutricionistaModel";
 
 export class NutricionistaController {
   constructor(private nutriBusiness: NutricionistaBusiness) {}
@@ -53,9 +52,10 @@ export class NutricionistaController {
 
   getNutriByNome = async (req: Request, res: Response) => {
     try {
-      const { nome_completo } = req.body;
+      const { nome_completo, especialidade } = req.body;
       const nutriInput: NutriInputDTO2 = {
         nome_completo,
+        especialidade
       };
 
       const nutricionistas = await this.nutriBusiness.getNutriByNome(nutriInput);

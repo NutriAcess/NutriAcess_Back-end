@@ -33,6 +33,7 @@ export enum ALERGIA {
   PEIXES = "peixes",
   OVOS = "ovos",
   MARISCOS = "mariscos",
+  NENHUM = "nenhum"
 }
 
 
