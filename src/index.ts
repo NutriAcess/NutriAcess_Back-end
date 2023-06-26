@@ -58,6 +58,7 @@ app.post("/nutricionista/conectar", nutriController.login);
 app.get("/nutricionista", nutriController.getAllNutricionistas);
 app.get("/nutricionista/:id_nutricionista", nutriController.getNutriById);
 app.post("/nutricionista/buscar", nutriController.getNutriByNome);
+
 //Consultas
 const consultasBusiness = new ConsultasBusiness(
   new TokenGenerator(),

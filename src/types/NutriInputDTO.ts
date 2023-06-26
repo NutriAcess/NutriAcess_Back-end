@@ -11,7 +11,8 @@ export type NutriInputDTO = {
 };
 
 export type NutriInputDTO2 = {
-  nome_completo: string;
+  nome_completo?: string;
+  especialidade?: SpecialtyNutriEnum
 };
 export type TEsp = {
   data: NutricionistaModel;

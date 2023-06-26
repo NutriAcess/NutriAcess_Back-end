@@ -1,6 +1,6 @@
 import { NutricionistaData } from "../data/NutricionistaData";
 import { CustomError } from "../error/CustomError";
-import { NutricionistaModel } from "../model/NutricionistaModel";
+import { NutricionistaModel, SpecialtyNutriEnum } from "../model/NutricionistaModel";
 import { HashGenerator } from "../services/hashGenerator";
 import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
@@ -180,29 +180,40 @@ export class NutricionistaBusiness {
       throw new CustomError(error.statusCode || 500, error.message);
     }
   }
-
   public async getNutriByNome(nutriInput: NutriInputDTO2) {
-    try {
-      const { nome_completo } = nutriInput;
-
-      if (!nome_completo) {
-        throw new CustomError(422, "Missing input.");
-      }
-
-      const nutricionistas = await this.nutriData.findNutricionistasByNome(
-        nome_completo
-      );
-
-      if (nutricionistas.length === 0) {
-        throw new CustomError(404, "No nutritionists found with that name.");
-      }
-
-      return nutricionistas;
-    } catch (error: any) {
-      throw new CustomError(error.statusCode || 500, error.message);
+    const { nome_completo, especialidade } = nutriInput;
+  
+    if (!nome_completo && !especialidade) {
+      throw new CustomError(422, "Missing input.");
     }
+  
+    let specialty;
+    if (especialidade) {
+      specialty = Object.values(SpecialtyNutriEnum).find(
+        value => value.toLowerCase() === especialidade.toLowerCase()
+      );
+  
+      if (!specialty) {
+        throw new CustomError(
+          422,
+          "Invalid specialty. Must be one of the following: 'Nutrição Esportiva', 'Nutrição Funcional', 'Nutrição Estética', 'Nutrição Integrativa', 'Materno-Infanti', or 'Nutrição Familiar'."
+        );
+      }
+    }
+  
+    const nutricionistas = await this.nutriData.findNutricionistasByNome(
+      nome_completo,
+      specialty
+    );
+  
+    if (nutricionistas.length === 0) {
+      throw new CustomError(404, "No nutritionists found with that name or specialty.");
+    }
+  
+    return nutricionistas;
   }
-
+  
+  
   public async getAllNutricionistas() {
     try {
       const results = await this.nutriData.getNutricionistas();

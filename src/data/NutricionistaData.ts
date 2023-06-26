@@ -1,5 +1,5 @@
 import { CustomError } from "../error/CustomError";
-import { NutricionistaModel } from "../model/NutricionistaModel";
+import { NutricionistaModel, SpecialtyNutriEnum } from "../model/NutricionistaModel";
 import { BaseData } from "./BaseData";
 
 export class NutricionistaData extends BaseData {
@@ -61,17 +61,39 @@ export class NutricionistaData extends BaseData {
       throw new CustomError(400, error.sqlMessage);
     }
   }
-  public async findNutricionistasByNome(nome_completo: string): Promise<NutricionistaModel[]> {
+  public async findNutricionistasByNome(
+    nome_completo?: string,
+    especialidade?: SpecialtyNutriEnum
+  ): Promise<NutricionistaModel[]> {
     try {
-      const nutricionistas = await BaseData.connection(this.tableName)
-        .select("id_nutricionista", "nome_completo", "email")
-        .where({ nome_completo: nome_completo });
-    
-      return nutricionistas.map((nutri) => NutricionistaModel.toNutricionistaModel(nutri));
+      let query = BaseData.connection(this.tableName)
+        .select("id_nutricionista", "nome_completo", "email", "especialidade");
+  
+      if (nome_completo) {
+        query = query.where({ nome_completo });
+      }
+  
+      if (especialidade) {
+        if (!Object.values(SpecialtyNutriEnum).includes(especialidade)) {
+          throw new CustomError(
+            422,
+            "Invalid specialty. Must be one of the following: 'Nutrição Esportiva', 'Nutrição Funcional', 'Nutrição Estética', 'Nutrição Integrativa', 'Materno-Infanti', or 'Nutrição Familiar'."
+          );
+        }
+  
+        query = query.where({ especialidade });
+      }
+  
+      const nutricionistas = await query;
+  
+      return nutricionistas.map((nutri) =>
+        NutricionistaModel.toNutricionistaModel(nutri)
+      );
     } catch (error: any) {
       throw new CustomError(400, error.sqlMessage);
     }
   }
+  
   
   public async getNutricionistas() {
     try {

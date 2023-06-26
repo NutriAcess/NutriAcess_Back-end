@@ -40,9 +40,10 @@ export class NutricionistaModel {
   getTelefone = (): string => {
     return this.telefone;
   };
-  getEspecialidade = (): string => {
+  getEspecialidade = (): SpecialtyNutriEnum => {
     return this.especialidade;
   };
+  
   static toNutricionistaModel(data: any): NutricionistaModel {
     return new NutricionistaModel(
       data.id_nutricionista,

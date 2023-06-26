@@ -18,7 +18,8 @@ export class FormularioData extends BaseData {
         tempo_preparo: forms.getTempo_preparo(),
         foto: forms.getFoto(),
         id_cliente: forms.getId_cliente(),
-        alergia: forms.getAlergia()
+        alergia: forms.getAlergia(),
+        genero: forms.getGenero()
       });
     } catch (error: any) {
       throw new CustomError(400, error.sqlMessage);
