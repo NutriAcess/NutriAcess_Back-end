@@ -55,6 +55,8 @@ CREATE TABLE `consultas` (
   foreign key (id_nutricionista) references nutricionista (id_nutricionista),
   foreign key (id_cliente) references cliente (id_cliente)
 );
+ALTER TABLE formulario
+ADD COLUMN foto ENUM('avatarUva', 'avatarMaca', 'avatarLaranja', 'avatarAbacaxi');
 
 
 CREATE TABLE `formulario` (
@@ -66,12 +68,14 @@ CREATE TABLE `formulario` (
   `peso` decimal NOT NULL,
   `capacidade_fisica` Enum('Sedentarismo', 'Atividade física moderada', 'Atividade física intensiva'),
   `restricao_alimentar` Enum('Qualquer coisa', 'Sou vegetariano(a)', 'Sou vegano(a)'),
-  `alergia` ENUM('gluten', 'laticinios', 'amendoim', 'peixes', 'ovos', 'mariscos'),
+ `alergia` ENUM('gluten', 'laticinios', 'amendoim', 'peixes', 'ovos', 'mariscos', 'nenhum'),
   `tempo_preparo` Enum('Sim', 'Nao') NOT NULL,
-  `foto`LONGBLOB,
+	`foto`  ENUM('avatarUva', 'avatarMaca', 'avatarLaranja', 'avatarAbacaxi'),
   `id_cliente` VARCHAR(255),
   foreign key (id_cliente) references cliente (id_cliente)
 );
+
+
 CREATE TABLE `fale_conosco` (
   `id` VARCHAR(255) PRIMARY KEY,
   `avaliacao` Enum('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'),
@@ -89,4 +93,24 @@ CREATE TABLE familia_cliente (
 );
 
 
+
+CREATE TABLE perfil_nutri (
+  id_perfil VARCHAR(255) PRIMARY KEY,
+  nome varchar(255),
+  foto blob,
+  instagram varchar(255) NOT NULL,
+  bio varchar(300) not null,
+  especialidades varchar(255) NOT NULL
+);
+
+
+create table `ArmazenaPagamento` (
+`id_pagamento` varchar(255) primary key,
+`id_cliente` varchar(255),
+`nomeTitular`varchar(255) not null,
+`numeroCartao`bigint not null unique,
+`validadeCartao` int not null unique,
+`codigoSeguranca` int not null unique,
+foreign key (id_cliente) references cliente (id_cliente)
+);
 
