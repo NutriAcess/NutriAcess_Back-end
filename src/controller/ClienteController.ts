@@ -100,4 +100,22 @@ export class ClienteController {
       res.status(statusCode || 400).send({ message });
     }
   };
+  getClienteAndFormById = async (req: Request, res: Response) => {
+    try {
+      const token = req.headers.authorization as string;
+      const id_cliente = req.params.id_cliente;
+  
+      const clienteAndForm = await this.clienteBusiness.getClienteAndFormById(
+        id_cliente,
+        token
+      );
+  
+      res.status(200).send({ message: "Cliente and Form found!", clienteAndForm });
+    } catch (error: any) {
+      const { statusCode, message } = error;
+      res.status(statusCode || 400).send({ message });
+    }
+  };
+  
+  
 }

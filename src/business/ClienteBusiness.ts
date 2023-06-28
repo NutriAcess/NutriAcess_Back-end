@@ -75,7 +75,6 @@ export class ClienteBusiness {
       throw new CustomError(error.statusCode, error.message);
     }
   }
-
   public async login(email: string, senha: string): Promise<TLogin> {
     try {
       if (!email || !senha) {
@@ -101,18 +100,20 @@ export class ClienteBusiness {
         id: cliente.getIdCliente(),
         email: cliente.getEmail(),
       });
-
+  
       const clientForm = await this.formularioData.findFormularioByUserId(
         cliente.getIdCliente()
       );
-
+  
+      const hasRespondedForm = !!clientForm;
+  
       const user: TUser = {
         data: cliente,
         form: clientForm,
+        hasRespondedForm: hasRespondedForm,
       };
-
+  
       return { accessToken, user };
-
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
@@ -219,4 +220,38 @@ export class ClienteBusiness {
       throw new CustomError(error.statusCode, error.message);
     }
   }
+  public async getClienteAndFormById(
+    id_cliente: string,
+    token: string
+  ): Promise<any> {
+    if (!token) {
+      throw new CustomError(401, "Token is required.");
+    }
+  
+    const clienteTokenData = this.tokenGenerator.verify(token);
+  
+    if (!clienteTokenData) {
+      throw new CustomError(401, "Invalid token.");
+    }
+  
+    const cliente = await this.clienteData.findClienteById(id_cliente);
+  
+    if (!cliente) {
+      throw new CustomError(404, "Cliente not found.");
+    }
+  
+    const form = await this.formularioData.findFormularioByClientId(id_cliente);
+  
+    const hasRespondedForm = !!form;
+  
+    const user: TUser = {
+      data: cliente,
+      form: form,
+      hasRespondedForm: hasRespondedForm,
+    };
+  
+    return { cliente, form, user };
+  }
+  
+  
 }

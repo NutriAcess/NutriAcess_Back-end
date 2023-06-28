@@ -20,7 +20,9 @@ export type ClienteInputDTO2 = {
 export type TUser = {
   form?: FormularioModel;
   data: ClienteModel;
+  hasRespondedForm?: boolean;
 };
+
 
 export type TLogin = {
   accessToken: string;

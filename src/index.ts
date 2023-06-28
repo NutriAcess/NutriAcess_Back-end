@@ -44,7 +44,9 @@ app.post("/cliente/cadastrar", clienteController.signup);
 app.post("/cliente/conectar", clienteController.login);
 app.get("/cliente/:id_cliente", clienteController.getClienteById);
 app.get("/cliente", clienteController.getAllClientes);
+app.get("/cliente/formulario/:id_cliente", clienteController.getClienteAndFormById);
 app.put("/cliente/:id_cliente", clienteController.updateClienteById);
+
 //Nutricionista
 const nutriBusiness = new NutricionistaBusiness(
   new HashGenerator(),

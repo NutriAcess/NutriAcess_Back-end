@@ -33,17 +33,22 @@ export class ArmazenaPagamentoBusiness {
       ) {
         throw new CustomError(422, "Missing input.");
       }
-
-      if (numeroCartao.toString().length !== 11) {
-        throw new CustomError(422, "Invalid number card.");
+      if (numeroCartao.toString().length !== 16) {
+        throw new CustomError(422, "Invalid credit card number.");
       }
       
       if (codigoSeguranca.toString().length !== 3) {
-        throw new CustomError(422, "Invalid card code.");
+        throw new CustomError(422, "Invalid card security code.");
       }
       
-      if (isNaN(Number(numeroCartao)) || isNaN(Number(codigoSeguranca))) {
-        throw new CustomError(401, "Invalid Number!");
+      const cardNumberRegex = /^\d{16}$/;
+      if (!cardNumberRegex.test(numeroCartao.toString())) {
+        throw new CustomError(422, "Invalid credit card number format.");
+      }
+      
+      const securityCodeRegex = /^\d{3}$/;
+      if (!securityCodeRegex.test(codigoSeguranca.toString())) {
+        throw new CustomError(422, "Invalid card security code format.");
       }
 
       const clienteExists = await this.clienteData.findClienteById(id_cliente);
@@ -53,7 +58,7 @@ export class ArmazenaPagamentoBusiness {
 
       const id_pagamento = this.idGenerator.generate();
       const validadeCartaoDate = parse(validadeCartao, "MM/yy", new Date());
-      const formattedValidadeCartao = format(validadeCartaoDate, "MM/yyyy");
+      const formattedValidadeCartao = format(validadeCartaoDate, "MM/yy");
 
       const newPagamento = new ArmazenaPagamentoModel(
         id_pagamento,

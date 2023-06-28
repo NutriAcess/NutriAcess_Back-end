@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ArmazenaPagamentoBusiness } from "../business/ArmazenaPagamentoBusiness";
 import { ArmazenaPagamentoInputDTO } from "../types/ArmazenaPagamentoInputDTO";
+import { CustomError } from "../error/CustomError";
 
 export class ArmazenaPagamentoController {
   constructor(private armazenaPagamentoBusiness: ArmazenaPagamentoBusiness) {}
