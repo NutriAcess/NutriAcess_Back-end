@@ -1,6 +1,8 @@
+import { ClienteController } from "../controller/ClienteController";
 import { CustomError } from "../error/CustomError";
 import { FamiliaModel } from "../model/FamiliaModel";
 import { BaseData } from "./BaseData";
+import { ClienteData } from "./ClienteData";
 
 export class FamiliaData extends BaseData {
   protected tableName: string = "familia";
@@ -13,6 +15,7 @@ export class FamiliaData extends BaseData {
         idade: familia.getIdade(),
         sexo: familia.getSexo(),
         peso: familia.getPeso(),
+        // id_cliente: ClienteController.ClienteBusiness.getClienteById,
         id_cliente: familia.getId_cliente(),
         id_plano: familia.getId_plano()
       });
