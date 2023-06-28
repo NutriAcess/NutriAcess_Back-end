@@ -9,7 +9,7 @@ export class FormularioController {
   createForm = async (req: Request, res: Response) => {
     try {
       const token = req.headers.authorization as string;
-      
+
       const {
         alergia,
         objetivo,
@@ -23,7 +23,7 @@ export class FormularioController {
         foto,
         id_cliente
       } = req.body;
-  
+
       const form: FormularioInputDTO = {
         token,
         alergia,
@@ -36,17 +36,19 @@ export class FormularioController {
         restricao_alimentar,
         tempo_preparo,
         foto,
-        id_cliente 
+        id_cliente
       };
-  
+
       const newForm = await this.formularioBusiness.createForm(form);
-  
+
       res.status(201).send({ message: "Form created successfully.", newForm });
     } catch (error: any) {
       if (res.statusCode === 200) {
         res.status(500).send({ message: error.message });
       } else {
-        res.status(res.statusCode).send({ message: error.sqlMessage || error.message });
+        res
+          .status(res.statusCode)
+          .send({ message: error.sqlMessage || error.message });
       }
     }
   };

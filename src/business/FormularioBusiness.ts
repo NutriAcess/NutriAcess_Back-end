@@ -1,11 +1,10 @@
 import { ClienteData } from "../data/ClienteData";
 import { FormularioData } from "../data/FormularioData";
 import { CustomError } from "../error/CustomError";
-import { FormularioModel } from "../model/FormularioModel";
+import { AvatarsEnum, FormularioModel } from "../model/FormularioModel";
 import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
 import { FormularioInputDTO } from "../types/FormularioInputDTO";
-import jwt, { Secret } from "jsonwebtoken";
 
 export class FormularioBusiness {
   constructor(
@@ -26,15 +25,16 @@ export class FormularioBusiness {
         capacidade_fisica,
         restricao_alimentar,
         tempo_preparo,
-        foto,
         id_cliente,
+        foto,
         alergia
       } = input;
       if (!token) {
         throw new CustomError(401, `Authorization token is required`);
       }
-     
-     
+
+      
+
       const tokenData = this.tokenGenerator.verify(token);
 
       if (!tokenData) {
@@ -59,6 +59,13 @@ export class FormularioBusiness {
       }
       if (isNaN(altura) || isNaN(idade) || isNaN(peso)) {
         throw new CustomError(401, "Invalid number!");
+      }
+      let parsedFoto: AvatarsEnum | undefined;
+      if (foto !== undefined) {
+        if (!Object.values(AvatarsEnum).includes(foto)) {
+          throw new CustomError(422, "Invalid value for 'foto'");
+        }
+        parsedFoto = foto;
       }
       if (
         objetivo.toLowerCase() !== "perder peso" &&

@@ -35,7 +35,12 @@ export enum ALERGIA {
   MARISCOS = "mariscos",
   NENHUM = "nenhum"
 }
-
+export enum AvatarsEnum {
+  avatarUva = "avatarUva",
+  avatarMaca = "avatarMaca",
+  avatarLaranja = "avatarLaranja",
+  avatarAbacaxi= "avatarAbacaxi",
+}
 
 export class FormularioModel {
   constructor(
@@ -48,7 +53,7 @@ export class FormularioModel {
     private capacidade_fisica: CAPACIDADE_FISICA,
     private restricao_alimentar: RESTRICAO_ALIMENTAR,
     private tempo_preparo: TEMPO_PREPARO,
-    private foto: string | undefined,
+    private foto:AvatarsEnum,
     private id_cliente: string,
     private alergia: ALERGIA
   ) {}
@@ -93,7 +98,7 @@ export class FormularioModel {
     return this.tempo_preparo;
   };
 
-  getFoto = (): string | undefined => {
+  getFoto = (): AvatarsEnum => {
     return this.foto;
   };
 
