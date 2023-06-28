@@ -32,7 +32,7 @@ export class ClienteBusiness {
       
       const telefoneSemFormatacao = telefone.replace(/\D/g, "");
 
-      if (telefoneSemFormatacao.length !== 10) {
+      if (telefoneSemFormatacao.length !== 11) {
         throw new CustomError(422, "Invalid phone number.");
       }
       
