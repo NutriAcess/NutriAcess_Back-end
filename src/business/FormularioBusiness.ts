@@ -213,8 +213,11 @@ export class FormularioBusiness {
       if (!form) {
         throw new CustomError(404, `Form with ID ${id_formulario} not found.`);
       }
-      if (!token) {
-        throw new CustomError(401, "Insert a token please!");
+      const tokenData = this.tokenGenerator.verify(token);
+
+      if (!tokenData) {
+       
+        throw new CustomError(401, "Invalid token.");
       }
       if (!id_formulario) {
         throw new CustomError(400, "Insert an id_formulario please!");

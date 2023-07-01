@@ -72,34 +72,33 @@ export class ClienteController {
     }
   };
 
-  updateClienteById = async (req: Request, res: Response) => {
-    try {
-      const token = req.headers.authorization as string;
-      const id_cliente = req.params.id_cliente;
-      const { nome_completo, nome_social, email, senha, telefone} = req.body;
+  // updateCliente = async (req: Request, res: Response): Promise<void> => {
+  //   try {
+  //     const token = req.headers.authorization as string;
+  //     const id_cliente = req.params.id_cliente;
+  //     const { nome_completo, nome_social, email, senha, telefone } = req.body;
 
-      const clienteInput: ClienteInputDTO2 = {
-        token,
-        nome_completo,
-        nome_social,
-        email,
-        senha,
-        telefone
-      };
+  //     const clienteInput: ClienteInputDTO = {
+  //       nome_completo,
+  //       nome_social,
+  //       email,
+  //       senha,
+  //       telefone,
+  //     };
 
-      const updatedToken = await this.clienteBusiness.updateClienteById(
-        id_cliente,
-        clienteInput
-      );
+  //     await this.clienteBusiness.updateCliente(
+  //       id_cliente,
+  //       token,
+  //       clienteInput
+  //     );
 
-      res
-        .status(200)
-        .send({ message: "Cliente atualizado!", token: updatedToken });
-    } catch (error: any) {
-      const { statusCode, message } = error;
-      res.status(statusCode || 400).send({ message });
-    }
-  };
+  //     res.status(200).send({ message: "Cliente updated!" });
+  //   } catch (error: any) {
+  //     const { statusCode, message } = error;
+  //     res.status(statusCode || 400).send({ message });
+  //   }
+  // }
+  
   getClienteAndFormById = async (req: Request, res: Response) => {
     try {
       const token = req.headers.authorization as string;
