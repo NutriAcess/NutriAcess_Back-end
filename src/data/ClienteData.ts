@@ -81,16 +81,16 @@ export class ClienteData extends BaseData {
     }
   }
   
-  public async updateCliente(cliente: ClienteModel) {
+  public async updateCliente( id_cliente: string,nome_completo: string, nome_social: string,email: string,  senha: string, telefone: string) {
     try {
       await BaseData.connection(this.tableName)
-        .where({ id_cliente: cliente.getIdCliente() })
+        .where({ id_cliente})
         .update({
-          nome_completo: cliente.getNomeCompleto(),
-          nome_social: cliente.getNomeSocial(),
-          email: cliente.getEmail(),
-          senha: cliente.getSenha(),
-          telefone: cliente.getTelefone()
+          nome_completo,
+          nome_social,
+          email,
+          senha,
+          telefone
         });
     } catch (error: any) {
       throw new CustomError(400, error.sqlMessage);

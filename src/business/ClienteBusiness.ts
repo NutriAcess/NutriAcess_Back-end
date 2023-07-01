@@ -155,74 +155,144 @@ export class ClienteBusiness {
     }
   }
 
-  public async updateClienteById(
-    id_cliente: string,
-    clienteInput: ClienteInputDTO2
-  ) {
-    try {
-      const { token, nome_completo, nome_social, email, senha , telefone} = clienteInput;
+//   public async updateClienteById(
+//     id_cliente: string,token: string, nome_completo: string, nome_social: string,email: string,  senha: string, telefone: string
+   
+//   ) {
+//     try {
+      
+//       const form = await this.clienteData.findClienteById(id_cliente);
+//       if (!form) {
+//         throw new CustomError(400, "Insert a id_cliente please!");
+//       }
+//       const tokenData = this.tokenGenerator.verify(token);
 
-      if (!token) {
-        throw new CustomError(401, "Please enter a valid token!");
-      }
+//       if (!tokenData) {
+       
+//         throw new CustomError(401, "Invalid token.");
+//       }
+      
+//       if (!id_cliente) {
+//         throw new CustomError(400, "Insert an id_formulario please!");
+//       }
+//       if (!nome_completo && !nome_social && !email && !senha && !telefone) {
+//         throw new CustomError(400, "No fields provided to update.");
+//       }
+//       if (senha.length < 6) {
+//         throw new CustomError(422, "Invalid password.");
+//       }
+      
+//       const telefoneSemFormatacao = telefone.replace(/\D/g, "");
 
-      const clienteTokenData = this.tokenGenerator.verify(token);
+//       if (telefoneSemFormatacao.length !== 11) {
+//         throw new CustomError(422, "Invalid phone number.");
+//       }
+      
+//       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      if (!clienteTokenData) {
-        throw new CustomError(401, "Invalid token!");
-      }
+//       if (!emailRegex.test(email)) {
+//         throw new CustomError(422, "Invalid email.");
+//       }
 
-      if (!nome_completo && !nome_social && !email && !senha && !telefone) {
-        throw new CustomError(400, "No fields provided to update.");
-      }
+//       const existingCliente = await this.clienteData.findClienteByEmail(email);
 
-      const cliente = await this.clienteData.findClienteById(id_cliente);
+//       const existingTelefone = await this.clienteData.findClienteByTelefone(telefone)
+//       if (existingCliente) {
+//         throw new CustomError(401, "Invalid credentials.");
+//       }
+//       if (existingTelefone) {
+//         throw new CustomError(401, "Invalid credentials.");
+//       }
+     
 
-      if (!cliente) {
-        throw new CustomError(404, "Customer not found.");
-      }
+//       const update = await this.clienteData.updateCliente(id_cliente, nome_completo,
+//         nome_social,
+//         email,
+//         senha,
+//         telefone);
+//   //  this.tokenGenerator.generate({
+//   //       id: cliente.getIdCliente(),
+//   //       email: cliente.getEmail(),
+//   //     });
+// console.log(update);
 
-      if (nome_completo) {
-        cliente.setNomeCompleto(nome_completo);
-      }
+//       return update;
+//     } catch (error: any) {
+//       throw new CustomError(error.statusCode, error.message);
+//     }
+//   }
+// public async updateCliente(id: string, clienteInput: ClienteInputDTO): Promise<void> {
+//   try {
+//     const { nome_completo, nome_social, email, senha, telefone } = clienteInput;
 
-      if (nome_social) {
-        cliente.setNomeSocial(nome_social);
-      }
-      if (telefone) {
-        cliente.setNomeSocial(nome_social);
-      }
-      if (email) {
-        const existingCliente = await this.clienteData.findClienteByEmail(
-          email
-        );
+//     if (!nome_completo && !nome_social && !email && !senha && !telefone) {
+//       throw new CustomError(422, "No fields to update.");
+//     }
 
-        if (
-          existingCliente &&
-          existingCliente.getIdCliente() !== cliente.getIdCliente()
-        ) {
-          throw new CustomError(400, "Email is already in use.");
-        }
+//     const existingCliente = await this.clienteData.findClienteById(id);
 
-        cliente.setEmail(email);
-      }
+//     if (!existingCliente) {
+//       throw new CustomError(400, "Client not found.");
+//     }
 
-      if (senha) {
-        const hashedSenha = await this.hashGenerator.hash(senha);
-        cliente.setSenha(hashedSenha);
-      }
+//     const updatedCliente: Partial<ClienteModel> = {};
 
-      const update = await this.clienteData.updateCliente(cliente);
-      const updatedToken = this.tokenGenerator.generate({
-        id: cliente.getIdCliente(),
-        email: cliente.getEmail(),
-      });
+//     if (nome_completo) {
+//       updatedCliente.nome_completo = nome_completo;
+//     }
 
-      return {updatedToken, update};
-    } catch (error: any) {
-      throw new CustomError(error.statusCode, error.message);
-    }
-  }
+//     if (nome_social) {
+//       updatedCliente.nome_social = nome_social;
+//     }
+
+//     if (email) {
+//       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+//       if (!emailRegex.test(email)) {
+//         throw new CustomError(422, "Invalid email.");
+//       }
+
+//       const existingEmail = await this.clienteData.findClienteByEmail(email);
+
+//       if (existingEmail) {
+//         throw new CustomError(409, "Email already in use.");
+//       }
+
+//       updatedCliente.email = email;
+//     }
+
+//     if (senha) {
+//       if (senha.length < 6) {
+//         throw new CustomError(422, "Invalid password.");
+//       }
+
+//       const cypherSenha = await this.hashGenerator.hash(senha);
+//       updatedCliente.senha = cypherSenha;
+//     }
+
+//     if (telefone) {
+//       const telefoneSemFormatacao = telefone.replace(/\D/g, "");
+
+//       if (telefoneSemFormatacao.length !== 11) {
+//         throw new CustomError(422, "Invalid phone number.");
+//       }
+
+//       const existingTelefone = await this.clienteData.findClienteByTelefone(telefone);
+
+//       if (existingTelefone) {
+//         throw new CustomError(409, "Phone number already in use.");
+//       }
+
+//       updatedCliente.telefone = telefone;
+//     }
+
+//     await this.clienteData.updateCliente(id, updatedCliente);
+//   } catch (error: any) {
+//     throw new CustomError(error.statusCode, error.message);
+//   }
+// }
+
+
   public async getClienteAndFormById(id_cliente: string, token: string) {
     try {
       if (!token) {
