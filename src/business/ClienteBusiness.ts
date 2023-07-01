@@ -6,7 +6,7 @@ import { HashGenerator } from "../services/hashGenerator";
 import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
 import { ClienteInputDTO, ClienteInputDTO2, TLogin, TUser } from "../types/ClienteInputDTO";
-
+import { PlanosData } from "../data/PlanosData";
 
 
 export class ClienteBusiness {
@@ -15,7 +15,8 @@ export class ClienteBusiness {
     private idGenerator: IdGenerator,
     private tokenGenerator: TokenGenerator,
     private clienteData: ClienteData,
-    private formularioData: FormularioData
+    private formularioData: FormularioData,
+    private planosData: PlanosData 
   ) {}
 
   public async signup(clienteInput: ClienteInputDTO): Promise<string> {
@@ -159,7 +160,7 @@ export class ClienteBusiness {
     clienteInput: ClienteInputDTO2
   ) {
     try {
-      const { token, nome_completo, nome_social, email, senha } = clienteInput;
+      const { token, nome_completo, nome_social, email, senha , telefone} = clienteInput;
 
       if (!token) {
         throw new CustomError(401, "Please enter a valid token!");
@@ -171,7 +172,7 @@ export class ClienteBusiness {
         throw new CustomError(401, "Invalid token!");
       }
 
-      if (!nome_completo && !nome_social && !email && !senha) {
+      if (!nome_completo && !nome_social && !email && !senha && !telefone) {
         throw new CustomError(400, "No fields provided to update.");
       }
 
@@ -188,7 +189,9 @@ export class ClienteBusiness {
       if (nome_social) {
         cliente.setNomeSocial(nome_social);
       }
-
+      if (telefone) {
+        cliente.setNomeSocial(nome_social);
+      }
       if (email) {
         const existingCliente = await this.clienteData.findClienteByEmail(
           email
@@ -209,49 +212,49 @@ export class ClienteBusiness {
         cliente.setSenha(hashedSenha);
       }
 
-      await this.clienteData.updateCliente(cliente);
+      const update = await this.clienteData.updateCliente(cliente);
       const updatedToken = this.tokenGenerator.generate({
         id: cliente.getIdCliente(),
         email: cliente.getEmail(),
       });
 
-      return updatedToken;
+      return {updatedToken, update};
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
   }
-  public async getClienteAndFormById(
-    id_cliente: string,
-    token: string
-  ): Promise<any> {
-    if (!token) {
-      throw new CustomError(401, "Token is required.");
+  public async getClienteAndFormById(id_cliente: string, token: string) {
+    try {
+      if (!token) {
+        throw new CustomError(401, "Insert a token please!");
+      }
+      if (!id_cliente) {
+        throw new CustomError(400, "Insert a id_cliente please!");
+      }
+  
+      const clienteTokenData = this.tokenGenerator.verify(token);
+  
+      if (!clienteTokenData) {
+        throw new CustomError(401, "Invalid token!");
+      }
+  
+      const cliente = await this.clienteData.findClienteById(id_cliente);
+  
+      if (!cliente) {
+        throw new CustomError(400, "There is no customer with that ID!");
+      }
+  
+      const formulario = await this.formularioData.findFormularioByUserId(id_cliente);
+  
+      const clienteAndForm = {
+        cliente,
+        formulario,
+      };
+  
+      return clienteAndForm;
+    } catch (error: any) {
+      throw new CustomError(error.statusCode, error.message);
     }
-  
-    const clienteTokenData = this.tokenGenerator.verify(token);
-  
-    if (!clienteTokenData) {
-      throw new CustomError(401, "Invalid token.");
-    }
-  
-    const cliente = await this.clienteData.findClienteById(id_cliente);
-  
-    if (!cliente) {
-      throw new CustomError(404, "Cliente not found.");
-    }
-  
-    const form = await this.formularioData.findFormularioByClientId(id_cliente);
-  
-    const hasRespondedForm = !!form;
-  
-    const user: TUser = {
-      data: cliente,
-      form: form,
-      hasRespondedForm: hasRespondedForm,
-    };
-  
-    return { cliente, form, user };
   }
-  
   
 }

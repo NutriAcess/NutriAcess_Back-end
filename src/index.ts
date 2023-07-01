@@ -37,7 +37,8 @@ const clienteBusiness = new ClienteBusiness(
   new IdGenerator(),
   new TokenGenerator(),
   new ClienteData(),
-  new FormularioData()
+  new FormularioData(),
+  new PlanosData()
 );
 const clienteController = new ClienteController(clienteBusiness);
 app.post("/cliente/cadastrar", clienteController.signup);
@@ -45,7 +46,8 @@ app.post("/cliente/conectar", clienteController.login);
 app.get("/cliente/:id_cliente", clienteController.getClienteById);
 app.get("/cliente", clienteController.getAllClientes);
 app.get("/cliente/formulario/:id_cliente", clienteController.getClienteAndFormById);
-app.put("/cliente/:id_cliente", clienteController.updateClienteById);
+app.put("/cliente/atualizar/:id_cliente", clienteController.updateClienteById);
+
 
 //Nutricionista
 const nutriBusiness = new NutricionistaBusiness(
@@ -87,6 +89,7 @@ const formsController = new FormularioController(formsBusiness);
 app.post("/formulario/criar", formsController.createForm);
 app.get("/formulario/:id_formulario", formsController.getFormById);
 app.get("/formulario", formsController.getAllFormularios);
+app.put("/formulario/atualizar/:id_formulario", formsController.updatePlano)
 
 
 //Planos

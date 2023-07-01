@@ -3,7 +3,11 @@ export enum OBJETIVO {
   manter_peso = "manter peso",
   ganhar_massa = "ganhar massa",
 }
-
+export enum TIPO {
+  plus1 = "plus1",
+  familia = "familia",
+  plus2 = "plus2"
+}
 export enum GENERO {
   feminino = "feminino",
   masculino = "masculino",
@@ -55,13 +59,32 @@ export class FormularioModel {
     private tempo_preparo: TEMPO_PREPARO,
     private foto:AvatarsEnum,
     private id_cliente: string,
-    private alergia: ALERGIA
-  ) {}
+    private alergia: ALERGIA,
+    private plano: TIPO
+  ) {this.id_formulario = id_formulario;
+    this.objetivo = objetivo;
+    this.genero = genero;
+    this.altura = altura;
+    this.idade = idade;
+    this.peso = peso;
+    this.capacidade_fisica = capacidade_fisica;
+    this.restricao_alimentar = restricao_alimentar;
+    this.tempo_preparo = tempo_preparo;
+    this.foto = foto;
+    this.id_cliente = id_cliente;
+    this.alergia = alergia;
+    this.plano = plano;}
 
   getId_formulaio = (): string => {
     return this.id_formulario;
   };
+  getPlano = (): TIPO => {
+    return this.plano;
+  };
 
+  public setPlano(plano: TIPO) {
+    this.plano = plano;
+  }
   getObjetivo = (): OBJETIVO => {
     return this.objetivo;
   };
@@ -105,7 +128,9 @@ export class FormularioModel {
   getId_cliente = (): string => {
     return this.id_cliente;
   };
+ 
 
+  
   static toFormularioModel(data: any): FormularioModel {
     return new FormularioModel(
       data.id_formulario,
@@ -119,7 +144,8 @@ export class FormularioModel {
       data.tempo_preparo,
       data.foto,
       data.id_cliente,
-      data.alergia
+      data.alergia,
+      data.plano
     );
   }
 }

@@ -1,7 +1,7 @@
 import { ClienteData } from "../data/ClienteData";
 import { FormularioData } from "../data/FormularioData";
 import { CustomError } from "../error/CustomError";
-import { AvatarsEnum, FormularioModel } from "../model/FormularioModel";
+import { AvatarsEnum, FormularioModel, TIPO } from "../model/FormularioModel";
 import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
 import { FormularioInputDTO } from "../types/FormularioInputDTO";
@@ -27,7 +27,8 @@ export class FormularioBusiness {
         tempo_preparo,
         id_cliente,
         foto,
-        alergia
+        alergia, 
+        plano
       } = input;
       if (!token) {
         throw new CustomError(401, `Authorization token is required`);
@@ -66,6 +67,15 @@ export class FormularioBusiness {
           throw new CustomError(422, "Invalid value for 'foto'");
         }
         parsedFoto = foto;
+      }if (
+        plano.toLowerCase() !== "plus1" &&
+        plano.toLowerCase() !== "plus2" &&
+        plano.toLowerCase() !== "familia"
+      ) {
+        throw new CustomError(
+          422,
+          "Plano must be 'plus1', 'plus2' or 'familia'"
+        );
       }
       if (
         objetivo.toLowerCase() !== "perder peso" &&
@@ -150,8 +160,11 @@ export class FormularioBusiness {
         tempo_preparo,
         foto,
         id_cliente,
-        alergia
+        alergia,
+        plano
       );
+      console.log(newForms);
+      
       await this.formData.createFormulario(newForms);
       return newForms;
     } catch (error: any) {
@@ -193,8 +206,45 @@ export class FormularioBusiness {
       throw new CustomError(error.statusCode, error.message);
     }
   };
-
-
+  
+  public async updatePlano(id_formulario: string, plano: TIPO, token: string) {
+    try {
+      const form = await this.formData.findFormularioById(id_formulario);
+      if (!form) {
+        throw new CustomError(404, `Form with ID ${id_formulario} not found.`);
+      }
+      if (!token) {
+        throw new CustomError(401, "Insert a token please!");
+      }
+      if (!id_formulario) {
+        throw new CustomError(400, "Insert an id_formulario please!");
+      }
+  
+      if (
+        plano.toLowerCase() !== "plus1" &&
+        plano.toLowerCase() !== "plus2" &&
+        plano.toLowerCase() !== "familia"
+      ) {
+        throw new CustomError(
+          400,
+          "Invalid value for 'plano'. Must be 'plus1', 'plus2' or 'familia'."
+        );
+      }
+      if (!plano) {
+        throw new CustomError(400, "Missing 'plano' field.");
+      }
+  
+      const update = await this.formData.updatePlano(id_formulario, plano);
+      
+  
+      return update;
+    } catch (error: any) {
+      throw new CustomError(error.statusCode, error.message);
+    }
+  }
+  
 
 }
+
+
 
