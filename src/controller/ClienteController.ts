@@ -72,32 +72,6 @@ export class ClienteController {
     }
   };
 
-  // updateCliente = async (req: Request, res: Response): Promise<void> => {
-  //   try {
-  //     const token = req.headers.authorization as string;
-  //     const id_cliente = req.params.id_cliente;
-  //     const { nome_completo, nome_social, email, senha, telefone } = req.body;
-
-  //     const clienteInput: ClienteInputDTO = {
-  //       nome_completo,
-  //       nome_social,
-  //       email,
-  //       senha,
-  //       telefone,
-  //     };
-
-  //     await this.clienteBusiness.updateCliente(
-  //       id_cliente,
-  //       token,
-  //       clienteInput
-  //     );
-
-  //     res.status(200).send({ message: "Cliente updated!" });
-  //   } catch (error: any) {
-  //     const { statusCode, message } = error;
-  //     res.status(statusCode || 400).send({ message });
-  //   }
-  // }
   
   getClienteAndFormById = async (req: Request, res: Response) => {
     try {
@@ -108,6 +82,8 @@ export class ClienteController {
         id_cliente,
         token
       );
+    
+      
   
       res.status(200).send({ message: "Cliente and Form found!", clienteAndForm });
     } catch (error: any) {

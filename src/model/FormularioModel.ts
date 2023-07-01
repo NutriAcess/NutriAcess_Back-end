@@ -73,7 +73,8 @@ export class FormularioModel {
     this.foto = foto;
     this.id_cliente = id_cliente;
     this.alergia = alergia;
-    this.plano = plano;}
+    this.plano = plano;
+  }
 
   getId_formulaio = (): string => {
     return this.id_formulario;

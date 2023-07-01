@@ -21,7 +21,7 @@ export class ArmazenaPagamentoBusiness {
         nomeTitular,
         numeroCartao,
         validadeCartao,
-        codigoSeguranca
+        codigoSeguranca,
       } = input;
 
       if (
@@ -36,16 +36,16 @@ export class ArmazenaPagamentoBusiness {
       if (numeroCartao.toString().length !== 16) {
         throw new CustomError(422, "Invalid credit card number.");
       }
-      
+
       if (codigoSeguranca.toString().length !== 3) {
         throw new CustomError(422, "Invalid card security code.");
       }
-      
+
       const cardNumberRegex = /^\d{16}$/;
       if (!cardNumberRegex.test(numeroCartao.toString())) {
         throw new CustomError(422, "Invalid credit card number format.");
       }
-      
+
       const securityCodeRegex = /^\d{3}$/;
       if (!securityCodeRegex.test(codigoSeguranca.toString())) {
         throw new CustomError(422, "Invalid card security code format.");
@@ -81,7 +81,9 @@ export class ArmazenaPagamentoBusiness {
         throw new CustomError(401, "Insert an id_pagamento, please!");
       }
 
-      const pagamento = await this.pagamentoData.findPagamentoById(id_pagamento);
+      const pagamento = await this.pagamentoData.findPagamentoById(
+        id_pagamento
+      );
 
       if (!pagamento) {
         throw new CustomError(400, "There is no form with that ID");

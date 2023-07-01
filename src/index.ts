@@ -38,7 +38,6 @@ const clienteBusiness = new ClienteBusiness(
   new TokenGenerator(),
   new ClienteData(),
   new FormularioData(),
-  new PlanosData()
 );
 const clienteController = new ClienteController(clienteBusiness);
 app.post("/cliente/cadastrar", clienteController.signup);

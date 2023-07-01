@@ -19,7 +19,7 @@ export class FamiliaBusiness {
   public async createFamilia(input: FamiliaInputDTO) {
     try {
       const { token, nome, idade, sexo, peso, id_plano, id_cliente } = input;
-     
+
       if (!token) {
         throw new CustomError(401, `Authorization token is required`);
       }
@@ -63,7 +63,6 @@ export class FamiliaBusiness {
         peso,
         id_cliente,
         id_plano
-        
       );
       await this.familiaData.createFamilia(newFamilia);
       return newFamilia;

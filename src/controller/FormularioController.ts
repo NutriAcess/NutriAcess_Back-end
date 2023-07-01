@@ -40,10 +40,9 @@ export class FormularioController {
         id_cliente,
         plano
       };
-console.log("2", form);
 
       const newForm = await this.formularioBusiness.createForm(form);
-      console.log("3",newForm);
+  
       res.status(201).send({ message: "Form created successfully.", newForm });
     } catch (error: any) {
       if (res.statusCode === 200) {
