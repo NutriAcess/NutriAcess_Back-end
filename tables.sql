@@ -58,7 +58,6 @@ CREATE TABLE `consultas` (
 ALTER TABLE formulario
 ADD COLUMN foto ENUM('avatarUva', 'avatarMaca', 'avatarLaranja', 'avatarAbacaxi');
 
-
 CREATE TABLE `formulario` (
   `id_formulario` VARCHAR(255) PRIMARY KEY,
   `objetivo` Enum('Perder peso', 'manter peso', 'ganhar massa') NOT NULL,
@@ -71,10 +70,10 @@ CREATE TABLE `formulario` (
  `alergia` ENUM('gluten', 'laticinios', 'amendoim', 'peixes', 'ovos', 'mariscos', 'nenhum'),
   `tempo_preparo` Enum('Sim', 'Nao') NOT NULL,
 	`foto`  ENUM('avatarUva', 'avatarMaca', 'avatarLaranja', 'avatarAbacaxi'),
+    `plano` ENUM('plus1', 'familia', 'plus2') DEFAULT NULL,
   `id_cliente` VARCHAR(255),
   foreign key (id_cliente) references cliente (id_cliente)
 );
-
 ALTER TABLE planos add  COLUMN  `tipo` Enum('plus1', 'familia', 'plus2') ;
 CREATE TABLE `fale_conosco` (
   `id` VARCHAR(255) PRIMARY KEY,

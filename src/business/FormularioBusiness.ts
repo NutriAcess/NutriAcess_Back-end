@@ -61,22 +61,15 @@ export class FormularioBusiness {
       if (isNaN(altura) || isNaN(idade) || isNaN(peso)) {
         throw new CustomError(401, "Invalid number!");
       }
-      let parsedFoto: AvatarsEnum | undefined;
       if (foto !== undefined) {
         if (!Object.values(AvatarsEnum).includes(foto)) {
           throw new CustomError(422, "Invalid value for 'foto'");
         }
-        parsedFoto = foto;
-      }if (
-        plano.toLowerCase() !== "plus1" &&
-        plano.toLowerCase() !== "plus2" &&
-        plano.toLowerCase() !== "familia"
-      ) {
-        throw new CustomError(
-          422,
-          "Plano must be 'plus1', 'plus2' or 'familia'"
-        );
       }
+      if (plano && plano.toLowerCase() !== "plus1" && plano.toLowerCase() !== "plus2" && plano.toLowerCase() !== "familia") {
+        throw new CustomError(422, "Plano must be 'plus1', 'plus2' or 'familia'");
+      }
+      
       if (
         objetivo.toLowerCase() !== "perder peso" &&
         objetivo.toLowerCase() !== "manter peso" &&
@@ -216,13 +209,12 @@ export class FormularioBusiness {
       const tokenData = this.tokenGenerator.verify(token);
 
       if (!tokenData) {
-       
         throw new CustomError(401, "Invalid token.");
       }
       if (!id_formulario) {
         throw new CustomError(400, "Insert an id_formulario please!");
       }
-  
+
       if (
         plano.toLowerCase() !== "plus1" &&
         plano.toLowerCase() !== "plus2" &&
@@ -236,16 +228,14 @@ export class FormularioBusiness {
       if (!plano) {
         throw new CustomError(400, "Missing 'plano' field.");
       }
-  
+
       const update = await this.formData.updatePlano(id_formulario, plano);
-      
-  
+
       return update;
     } catch (error: any) {
       throw new CustomError(error.statusCode, error.message);
     }
   }
-  
 
 }
 
