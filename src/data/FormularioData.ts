@@ -19,7 +19,8 @@ export class FormularioData extends BaseData {
         foto: forms.getFoto(),
         id_cliente: forms.getId_cliente(),
         alergia: forms.getAlergia(),
-        genero: forms.getGenero()
+        genero: forms.getGenero(),
+        plano: forms.getPlano()
       });
     } catch (error: any) {
       throw new CustomError(400, error.sqlMessage);
@@ -76,6 +77,15 @@ export class FormularioData extends BaseData {
         .where({ id_cliente });
   
       return forms;
+    } catch (error: any) {
+      throw new CustomError(400, error.sqlMessage);
+    }
+  }
+  public async updatePlano(id_formulario: string, plano: string): Promise<void> {
+    try {
+      await BaseData.connection(this.tableName)
+        .where({ id_formulario })
+        .update({ plano: plano });
     } catch (error: any) {
       throw new CustomError(400, error.sqlMessage);
     }

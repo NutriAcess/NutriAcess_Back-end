@@ -1,5 +1,6 @@
 import { CustomError } from "../error/CustomError";
 import { ClienteModel } from "../model/ClienteModel";
+import { FormularioModel } from "../model/FormularioModel";
 import { BaseData } from "./BaseData";
 
 export class ClienteData extends BaseData {
@@ -89,10 +90,23 @@ export class ClienteData extends BaseData {
           nome_social: cliente.getNomeSocial(),
           email: cliente.getEmail(),
           senha: cliente.getSenha(),
+          telefone: cliente.getTelefone()
         });
     } catch (error: any) {
       throw new CustomError(400, error.sqlMessage);
     }
   }
+  public async findFormularioByUserId(id_cliente: string): Promise<FormularioModel | undefined> {
+    try {
+      const formulario = await BaseData.connection("formulario")
+        .select("*")
+        .where({ id_cliente: id_cliente });
+  
+      return formulario[0];
+    } catch (error: any) {
+      throw new CustomError(400, error.sqlMessage);
+    }
+  }
+  
   
 }

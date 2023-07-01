@@ -10,7 +10,7 @@ CREATE TABLE `cliente` (
 
 CREATE TABLE `planos` (
   `id_plano` VARCHAR(255) PRIMARY KEY,
-  `tipo` Enum('Plus', 'Família', 'Premium') NOT NULL,
+  `tipo` Enum('plus1', 'familia', 'plus2') NOT NULL,
   `duracao` varchar(255) NOT NULL,
   `descricao` varchar(255) NOT NULL,
   `valor` decimal NOT NULL
@@ -61,13 +61,13 @@ ADD COLUMN foto ENUM('avatarUva', 'avatarMaca', 'avatarLaranja', 'avatarAbacaxi'
 
 CREATE TABLE `formulario` (
   `id_formulario` VARCHAR(255) PRIMARY KEY,
-  `objetivo` Enum('Perder peso', 'Manter meu peso atual', 'Ganhar massa muscular') NOT NULL,
+  `objetivo` Enum('Perder peso', 'manter peso', 'ganhar massa') NOT NULL,
   `genero` ENUM('feminino', 'masculino', 'outro'),
   `altura` decimal NOT NULL,
   `idade` int NOT NULL,
   `peso` decimal NOT NULL,
-  `capacidade_fisica` Enum('Sedentarismo', 'Atividade física moderada', 'Atividade física intensiva'),
-  `restricao_alimentar` Enum('Qualquer coisa', 'Sou vegetariano(a)', 'Sou vegano(a)'),
+  `capacidade_fisica` Enum('Sedentarismo', 'Atividade fisica moderada', 'Atividade fisica intensa'),
+  `restricao_alimentar` Enum('Qualquer coisa', 'vegetariano', 'vegano'),
  `alergia` ENUM('gluten', 'laticinios', 'amendoim', 'peixes', 'ovos', 'mariscos', 'nenhum'),
   `tempo_preparo` Enum('Sim', 'Nao') NOT NULL,
 	`foto`  ENUM('avatarUva', 'avatarMaca', 'avatarLaranja', 'avatarAbacaxi'),
@@ -75,7 +75,7 @@ CREATE TABLE `formulario` (
   foreign key (id_cliente) references cliente (id_cliente)
 );
 
-
+ALTER TABLE planos add  COLUMN  `tipo` Enum('plus1', 'familia', 'plus2') ;
 CREATE TABLE `fale_conosco` (
   `id` VARCHAR(255) PRIMARY KEY,
   `avaliacao` Enum('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'),

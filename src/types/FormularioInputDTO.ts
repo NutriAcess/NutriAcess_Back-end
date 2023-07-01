@@ -1,4 +1,4 @@
-import { ALERGIA, AvatarsEnum, CAPACIDADE_FISICA, GENERO, OBJETIVO, RESTRICAO_ALIMENTAR, TEMPO_PREPARO } from "../model/FormularioModel"
+import { ALERGIA, AvatarsEnum, CAPACIDADE_FISICA, GENERO, OBJETIVO, RESTRICAO_ALIMENTAR, TEMPO_PREPARO, TIPO } from "../model/FormularioModel"
 
 export type FormularioInputDTO = {
   token?:string,
@@ -12,6 +12,7 @@ export type FormularioInputDTO = {
   tempo_preparo: TEMPO_PREPARO,
   foto: AvatarsEnum ,
   id_cliente: string,
-  alergia: ALERGIA
+  alergia: ALERGIA,
+  plano: TIPO
 }
 
