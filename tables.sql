@@ -1,5 +1,5 @@
 CREATE TABLE `cliente` (
-  `id_cliente` VARCHAR(255) PRIMARY KEY,
+  `id_cliente` VARCHAR(50) PRIMARY KEY,
   `nome_completo` varchar(255) NOT NULL,
   `nome_social` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE `cliente` (
 
 
 CREATE TABLE `planos` (
-  `id_plano` VARCHAR(255) PRIMARY KEY,
+  `id_plano` VARCHAR(50) PRIMARY KEY,
   `tipo` Enum('plus1', 'familia', 'plus2') NOT NULL,
   `duracao` varchar(255) NOT NULL,
   `descricao` varchar(255) NOT NULL,
@@ -18,12 +18,12 @@ CREATE TABLE `planos` (
 
 
 CREATE TABLE `familia` (
-  `id_familia` VARCHAR(255) PRIMARY KEY,
+  `id_familia` VARCHAR(50) PRIMARY KEY,
   `nome` varchar(255) NOT NULL,
   `idade` int,
   `sexo` Enum('masculino', 'feminino', 'outro') NOT NULL,
   `peso` decimal NOT NULL,
-  `id_cliente` VARCHAR(255),
+  `id_cliente` VARCHAR(50),
   `id_plano` VARCHAR(255),
   foreign key (id_cliente) references cliente (id_cliente),
   foreign key (id_plano) references planos (id_plano)
@@ -32,7 +32,7 @@ CREATE TABLE `familia` (
 
 
 CREATE TABLE `nutricionista` (
-  `id_nutricionista` VARCHAR(255) PRIMARY KEY,
+  `id_nutricionista` VARCHAR(50) PRIMARY KEY,
   `nome_completo` varchar(255) NOT NULL,
   `nome_social` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
@@ -45,13 +45,13 @@ CREATE TABLE `nutricionista` (
 
 
 CREATE TABLE `consultas` (
-  `id` VARCHAR(255) PRIMARY KEY,
+  `id` VARCHAR(50) PRIMARY KEY,
   `data` date NOT NULL,
   `hora` time NOT NULL,
   `status` varchar(255) NOT NULL,
   `observacoes` varchar(255) NOT NULL,
   `id_nutricionista` VARCHAR(255),
-  `id_cliente` VARCHAR(255),
+  `id_cliente` VARCHAR(50),
   foreign key (id_nutricionista) references nutricionista (id_nutricionista),
   foreign key (id_cliente) references cliente (id_cliente)
 );
@@ -59,7 +59,7 @@ ALTER TABLE formulario
 ADD COLUMN foto ENUM('avatarUva', 'avatarMaca', 'avatarLaranja', 'avatarAbacaxi');
 
 CREATE TABLE `formulario` (
-  `id_formulario` VARCHAR(255) PRIMARY KEY,
+  `id_formulario` VARCHAR(50) PRIMARY KEY,
   `objetivo` Enum('Perder peso', 'manter peso', 'ganhar massa') NOT NULL,
   `genero` ENUM('feminino', 'masculino', 'outro'),
   `altura` decimal NOT NULL,
@@ -71,12 +71,12 @@ CREATE TABLE `formulario` (
   `tempo_preparo` Enum('Sim', 'Nao') NOT NULL,
 	`foto`  ENUM('avatarUva', 'avatarMaca', 'avatarLaranja', 'avatarAbacaxi'),
     `plano` ENUM('plus1', 'familia', 'plus2') DEFAULT NULL,
-  `id_cliente` VARCHAR(255),
+  `id_cliente` VARCHAR(50),
   foreign key (id_cliente) references cliente (id_cliente)
 );
 ALTER TABLE planos add  COLUMN  `tipo` Enum('plus1', 'familia', 'plus2') ;
 CREATE TABLE `fale_conosco` (
-  `id` VARCHAR(255) PRIMARY KEY,
+  `id` VARCHAR(50) PRIMARY KEY,
   `avaliacao` Enum('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'),
   `nome_usuario` varchar(255),
   `email` varchar(255),
@@ -84,9 +84,9 @@ CREATE TABLE `fale_conosco` (
 );
 
 CREATE TABLE familia_cliente (
-  id_familia_cliente VARCHAR(255) PRIMARY KEY,
-  id_cliente VARCHAR(255),
-  id_familia VARCHAR(255),
+  id_familia_cliente VARCHAR(50) PRIMARY KEY,
+  id_cliente VARCHAR(50),
+  id_familia VARCHAR(50),
   foreign key (id_cliente) references cliente (id_cliente),
   foreign key (id_familia) references familia (id_familia)
 );
@@ -94,7 +94,7 @@ CREATE TABLE familia_cliente (
 
 
 CREATE TABLE perfil_nutri (
-  id_perfil VARCHAR(255) PRIMARY KEY,
+  id_perfil VARCHAR(50) PRIMARY KEY,
   nome varchar(255),
   foto blob,
   instagram varchar(255) NOT NULL,
@@ -104,8 +104,8 @@ CREATE TABLE perfil_nutri (
 
 
 create table `ArmazenaPagamento` (
-`id_pagamento` varchar(255) primary key,
-`id_cliente` varchar(255),
+`id_pagamento` varchar(50) primary key,
+`id_cliente` varchar(50),
 `nomeTitular`varchar(255) not null,
 `numeroCartao`bigint not null unique,
 `validadeCartao` int not null unique,
