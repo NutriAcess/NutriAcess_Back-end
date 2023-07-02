@@ -7,7 +7,6 @@ CREATE TABLE `cliente` (
   `telefone` varchar(255) not null 
 );
 
-
 CREATE TABLE `planos` (
   `id_plano` VARCHAR(50) PRIMARY KEY,
   `tipo` Enum('plus1', 'familia', 'plus2') NOT NULL,
@@ -15,7 +14,6 @@ CREATE TABLE `planos` (
   `descricao` varchar(255) NOT NULL,
   `valor` decimal NOT NULL
 );
-
 
 CREATE TABLE `familia` (
   `id_familia` VARCHAR(50) PRIMARY KEY,
@@ -29,8 +27,6 @@ CREATE TABLE `familia` (
   foreign key (id_plano) references planos (id_plano)
 );
 
-
-
 CREATE TABLE `nutricionista` (
   `id_nutricionista` VARCHAR(50) PRIMARY KEY,
   `nome_completo` varchar(255) NOT NULL,
@@ -41,8 +37,6 @@ CREATE TABLE `nutricionista` (
   `especialidade` varchar(255),
   `crn` int NOT NULL
 );
-
-
 
 CREATE TABLE `consultas` (
   `id` VARCHAR(50) PRIMARY KEY,
@@ -62,19 +56,19 @@ CREATE TABLE `formulario` (
   `id_formulario` VARCHAR(50) PRIMARY KEY,
   `objetivo` Enum('Perder peso', 'manter peso', 'ganhar massa') NOT NULL,
   `genero` ENUM('feminino', 'masculino', 'outro'),
-  `altura` decimal NOT NULL,
+  `altura` float(8,2) NOT NULL,
   `idade` int NOT NULL,
-  `peso` decimal NOT NULL,
+  `peso` float(8,2) NOT NULL,
   `capacidade_fisica` Enum('Sedentarismo', 'Atividade fisica moderada', 'Atividade fisica intensa'),
   `restricao_alimentar` Enum('Qualquer coisa', 'vegetariano', 'vegano'),
  `alergia` ENUM('gluten', 'laticinios', 'amendoim', 'peixes', 'ovos', 'mariscos', 'nenhum'),
   `tempo_preparo` Enum('Sim', 'Nao') NOT NULL,
 	`foto`  ENUM('avatarUva', 'avatarMaca', 'avatarLaranja', 'avatarAbacaxi'),
-    `plano` ENUM('plus1', 'familia', 'plus2') DEFAULT NULL,
+  `plano` ENUM('plus1', 'familia', 'plus2') DEFAULT NULL,
   `id_cliente` VARCHAR(50),
   foreign key (id_cliente) references cliente (id_cliente)
 );
-ALTER TABLE planos add  COLUMN  `tipo` Enum('plus1', 'familia', 'plus2') ;
+
 CREATE TABLE `fale_conosco` (
   `id` VARCHAR(50) PRIMARY KEY,
   `avaliacao` Enum('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'),
@@ -91,8 +85,6 @@ CREATE TABLE familia_cliente (
   foreign key (id_familia) references familia (id_familia)
 );
 
-
-
 CREATE TABLE perfil_nutri (
   id_perfil VARCHAR(50) PRIMARY KEY,
   nome varchar(255),
@@ -101,7 +93,6 @@ CREATE TABLE perfil_nutri (
   bio varchar(300) not null,
   especialidades varchar(255) NOT NULL
 );
-
 
 create table `ArmazenaPagamento` (
 `id_pagamento` varchar(50) primary key,
