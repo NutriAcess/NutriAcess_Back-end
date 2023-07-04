@@ -1,6 +1,13 @@
-# API NutriAcess
 
-A API NutriAcess é uma aplicação desenvolvida para integrar com o frontend do projeto NutriAcess. Essa API foi construída durante os 6 meses do curso Profissão do Instituto PROA, por Erica Inacia e Henrique Santos.
+[![Typing SVG](https://readme-typing-svg.herokuapp.com/?color=F15115&size=35&center=true&vCenter=true&width=1000&lines=Olá!+Bem+vindo(a)+a+NutriAcess!;)](https://git.io/typing-svg)
+
+ 
+<div align="center">
+   <img width="550px" src="https://i.imgur.com/EFisXuC.png"/>
+</div>
+<br/>
+
+A API NutriAcess é uma aplicação desenvolvida para integrar com o frontend do projeto NutriAcess e foi construída durante os 6 meses do curso Profissão do Instituto PROA, por Erica Inacia e Henrique Santos.
 
 ## Tecnologias Utilizadas
 
