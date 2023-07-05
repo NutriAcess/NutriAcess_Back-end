@@ -71,5 +71,5 @@ O front-end da aplicação pode ser acessado no seguinte link: [Front-end NutriA
     
 </div>
 
-
+## LICENSE
 Este projeto está licenciado sob a Licença ISC. Consulte o arquivo `LICENSE` para obter mais informações.
