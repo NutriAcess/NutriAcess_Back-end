@@ -1,5 +1,4 @@
-
-[![Typing SVG](https://readme-typing-svg.herokuapp.com/?color=F15115&size=35&center=true&vCenter=true&width=1000&lines=Olá!+Bem+vindo(a)+a+NutriAcess!;)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.herokuapp.com/?color=F15115&size=35&center=true&vCenter=true&width=1000&lines=Olá!+Bem-vindo(a)+a+NutriAcess!;)](https://git.io/typing-svg)
 
  
 <div align="center">
@@ -50,8 +49,18 @@ As seguintes dependências de desenvolvimento são utilizadas no projeto:
 
 - `ts-node-dev`: um pacote que permite executar arquivos TypeScript diretamente, sem a necessidade de compilação prévia.
 - `@types/cors`: pacote contendo definições de tipos para o middleware `cors`.
-- `@types/express`: pacote contendo definições de tipos para o framework `Express`.
+- `@types/express`: pacote contendo definições de tipos para o framework `
+
+Express`.
 
 ## Licença
 
 Este projeto está licenciado sob a Licença ISC. Consulte o arquivo `LICENSE` para obter mais informações.
+
+## Documentação
+
+A documentação da API pode ser encontrada no seguinte link: [Documentação da API NutriAcess](https://documenter.getpostman.com/view/20353568/2s93zE3LKr)
+
+## Front-end
+
+O front-end da aplicação pode ser acessado no seguinte link: [Front-end NutriAcess](https://lnkd.in/dCTf2kiF) (abrir na branch homolog).
