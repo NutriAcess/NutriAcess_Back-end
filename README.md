@@ -6,7 +6,7 @@
 </div>
 <br/>
 
-A API NutriAcess é uma aplicação desenvolvida para integrar com o frontend do projeto NutriAcess e foi construída durante os 6 meses do curso Profissão do Instituto PROA, por Erica Inacia e Henrique Santos.
+A API NutriAcess é uma aplicação desenvolvida para integrar com o frontend do projeto NutriAcess e foi construída durante os 6 meses do curso Profissão do Instituto PROA, por Erica Inacia e Henrique Araújo.
 
 ## Tecnologias Utilizadas
 
@@ -53,9 +53,6 @@ As seguintes dependências de desenvolvimento são utilizadas no projeto:
 
 Express`.
 
-## Licença
-
-Este projeto está licenciado sob a Licença ISC. Consulte o arquivo `LICENSE` para obter mais informações.
 
 ## Documentação
 
@@ -64,3 +61,15 @@ A documentação da API pode ser encontrada no seguinte link: [Documentação da
 ## Front-end
 
 O front-end da aplicação pode ser acessado no seguinte link: [Front-end NutriAcess](https://lnkd.in/dCTf2kiF) (abrir na branch homolog).
+## Licença
+   <h2>🍍 Entre em contato conosco</h2>
+   <a href="https://linktr.ee/nutriacess_" target="_blank"><img width="200px" src="https://i.imgur.com/i7OAzxg.png" /></a> <br>
+    <a href="https://linktr.ee/nutriacess_" target="_blank"><img width="24px" src="https://i.imgur.com/xgUMuX1.png"/>Clique para ir a nosso LinkTree </a>
+   
+   <h2>🍌 Integrantes</h2>
+   <a href="https://linktr.ee/nutriacess_" target="_blank"><img width="900px" src="https://i.imgur.com/zYjdT4U.png" /></a>
+    
+</div>
+
+
+Este projeto está licenciado sob a Licença ISC. Consulte o arquivo `LICENSE` para obter mais informações.
