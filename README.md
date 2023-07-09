@@ -49,9 +49,22 @@ As seguintes dependências de desenvolvimento são utilizadas no projeto:
 
 - `ts-node-dev`: um pacote que permite executar arquivos TypeScript diretamente, sem a necessidade de compilação prévia.
 - `@types/cors`: pacote contendo definições de tipos para o middleware `cors`.
-- `@types/express`: pacote contendo definições de tipos para o framework `
+- `@types/express`: pacote contendo definições de tipos para o framework `Express`.
 
-Express`.
+## Como executar o projeto
+
+Para executar o backend da API NutriAcess, siga as etapas abaixo:
+
+1. Certifique-se de ter o Node.js e o MySQL instalados em sua máquina.
+2. Clone este repositório para o seu ambiente de desenvolvimento.
+3. Abra o terminal na pasta do projeto e execute o comando `npm install` para instalar as dependências.
+4. Configure as variáveis de ambiente no arquivo `.env`, inserindo as informações necessárias para a conexão com o banco de dados e outras configurações.
+5. Execute o comando `npm run start` para iniciar o servidor Node.js.
+6. O backend estará disponível no endereço `http://localhost:3003`.
+
+Certifique-se de que o banco de dados MySQL esteja em execução e acessível. Você pode usar a documentação fornecida para obter mais informações sobre a configuração do banco de dados e as rotas disponíveis na API.
+
+
 
 
 ## Documentação
@@ -60,15 +73,22 @@ A documentação da API pode ser encontrada no seguinte link: [Documentação da
 
 ## Front-end
 
-O front-end da aplicação pode ser acessado no seguinte link: [Front-end NutriAcess](https://github.com/NutriAcess/NutriAcess_Front-end) (abrir na branch homolog).
-## Licença
-   <h2>🍍 Entre em contato conosco</h2>
-   <a href="https://linktr.ee/nutriacess_" target="_blank"><img width="200px" src="https://i.imgur.com/i7OAzxg.png" /></a> <br>
-    <a href="https://linktr.ee/nutriacess_" target="_blank"><img width="24px" src="https://i.imgur.com/xgUMuX1.png"/>Clique para ir a nosso LinkTree </a>
-   
+O front-end da aplicação pode ser acessado no seguinte link: [Front-end NutriAcess](https://github.com/NutriAcess/NutriAcess_Front-end).
+<div align="center">
+  <h2>🍍 Entre em contato conosco</h2>
+</div>
+
+<p align="center">
+   <a href="https://linktr.ee/nutriacess_" target="_blank"><img width="200px" src="https://i.imgur.com/i7OAzxg.png" /></a><br>
+   <a href="https://linktr.ee/nutriacess_" target="_blank"><img width="24px" src="https://i.imgur.com/xgUMuX1.png"/>Clique para ir ao nosso LinkTree</a>
+</p>
+
+   <div align="center">
    <h2>🍌 Integrantes</h2>
-   <a href="https://linktr.ee/nutriacess_" target="_blank"><img width="900px" src="https://i.imgur.com/zYjdT4U.png" /></a>
+     <a href="https://linktr.ee/nutriacess_" target="_blank"><img width="900px" src="https://i.imgur.com/zYjdT4U.png" /></a>
     
+</div>
+  
 </div>
 
 ## LICENSE
