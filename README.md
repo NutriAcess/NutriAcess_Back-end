@@ -59,7 +59,7 @@ Para executar o backend da API NutriAcess, siga as etapas abaixo:
 2. Clone este repositório para o seu ambiente de desenvolvimento.
 3. Abra o terminal na pasta do projeto e execute o comando `npm install` para instalar as dependências.
 4. Configure as variáveis de ambiente no arquivo `.env`, inserindo as informações necessárias para a conexão com o banco de dados e outras configurações.
-5. Execute o comando `npm run start` para iniciar o servidor Node.js.
+5. Execute o comando `npm run start:dev` para iniciar o servidor Node.js.
 6. O backend estará disponível no endereço `http://localhost:3003`.
 
 Certifique-se de que o banco de dados MySQL esteja em execução e acessível. Você pode usar a documentação fornecida para obter mais informações sobre a configuração do banco de dados e as rotas disponíveis na API.
