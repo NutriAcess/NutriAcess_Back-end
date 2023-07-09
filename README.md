@@ -71,6 +71,9 @@ Certifique-se de que o banco de dados MySQL esteja em execução e acessível. V
 
 A documentação da API pode ser encontrada no seguinte link: [Documentação da API NutriAcess](https://documenter.getpostman.com/view/20353568/2s93zE3LKr)
 
+## 🍎 Visite o site
+
+Acesse o site da NutriAcess clicando [aqui](http://nutriacess.com.br/).
 
 <div align="center">
   <h2>🍍 Entre em contato conosco</h2>
