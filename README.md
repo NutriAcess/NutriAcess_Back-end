@@ -60,7 +60,7 @@ A documentação da API pode ser encontrada no seguinte link: [Documentação da
 
 ## Front-end
 
-O front-end da aplicação pode ser acessado no seguinte link: [Front-end NutriAcess](https://lnkd.in/dCTf2kiF) (abrir na branch homolog).
+O front-end da aplicação pode ser acessado no seguinte link: [Front-end NutriAcess](https://github.com/NutriAcess/NutriAcess_Front-end) (abrir na branch homolog).
 ## Licença
    <h2>🍍 Entre em contato conosco</h2>
    <a href="https://linktr.ee/nutriacess_" target="_blank"><img width="200px" src="https://i.imgur.com/i7OAzxg.png" /></a> <br>
